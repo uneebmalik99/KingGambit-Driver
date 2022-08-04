@@ -1,84 +1,134 @@
-import { View, Text } from 'react-native'
-import React from 'react'
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-// import { NavigationContainer } from '@react-navigation/native';
+import * as React from "react";
+import {
+  createStackNavigator,
+  HeaderBackground,
+} from "@react-navigation/stack";
+import { createDrawerNavigator } from "@react-navigation/drawer";
+import { DrawerContent } from "./Drawer";
 import Splash from '../screen/Splash';
 import Login from '../screen/Login';
 import Register from '../screen/Register';
+// import Welcome from '../screen/Welcome';
 import WelcomeLogistic from '../screen/WelcomeLogistic';
+// import CreateLoad from '../screen/CreateLoad';
+import Maps from '../screen/Maps';
 import AllLoad from '../screen/AllLoad';
 import TrackYourDelivery from '../screen/TrackYourDelivery';
+// import TrackYourLoad from '../screen/TrackYourLoad';
+import ForgetPass from '../screen/ForgetPass';
+import VerificationCode from '../screen/VerificationCode';
+import ChangePass from '../screen/ChangePass';
 import ConfirmationPage from '../screen/ConfirmationPage';
-import IncomingLoad from '../screen/IncomingLoad';
-import 'react-native-gesture-handler';
-import { createDrawerNavigator, DrawerContent } from '@react-navigation/drawer';
+import Profile from "../screen/Profile";
+import MyLocation from "../screen/MyLocation";
 
-
- const DrawerNavigation=() =>{
-    return (
-        <>
-           <Drawer.Navigator >
-           <Drawer.Screen name="LoginScreen" component={LoginScreen} />
-         <Drawer.Screen name="SignupScreen" component={SignupScreen} />
-         {/* <Drawer.Screen name="Login" component={Login} /> */}
-         <Drawer.Screen name="AdminScreen" component={AdminScreen} />
-             {/* <Drawer.Screen name="Notifications" component={NotificationsScreen} /> */}
-            </Drawer.Navigator> 
-        </>
-    )
-}
-
-
-const AppDrawer   = createDrawerNavigator();
-
+const Stack = createStackNavigator();
+const AppDrawer = createDrawerNavigator();
 
 
 const AppDrawerScreen = () => {
   return (
     <AppDrawer.Navigator
-      // drawerContent={(props) => <DrawerContent {...props} 
-      // />}
+      drawerContent={(props) => <DrawerContent {...props} />}
     >
-      
-      <Stack.Screen name="welcomeLogistic" component={WelcomeLogistic} />
+      <AppDrawer.Screen
+        name="welcomeLogistic"
+        component={WelcomeLogistic} 
+        options={{ headerShown: false }}
+      />
+   {/* <AppDrawer.Screen
+        name="createLoad"
+        component={CreateLoad}
+        options={{ headerShown: false }}  
+      /> */}
+
+
+         <AppDrawer.Screen
+        name="maps"
+        component={Maps}
+        options={{ headerShown: false }}
+      />
 
     
+
+      
+      <Stack.Screen
+        name="mylocation"
+        component={MyLocation}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="profile"
+        component={Profile}
+        options={{ headerShown: false }}
+      />
+   <Stack.Screen
+        name="map"
+        component={Maps}
+        options={{ headerShown: false }}
+      />
     </AppDrawer.Navigator>
   );
-}
+};
 
-const WelcomeStack =()=>{
-  return(
-    
-    <Stack.Navigator>
-                <Stack.Screen name="welcomeLogistic" component={WelcomeLogistic} />
+const WelcomeStack = () => {
+  
+  return (
+    <Stack.Navigator initialRouteName={'Splash'}>
+        <Stack.Screen name="Splash" component={Splash} options={{
+          headerShown: false
+        }} />
+        <Stack.Screen name="login" component={Login} options={{
+          headerShown: false
+        }}/>
+        <Stack.Screen name="register" component={Register} options={{
+          headerShown: false
+        }}/>
+         <Stack.Screen name="forgetPass" component={ForgetPass}options={{
+          headerShown: false
+        }} />
+        <Stack.Screen name="verificationCode" component={VerificationCode} options={{
+          headerShown: false
+        }}/>
+          <Stack.Screen name="confirmationPage" component={ConfirmationPage} options={{
+          headerShown: false
+        }}/>
+        <Stack.Screen name="changePass" component={ChangePass}options={{
+          headerShown: false
+        }} />
 
-
-                </Stack.Navigator>
-  )
-}
+    </Stack.Navigator>
+  );
+};
 
 const AppNavigator = () => {
 
-
-    const Stack = createNativeStackNavigator()
   return (
-    // <View>
-    //   <Text>AppNavigator</Text>
-    // </View>
-    <Stack.Navigator>
-                <Stack.Screen name="Splash" component={Splash} />
-        <Stack.Screen name="login" component={Login} />
-        <Stack.Screen name="register" component={Register} />
-        <Stack.Screen name="AppDrawerScreen" component={AppDrawerScreen} />
-        <Stack.Screen name="allLoad" component={AllLoad} />
-        <Stack.Screen name="trackyourDelivery" component={TrackYourDelivery} />
-        <Stack.Screen name="confirmationPage" component={ConfirmationPage} />
-        <Stack.Screen name="incomingLoad" component={IncomingLoad} />
+    <Stack.Navigator initialRouteName="WelcomeStack">
+      <Stack.Screen
+        name="WelcomeStack"
+        component={WelcomeStack}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="AppDrawer"
+        component={AppDrawerScreen}
+        options={{ headerShown: false }}
+      />
 
-
+      <Stack.Screen
+        name="allLoad"
+        component={AllLoad}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="trackyourDelivery"
+        component={TrackYourDelivery}
+        options={{ headerShown: false }}
+      />
+    
     </Stack.Navigator>
-  )
-}
+  );
+};
 
-export default AppNavigator
+export default AppNavigator;

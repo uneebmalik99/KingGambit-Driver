@@ -1,0 +1,83 @@
+{
+  "project_info": {
+    "project_number": "242404480776",
+    "firebase_url": "https://kinggambit-1713f-default-rtdb.firebaseio.com",
+    "project_id": "kinggambit-1713f",
+    "storage_bucket": "kinggambit-1713f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:242404480776:android:668e2fb6f5197a9e7a3ebd",
+        "android_client_info": {
+          "package_name": "com.kinggambit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "242404480776-kvh9u0f72icv3msf0umao98n6ffb9ptt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBPn31y-kZiI9gbNZkGlwPgPLM7bKY3jl4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "242404480776-kvh9u0f72icv3msf0umao98n6ffb9ptt.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "242404480776-8ssoe2gdja98ql19bohia058aljjc05o.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.KingGambit"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:242404480776:android:e6546a6ee52b6b3a7a3ebd",
+        "android_client_info": {
+          "package_name": "com.kinggambitdriver"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "242404480776-kvh9u0f72icv3msf0umao98n6ffb9ptt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBPn31y-kZiI9gbNZkGlwPgPLM7bKY3jl4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "242404480776-kvh9u0f72icv3msf0umao98n6ffb9ptt.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "242404480776-8ssoe2gdja98ql19bohia058aljjc05o.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.KingGambit"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="default_web_client_id" translatable="false">242404480776-kvh9u0f72icv3msf0umao98n6ffb9ptt.apps.googleusercontent.com</string>
+    <string name="firebase_database_url" translatable="false">https://kinggambit-1713f-default-rtdb.firebaseio.com</string>
+    <string name="gcm_defaultSenderId" translatable="false">242404480776</string>
+    <string name="google_api_key" translatable="false">AIzaSyBPn31y-kZiI9gbNZkGlwPgPLM7bKY3jl4</string>
+    <string name="google_app_id" translatable="false">1:242404480776:android:e6546a6ee52b6b3a7a3ebd</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyBPn31y-kZiI9gbNZkGlwPgPLM7bKY3jl4</string>
+    <string name="google_storage_bucket" translatable="false">kinggambit-1713f.appspot.com</string>
+    <string name="project_id" translatable="false">kinggambit-1713f</string>
+</resources>

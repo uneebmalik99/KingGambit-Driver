@@ -1,31 +1,55 @@
-import React from 'react'
-import { View, Text,Button ,StyleSheet,} from 'react-native'
+import React,{useEffect} from 'react'
+import { View, Text,Button , Dimensions, ImageBackground, StyleSheet,ActivityIndicator} from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+
+const deviceHeight = Dimensions.get("window").height;
+const deviceWidth = Dimensions.get("window").width;
 
 const Splash = ({navigation}) => {
+
+  // componentDid
+
+  useEffect(() => {
+   
+//  setTimeout(()=>{
+  AsyncStorage.getItem('Login').then((logn)=>{
+    if ( logn == '1')
+    {
+      navigation.navigate('AppDrawer')
+    
+    }
+    else if(logn == '0' || logn ==null){
+    
+      navigation.navigate('login')
+    
+    }
+    
+    
+        }
+        )
+// },2000)
+  },[]);
+
     return (
-    //     <View sty>
-    //         <Text>splash scr</Text>
-    //         <Button
-    //     title="splash screen"
-    //     onPress={() => navigation.navigate('login')}
-    //   />
-    //     </View>
-    <View style={styles.container}>
-    {/* <Text style={styles.title}>React Native</Text> */}
-    <Button 
-        title="splash screen"
-         onPress={() => navigation.navigate('login')}
-      />
-  </View>
+    <SafeAreaView style={styles.container}>
+    
+    <ImageBackground source={require('../assets/Splash.png')} resizeMode="cover" style={styles.image}>
+            </ImageBackground>
+  </SafeAreaView>
     )
 }
 const styles = StyleSheet.create({
     container: {
       flex: 1,
-    //   justifyContent: center,
-    marginTop: 300,
-      padding: 24,
-      backgroundColor: "#eaeaea"
+    },
+    image: {
+      justifyContent: "center",
+      height:deviceHeight,
+      width:deviceWidth,
+      position:'absolute',
+      paddingVertical:0
     },
     title: {
       marginTop: 16,

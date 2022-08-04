@@ -7,11 +7,11 @@
 #define TIMEOUT_SECONDS 600
 #define TEXT_TO_LOOK_FOR @"Welcome to React"
 
-@interface KingGamBitDriverTests : XCTestCase
+@interface KinggambitDriverTests : XCTestCase
 
 @end
 
-@implementation KingGamBitDriverTests
+@implementation KinggambitDriverTests
 
 - (BOOL)findSubviewInView:(UIView *)view matching:(BOOL (^)(UIView *view))test
 {

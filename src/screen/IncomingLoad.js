@@ -1,11 +1,17 @@
 import React from 'react'
 import { View, Text,TouchableOpacity,TextInput,StyleSheet } from 'react-native'
 
+import { Appbar } from "react-native-paper";
 
 const IncomingLoad = () => {
   return (
     <View>
-    <Text style={styles.text} >Incoming Load</Text>
+  <Appbar.Header style={styles.header}>
+      <Text >
+        Incoming Load
+      </Text>
+      
+      </Appbar.Header>
     <TouchableOpacity
 style={{marginTop:20}}
 // onPress={() => navigation.navigate('maps')}
@@ -14,6 +20,8 @@ style={{marginTop:20}}
 style={styles.input}
 placeholder="Load Details"
 editable={false}
+placeholderTextColor={'black'}
+
 />
 </TouchableOpacity>
 <TouchableOpacity
@@ -24,6 +32,8 @@ style={{marginTop:20}}
 style={styles.input}
 placeholder="Pick Up Location"
 editable={false}
+placeholderTextColor={'black'}
+
 />
 </TouchableOpacity>
 <TouchableOpacity
@@ -34,6 +44,8 @@ style={{marginTop:20}}
 style={styles.input}
 placeholder="Drop of Location"
 editable={false}
+placeholderTextColor={'black'}
+
 />
 </TouchableOpacity>
 <TouchableOpacity
@@ -44,6 +56,8 @@ style={{marginTop:20}}
 style={styles.input}
 placeholder="Dock Number"
 editable={false}
+placeholderTextColor={'black'}
+
 />
 </TouchableOpacity>
 <TouchableOpacity
@@ -55,6 +69,8 @@ style={{marginTop:20}}
 style={styles.input}
 placeholder="Accept Load"
 editable={false}
+placeholderTextColor={'black'}
+
 />
 </TouchableOpacity>
 {/* <TouchableOpacity
@@ -86,6 +102,16 @@ const styles = StyleSheet.create({
       padding: 10,
       alignSelf:"center",
       textAlign:"center"
+    },
+    header: {
+      elevation: 0,
+      backgroundColor: '#EFDF79',
+      alignItems: "center",
+      justifyContent: "center",
+      // width:deviceWidth*0.07,
+      // height: deviceHeight * 0.07,
+      // alignSelf: "flex-start",
+      borderRadius:15
     },
     text:{
         alignSelf:"center"
