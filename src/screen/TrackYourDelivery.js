@@ -98,12 +98,33 @@ const TrackYourDelivery = ({route,navigation}) => {
       longitude:73.0819502
     }
   )
+  const update =(LAT,LONG) => {
 
+
+    //Create
+      // database()
+      // .ref('/kingGamBit/Loads/3')
+      // .set({
+      //   name: 'Ada Lovelace',
+      //   age: 31,
+      // })
+      // .then(() => console.log('Data set.'));
+    
+    //Update 
+      database()
+      .ref('/kingGamBit/Loads/1')
+      .update({
+        C_Latitude: LAT,
+        C_Longitude: LONG
+      })
+      .then(() => console.log('Data updated.'));
+    }
   const postion =()=>{
     watchId.current = Geolocation.watchPosition(
       (position) => {
         setLocation(position);
         console.log(position);
+        update(position.coords.latitude,position.coords.longitude)
       },
       (error) => {
         setLocation(null);
@@ -176,20 +197,21 @@ const TrackYourDelivery = ({route,navigation}) => {
 
 
 
+    requestLocationPermission();
 
 
-      const onValueChange = database()
-        .ref(`/users/${userId}`)
-        .on('value', snapshot => {
-          console.log('User data: ', snapshot.val());
-        });
+      // const onValueChange = database()
+      //   .ref(`/users/${userId}`)
+      //   .on('value', snapshot => {
+      //     console.log('User data: ', snapshot.val());
+      //   });
   
       // Stop listening for updates when no longer required
       // return () => database().ref(`/users/${userId}`).off('value', onValueChange);
 
-    console.log('  '+data.D_Latitude)
-    console.log('  '+data.D_Longitudes)
-    database().ref('/kingGamBit/Loads/1').once('value').then((snapshot)=>   {console.log(snapshot)} )  
+    // console.log('  '+data.D_Latitude)
+    // console.log('  '+data.D_Longitudes)
+    // database().ref('/kingGamBit/Loads/1').once('value').then((snapshot)=>   {console.log(snapshot)} )  
       // alert(dlocation.latitude)
 
     // new  creating
@@ -207,7 +229,6 @@ const TrackYourDelivery = ({route,navigation}) => {
 //   console.log('User data: ', snapshot.val());
 // });
 
-    requestLocationPermission();
         // return () => database().ref(`/kingGamBit/Loads/1/${}`).off('value', onValueChange);
 
   }, []);

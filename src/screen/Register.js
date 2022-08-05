@@ -28,14 +28,16 @@ const Register = ({navigation}) => {
   const [deviceId,setdeviceId] = useState('')
   const [showIndicator,setshowIndicator] = useState(false)
   const [selected, setSelected] = useState()
+  const [Vehical,setVehical] =useState()
   const [selectedState, setselectedState] = useState()
   const [check, setCheck] = useState(false);
   // const [paymenttype,setpaymenttype] = useState(3)
   const data = [
       {key:'0',value:'Bank Info'},{key:'1',value:'Credit Card'},
       ]
-  const StateData = [
-      {key:'0',value:'Folrida'},{key:'1',value:'Texes'},
+  const VehicalType = [
+      {key:'0',value:'Reefer Van'},{key:'1',value:'Dry Van'},
+      {key:'2',value:'FlatBed Van'}
       ]
 
 
@@ -59,6 +61,7 @@ const Register = ({navigation}) => {
   const [paymentType,setpaymentType] = useState(3)
   const [role,setrole] = useState('')
   const [image, setimage] = useState()
+  const [DriverPic,setDriverPic]=useState('')
   const [states, setstates] = useState([
     {
       id:1,
@@ -94,16 +97,19 @@ const Register = ({navigation}) => {
     value.append('Dot_Number',dotnumber)
     value.append('MC_Number',name)
     value.append('Password',password)
-    value.append('BankNumber',bankacountnumber)
+
+    value.append('Bank_Number',bankacountnumber)
+    value.append('Bank_Info',bankinfo)
     value.append('Credit_Card_No',creditcardnumber)
     value.append('Expire_Date',expiredate)
     value.append('Security_Code',securitycode)
     value.append('Token','token')
     value.append('Role',"1")
-    value.append('Device_id','312342441')
-    value.append('Driver_Pic',image)
-    value.append('Zip_Code',zipcode)
+    value.append('Device_id',deviceId)
+    // value.append('Driver_Pic','575769')
+    // value.append('Zip_Code',zipcode)
     value.append('Payment_Type',paymentType)
+    // value.append('Vehicle_Type',Vehical)
 
     // value.append('Driver_Pic',{
     //   uri:response.assets[0].uri,
@@ -112,27 +118,28 @@ const Register = ({navigation}) => {
     //    });
 
 
-    value.Name= name;
-    value.Email = email;
-    value.Phone = phone;
-    value.Date_of_Birth = dateofbirth;
-    value.SNN= snn;
-    value.DL= dl;
-    value.Dot_Number= dotnumber;
-    value.MC_Number= mcnumber;
-    value.BankNumber=bankacountnumber;
-    value.Password=password;
-    value.Payment_Type= paymentType;
-    value.Bank_Info=bankinfo;
-    value.Bank_Number=bankacountnumber;
-    value.Credit_Card_No=creditcardnumber;
-    value.Expire_Date=expiredate;
-    value.Security_Code=securitycode;
-    value.Zip_Code=zipcode;
-    value.Token= 'token';
-    value.Role= "1";
-    value.Device_id='312342441'
-    value.Driver_Pic =''
+    // value.Name= name;
+    // value.Email = email;
+    // value.Phone = phone;
+    // value.Date_of_Birth = dateofbirth;
+    // value.SNN= snn;
+    // value.DL= dl;
+    // value.Dot_Number= dotnumber;
+    // value.MC_Number= mcnumber;
+    // value.BankNumber=bankacountnumber;
+    // value.Password=password;
+    // value.Payment_Type= paymentType;
+    // value.Bank_Info=bankinfo;
+    // value.Vehical_Type = Vehical;
+    // value.Bank_Number=bankacountnumber;
+    // value.Credit_Card_No=creditcardnumber;
+    // value.Expire_Date=expiredate;
+    // value.Security_Code=securitycode;
+    // value.Zip_Code=zipcode;
+    // value.Token= 'token';
+    // value.Role= "1";
+    // value.Device_id='312342441'
+    // value.Driver_Pic =DriverPic
 
 
 
@@ -144,7 +151,7 @@ const Register = ({navigation}) => {
       method: 'POST',
       headers: {
         'Content-Type':  'multipart/form-data',
-        'Accept': 'application/json'
+        'Accept': 'multipart/form-data'
       },
       body: value,
   })
@@ -158,7 +165,7 @@ const Register = ({navigation}) => {
             console.log('login data response',responseJson);
             // alert(responseJson.DATA)
             setshowIndicator(false)
-            navigation.navigate('login')
+            // navigation.navigate('loging')
             // storeData(responseJson)
 
         //  loginServiceCall( responseJson , responseJson.user.role, responseJson.user.username, responseJson.user.role_name, responseJson.user.photo)
@@ -183,51 +190,70 @@ const Register = ({navigation}) => {
  
   }
 const galleryPic= async()=>{
-  let options = {
-    quality: 0.8,
-    videoQuality: 'low',
-    durationLimit: 30, //Video max duration in seconds
-    saveToPhotos: true,
-  };
-  ImagePicker.launchCamera(options, (response) => {
-    console.log('Response = ', response);
 
-    if (response.didCancel) {
-      // alert('User cancelled camera picker');
-      return;
-    } else if (response.errorCode == 'camera_unavailable') {
-      alert('Camera not available on device');
-      return;
-    } else if (response.errorCode == 'permission') {
-      alert('Permission not satisfied');
-      return;
-    } else if (response.errorCode == 'others') {
-      alert(response.errorMessage);
-      return;
-    }else{
+
+  try {
+    const pickerResult = await DocumentPicker.pickSingle({
+      type: [DocumentPicker.types.images],
+
+      presentationStyle: 'fullScreen',
+      copyTo: 'cachesDirectory',
+    })
+    console.log(pickerResult)
+    setDriverPic(pickerResult)
+    // setimage([pickerResult])
+  } catch (e) {
+    console.log(e)
+  }
+
+
+
+
+  // let options = {
+  //   quality: 0.8,
+  //   videoQuality: 'low',
+  //   durationLimit: 30, //Video max duration in seconds
+  //   saveToPhotos: true,
+  // };
+  // ImagePicker.launchCamera(options, (response) => {
+  //   console.log('Response = ', response);
+
+  //   if (response.didCancel) {
+  //     // alert('User cancelled camera picker');
+  //     return;
+  //   } else if (response.errorCode == 'camera_unavailable') {
+  //     alert('Camera not available on device');
+  //     return;
+  //   } else if (response.errorCode == 'permission') {
+  //     alert('Permission not satisfied');
+  //     return;
+  //   } else if (response.errorCode == 'others') {
+  //     alert(response.errorMessage);
+  //     return;
+  //   }else{
 
     
-      let temp = {} ;
-      temp.name = response.assets[0].fileName;
-      temp.size = response.assets[0].fileSize;
-      temp.type = response.assets[0].type;
-      temp.url = response.assets[0].uri;
+  //     let temp = {} ;
+  //     temp.name = response.assets[0].fileName;
+  //     temp.size = response.assets[0].fileSize;
+  //     temp.type = response.assets[0].type;
+  //     temp.url = response.assets[0].uri;
 
-        // alert(JSON.stringify(temp))
-    }
-
-
+  //       // alert(JSON.stringify(temp))
+  //   }
 
 
-    // console.log('base64 -> ', response.base64);
-    // console.log('uri -> ', response.uri);
-    // console.log('width -> ', response.width);
-    // console.log('height -> ', response.height);
-    // console.log('fileSize -> ', response.fileSize);
-    // console.log('type -> ', response.type);
-    // console.log('fileName -> ', response.fileName);
-    // setFilePath(response);
-  });
+
+
+  //   // console.log('base64 -> ', response.base64);
+  //   // console.log('uri -> ', response.uri);
+  //   // console.log('width -> ', response.width);
+  //   // console.log('height -> ', response.height);
+  //   // console.log('fileSize -> ', response.fileSize);
+  //   // console.log('type -> ', response.type);
+  //   // console.log('fileName -> ', response.fileName);
+  //   // setFilePath(response);
+  // });
 }
     // const galleryPic=()=>{
 
@@ -244,7 +270,38 @@ const galleryPic= async()=>{
 
  
     // let uriimage ='../assets/logocrop.png'
+const GetStates =()=>{
+  var url = AppUrlCollection.STATES;
 
+  fetch(url, {
+    method: 'GET',
+    headers: {
+      'Content-Type':  'application/json',
+    }
+})
+    .then((response) =>  response.json() )
+    .then((responseJson) => {
+
+      setstates(responseJson)
+      console.log('states data response',responseJson);
+
+        if(responseJson.message == 'SUCCESS'){
+          console.log('states data response',responseJson);
+       
+        }else if(responseJson.status == 422){
+          alert(responseJson.errors.password)
+        }else if(responseJson.status == 401){
+          alert(responseJson.error)
+        }
+    console.log('login data response',responseJson);
+  //   setspinner(false)  
+    })
+    .catch((error) => {
+      // setspinner(false)
+      alert(error)
+        console.warn(error)
+    });
+}
     const renderItem = ({ item }) => (
 
       <View>
@@ -252,11 +309,16 @@ const galleryPic= async()=>{
         <View style={{borderWidth:1,borderColor:'#EFDF79',marginBottom:10,borderRadius:10}}>
 <CheckBox
       
-      title={item.statesname}
+      title={item.state_name}
       checkedIcon="dot-circle-o"
       uncheckedIcon="circle-o"
-      checked={item.statesname == 'Texes' ? true :false }
-      
+      checked={item.state_name == states ?  true : item.state_name == states ? true
+      : item.state_name == states? true :item.state_name == states? true:false }
+
+      // checked={item.state_name == 'Texes' || item.state_name == 'Alabama'||item.state_name == 'Arizona' 
+      // || item.state_name == 'Alaska'
+      // ?  true :false
+      // }
       checkedColor='#EFDF79'
       onPress={() => setCheck(!check)}
     />
@@ -269,6 +331,9 @@ const galleryPic= async()=>{
  
    );
  
+   useEffect(()=>{
+    GetStates()
+   },[])
     return (
       <>
            <SafeAreaView style={styles.container}>
@@ -369,7 +434,16 @@ const galleryPic= async()=>{
         placeholderTextColor={'grey'}
         style={styles.input}
         placeholder="DOT Number"/> 
+ <SelectList 
+      
+      dropdownStyles={{backgroundColor:"white", borderWidth: 1,borderColor:'#EFDF79',borderRadius:15,}}
+      boxStyles={{backgroundColor:"white", borderWidth: 1, height:44,  margin: 12,
+      alignSelf:"center",paddingHorizontal:10, alignContent:'center', width:"100%",
+      borderColor:'#EFDF79',borderRadius:10,}}
+      setSelected={setSelected}  
+      onSelect={() => { setVehical(selected)}}
 
+      data={VehicalType}  />
         {/* Model Code */}
        <Modal
        transparent={true}
@@ -422,6 +496,7 @@ const galleryPic= async()=>{
 
 </View>
 </View>
+
        </Modal>
 
 

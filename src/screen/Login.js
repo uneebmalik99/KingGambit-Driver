@@ -1,5 +1,5 @@
 import React,{useState,useEffect} from 'react'
-import { View,ImageBackground, Text,TextInput,StyleSheet ,ActivityIndicator,TouchableOpacity,Button, SafeAreaView, Dimensions, ScrollView, Alert } from 'react-native'
+import { View,ImageBackground,BackHandler, Text,TextInput,StyleSheet ,ActivityIndicator,TouchableOpacity,Button, SafeAreaView, Dimensions, ScrollView, Alert } from 'react-native'
 import { Appbar } from "react-native-paper";
 import AppUrlCollection from '../UrlCollection/AppUrlCollection';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -28,6 +28,8 @@ const Login = ({navigation}) => {
     AppConstance.Id =responseJson.DATA.user.id.toString()
     AppConstance.Name=responseJson.DATA.user.Name;
     AppConstance.Email=responseJson.DATA.user.Email;
+    AppConstance.Password=responseJson.DATA.user.Password;
+
     AppConstance.Phone=responseJson.DATA.user.Phone;
     AppConstance.DateofBirth=responseJson.DATA.user.Date_of_Birth;
     // AppConstance.CompanyName=responseJson.DATA.user.Company_Name;
@@ -50,6 +52,8 @@ const Login = ({navigation}) => {
 
     await AsyncStorage.setItem('Name', responseJson.DATA.user.Name)
     await AsyncStorage.setItem('Email', responseJson.DATA.user.Email)
+    await AsyncStorage.setItem('Password', responseJson.DATA.user.Password)
+
     await AsyncStorage.setItem('Phone', responseJson.DATA.user.Phone)
     await AsyncStorage.setItem('DateofBirth', responseJson.DATA.user.Date_of_Birth)
     
@@ -107,8 +111,15 @@ const Login = ({navigation}) => {
   
   }
 
- 
+  function handleBackButtonClick() {
+    BackHandler.exitApp();
+    return true;
+  }
   useEffect(async () => {
+
+
+    BackHandler.addEventListener("hardwareBackPress", handleBackButtonClick);
+  
     let fcmToken = await messaging().getToken();
     if (fcmToken) {
       console.log("fcm"+fcmToken);
@@ -139,6 +150,9 @@ else {
   
   //   });
   //
+  return () => {
+    BackHandler.removeEventListener("hardwareBackPress", handleBackButtonClick);
+  };
 },[]
   );
 

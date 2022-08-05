@@ -8,6 +8,7 @@ import Ionicons from 'react-native-vector-icons/dist/Ionicons';
 import ImagePicker from 'react-native-image-crop-picker';
 import AppUrlCollection from '../UrlCollection/AppUrlCollection';
 import AppConstance from '../constance/AppConstance';
+import { Input } from 'react-native-elements';
 // or ES6+ destructured imports
 
 import { getUniqueId, getManufacturer } from 'react-native-device-info';
@@ -51,8 +52,8 @@ const Profile = ({navigation}) => {
   const [password,setpassword] = useState('')
   const [paymentType,setpaymentType] = useState(selected)
   const [role,setrole] = useState('')
-
-
+const [DrivePicture,setDrivePicture]= useState('')
+const [states,setstates]=useState('')
 
   const changeInput =()=>{
     setEditable(true)
@@ -67,39 +68,7 @@ const Profile = ({navigation}) => {
   
   const getApi =()=>{
 
-    // setshowIndicator(true)
-    //   setTimeout(() => {
-    //     setshowIndicator(false)
-    //   navigation.navigate('login')
-        
-    //   }, 2000);
-
-    let value = {};
-    value.Name= name;
-    value.Email = email;
-    value.Phone = phone;
-    value.Date_of_Birth = dateofbirth;
-    value.SNN= snn;
-    value.DL= dl;
-    value.Dot_Number= dotnumber;
-    value.MC_Number= mcnumber;
-    value.bankacountnumber=bankacountnumber;
-    value.Password=password;
-    value.Payment_Type= 0;
-    value.Bank_Info=bankinfo;
-    value.Bank_Number=bankacountnumber;
-    value.Credit_Card_No=creditcardnumber;
-    value.Expire_Date=expiredate;
-    value.Security_Code=securitycode;
-    value.Zip_Code=zipcode;
-    value.Token= 'token';
-    value.Role= 1;
-    value.Device_id='312342441'
-
-
-
-    console.log(value);
-    var url ='https://kinggambits.com/kinggambitapi/api/userinfo/'+AppConstance.Id
+    var url =AppUrlCollection.USER+'/'+AppConstance.Id;
 
     // var url =AppUrlCollection.USER;
     fetch(url, {
@@ -108,11 +77,36 @@ const Profile = ({navigation}) => {
         'Content-Type':  'application/json',
         'Accept':'application/json',
         'Authorization': "Bearer "+AppConstance.AUTH_KEY
-      },
-      body: JSON.stringify(value),
+      }
+     
   })
       .then((response) =>  response.json() )
       .then((responseJson) => {
+
+
+        setname(responseJson.Name)
+        setemail(responseJson.Email)
+        setphone(responseJson.Phone)
+        setdateofbirth(responseJson.Date_of_Birth)
+        setsnn(responseJson.SNN)
+        setdl(responseJson.DL)
+        setmcnumber(responseJson.MC_Number)
+        setdotnumber(responseJson.Dot_Number)
+        setDrivePicture(responseJson.Driver_Pic)
+        setstates(responseJson.States)
+
+        if(responseJson.Payment_Type == '0')
+        {
+          setbankinfo(responseJson.Bank_Info)
+          setbankacountnumber(responseJson.Bank_Number)
+        }
+        else 
+        {
+          setcreditcardnumber(responseJson.Credit_Card_No)
+          setexpiredate(responseJson.Expire_Date)
+          setsecuritycode(responseJson.Security_Code)
+          
+        }
 
           if(responseJson.result == 'SUCCESS'){
             // alert(responseJson.DATA.user.Bank_Info)
@@ -120,7 +114,6 @@ const Profile = ({navigation}) => {
 
             console.log('login data response',responseJson);
             // alert(responseJson.DATA)
-            storeData(responseJson)
 
         //  loginServiceCall( responseJson , responseJson.user.role, responseJson.user.username, responseJson.user.role_name, responseJson.user.photo)
 

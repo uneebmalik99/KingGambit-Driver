@@ -9,6 +9,7 @@ AppUrlCollection extends Component{
     static USER = AppUrlCollection.BASE_URL+'userinfo';
     static LOADS = AppUrlCollection.BASE_URL+'loadinfo';
     static LOAD = AppUrlCollection.BASE_URL+'load';
+    static  STATES = AppUrlCollection.BASE_URL+'stateinfo'
    
 
 }

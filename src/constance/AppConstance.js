@@ -10,6 +10,7 @@ class AppConstance extends Component {
   static Id ='';
   static Name = "" ;
   static Email = "" ;
+  static Password ='';
   static Phone = "" ;
   static DateofBirth = "" ;
   static CompanyName = "" ;
