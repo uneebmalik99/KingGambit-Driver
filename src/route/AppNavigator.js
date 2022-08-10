@@ -57,11 +57,7 @@ const AppDrawerScreen = () => {
         component={MyLocation}
         options={{ headerShown: false }}
       />
-      <Stack.Screen
-        name="profile"
-        component={Profile}
-        options={{ headerShown: false }}
-      />
+    
    <Stack.Screen
         name="map"
         component={Maps}
@@ -126,7 +122,11 @@ const AppNavigator = () => {
         component={TrackYourDelivery}
         options={{ headerShown: false }}
       />
-    
+      <Stack.Screen
+        name="profile"
+        component={Profile}
+        options={{ headerShown: false }}
+      />
     </Stack.Navigator>
   );
 };

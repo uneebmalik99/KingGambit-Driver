@@ -40,8 +40,6 @@ const Register = ({navigation}) => {
       {key:'2',value:'FlatBed Van'}
       ]
 
-
-
   const [email,setemail] = useState('')
   const [name,setname] = useState('')
   const [phone,setphone] = useState('')
@@ -81,13 +79,8 @@ const Register = ({navigation}) => {
   const registerApi =()=>{
 
     setshowIndicator(true)
-      setTimeout(() => {
-      navigation.navigate('login')
-        
-      }, 2000);
+    var value = new FormData()
 
-      var value = new FormData()
-    // let value = {};
     value.append('Name',name)
     value.append('Email',email)
     value.append('Phone',phone)
@@ -97,7 +90,6 @@ const Register = ({navigation}) => {
     value.append('Dot_Number',dotnumber)
     value.append('MC_Number',name)
     value.append('Password',password)
-
     value.append('Bank_Number',bankacountnumber)
     value.append('Bank_Info',bankinfo)
     value.append('Credit_Card_No',creditcardnumber)
@@ -106,10 +98,10 @@ const Register = ({navigation}) => {
     value.append('Token','token')
     value.append('Role',"1")
     value.append('Device_id',deviceId)
-    // value.append('Driver_Pic','575769')
+    // value.append('Driver_Pic', DriverPic.uri )
     // value.append('Zip_Code',zipcode)
     value.append('Payment_Type',paymentType)
-    // value.append('Vehicle_Type',Vehical)
+    value.append('Vehicle_Type',Vehical)
 
     // value.append('Driver_Pic',{
     //   uri:response.assets[0].uri,
@@ -117,34 +109,7 @@ const Register = ({navigation}) => {
     //      type: response.assets[0].type
     //    });
 
-
-    // value.Name= name;
-    // value.Email = email;
-    // value.Phone = phone;
-    // value.Date_of_Birth = dateofbirth;
-    // value.SNN= snn;
-    // value.DL= dl;
-    // value.Dot_Number= dotnumber;
-    // value.MC_Number= mcnumber;
-    // value.BankNumber=bankacountnumber;
-    // value.Password=password;
-    // value.Payment_Type= paymentType;
-    // value.Bank_Info=bankinfo;
-    // value.Vehical_Type = Vehical;
-    // value.Bank_Number=bankacountnumber;
-    // value.Credit_Card_No=creditcardnumber;
-    // value.Expire_Date=expiredate;
-    // value.Security_Code=securitycode;
-    // value.Zip_Code=zipcode;
-    // value.Token= 'token';
-    // value.Role= "1";
-    // value.Device_id='312342441'
-    // value.Driver_Pic =DriverPic
-
-
-
-
-    // console.log(value);
+    console.log(JSON.stringify(value));
 
     var url =AppUrlCollection.REGISTER;
     fetch(url, {
@@ -159,17 +124,9 @@ const Register = ({navigation}) => {
       .then((responseJson) => {
 
           if(responseJson.result == 'SUCCESS'){
-            // alert(responseJson.DATA.user.Bank_Info)
-            // alert(JSON.stringify(responseJson))
-
+                navigation.navigate('login')
             console.log('login data response',responseJson);
-            // alert(responseJson.DATA)
             setshowIndicator(false)
-            // navigation.navigate('loging')
-            // storeData(responseJson)
-
-        //  loginServiceCall( responseJson , responseJson.user.role, responseJson.user.username, responseJson.user.role_name, responseJson.user.photo)
-
           }else if(responseJson.status == 422){
             setspinner(false)
 
@@ -184,7 +141,10 @@ const Register = ({navigation}) => {
       })
       .catch((error) => {
         setspinner(false)
+
         alert(error)
+              // navigation.navigate('login')
+
           console.warn(error)
       });
  
@@ -201,6 +161,9 @@ const galleryPic= async()=>{
     })
     console.log(pickerResult)
     setDriverPic(pickerResult)
+    // value.append('Driver_Pic', pickerResult)
+
+    setimageuser(pickerResult.uri)
     // setimage([pickerResult])
   } catch (e) {
     console.log(e)
@@ -344,7 +307,6 @@ const GetStates =()=>{
           overlayColor='rgba(0, 0, 0, 0.25)'
           color	='#EFDF79'
           textStyle={{ color: '#EFDF79' }}
-          
           // textStyle={styles.spinnerTextStyle}
         />
          
@@ -366,9 +328,7 @@ const GetStates =()=>{
 
           <ScrollView>
      
-          <View style={styles.logtxt}>   
-      {/* <ActivityIndicator size='large' color="#EFDF79" animating={showIndicator}  /> */}
-       
+          <View style={styles.logtxt}>          
           <TouchableOpacity style={{width:"40%",height:"11%",justifyContent:"center",alignSelf:"center"}}
           onPress={galleryPic}
           >

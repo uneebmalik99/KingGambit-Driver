@@ -6,6 +6,8 @@ import Ionicons from 'react-native-vector-icons/dist/Ionicons';
 import Feather from 'react-native-vector-icons/dist/Feather';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import database from '@react-native-firebase/database';
+import MaterialCommunityIcons from 'react-native-vector-icons/dist/MaterialCommunityIcons';
+import AppColors from '../Colors/AppColors';
 
 const WelcomeLogistic = ({navigation}) => {
 
@@ -121,14 +123,14 @@ useEffect(()=>{
 
   <Ionicons name='menu-outline' 
   onPress={() => navigation.openDrawer()}
-  style={{alignSelf:'center',}} size={30} color='black'/>
-  <Text style={{color:"black",fontSize:16,alignSelf:'center' , }}>Home</Text>
-  <Text>.</Text>
+  style={{alignSelf:'center',}} size={30} color='white'/>
+  <Text style={{color:"white",fontSize:16,alignSelf:'center' , }}>Home</Text>
+  <MaterialCommunityIcons  name='account-circle-outline' 
+  onPress={() => { navigation.navigate('profile')}}
+  style={{alignSelf:'center',}} size={30} color='white'/>
 </View>
 
 </Appbar.Header>
-{/* <ScrollView> */}
-  <View></View>
       <View   style={styles.allLoadd}>
         
       <TouchableOpacity
@@ -141,7 +143,7 @@ useEffect(()=>{
     
       </View>
       
-      <View   style={styles.allLoadd}>
+      {/* <View   style={styles.allLoadd}>
       <TouchableOpacity
         style={{justifyContent:'space-around'}}
         onPress={() => navigation.navigate('profile')}
@@ -151,9 +153,9 @@ useEffect(()=>{
        <Text style={{color:"black",fontSize:20}}>Profile</Text>
       </TouchableOpacity>
      
-      </View>
+      </View> */}
       
-      <View   style={styles.allLoadd}>
+      {/* <View   style={styles.allLoadd}>
       <TouchableOpacity
         style={{justifyContent:'space-around'}}
         onPress={() => navigation.navigate('trackyourDelivery')}
@@ -163,7 +165,7 @@ useEffect(()=>{
        <Text style={{color:"black",fontSize:20}}>maps</Text>
       </TouchableOpacity>
      
-      </View>
+      </View> */}
       
 
       
@@ -212,7 +214,7 @@ const styles = StyleSheet.create({
       borderBottomRightRadius:15,
       borderBottomLeftRadius:15,
       justifyContent:'space-between',
-      backgroundColor:'#EFDF79'
+      backgroundColor:AppColors.Appcolor
     },
     btnChkLoad:{
       marginTop:20,

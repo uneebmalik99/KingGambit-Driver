@@ -72,8 +72,6 @@ export function DrawerContent(props) {
     props.navigation.navigate("login");
   };
 
-  // const { signOut, toggleTheme } = React.useContext(AuthContext);
-
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "black" }}>
       <View style={{ backgroundColor:'#daa726', height: "25%" }}>
@@ -126,7 +124,7 @@ export function DrawerContent(props) {
               labelStyle={{ color: "black" }}
              
             />
-            <DrawerItem
+            {/* <DrawerItem
               icon={({ color, size }) => (
                 <Icon name="car" size={size} color="black" />
               )}
@@ -137,7 +135,7 @@ export function DrawerContent(props) {
                 props.navigation.navigate("Profile");
               }}
              
-            />
+            /> */}
             <DrawerItem
               icon={({ color, size }) => (
                 <FontAwesome name="ship" size={size - 2} color="black" />

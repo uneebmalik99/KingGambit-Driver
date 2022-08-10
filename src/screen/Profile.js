@@ -1,5 +1,5 @@
 import React, { useState , useEffect} from 'react'
-import { View, Text,TextInput,StyleSheet,Button, ScrollView, SafeAreaView,ImageBackground ,Dimensions, TouchableOpacity, Alert, Image} from 'react-native'
+import { View, Text,StyleSheet,Button, ScrollView, SafeAreaView,ImageBackground ,Dimensions, TouchableOpacity, Alert, Image} from 'react-native'
 import { ActivityIndicator, Appbar } from "react-native-paper";
 // import AppUrlCollection from '../UrlCollection/AppUrlCollection';
 import SelectList from 'react-native-dropdown-select-list'
@@ -10,7 +10,9 @@ import AppUrlCollection from '../UrlCollection/AppUrlCollection';
 import AppConstance from '../constance/AppConstance';
 import { Input } from 'react-native-elements';
 // or ES6+ destructured imports
-
+import Spinner from 'react-native-loading-spinner-overlay';
+import AppColors from '../Colors/AppColors';
+import {TextInput} from 'react-native-paper';
 import { getUniqueId, getManufacturer } from 'react-native-device-info';
 
 const deviceHeight = Dimensions.get("window").height;
@@ -22,7 +24,7 @@ const Profile = ({navigation}) => {
 
 
   const [spinner,setspinner] = useState(false)  
-  const [imageuser,setimageuser] = useState('https://reactjs.org/logo-og.png')
+  const [imageuser,setimageuser] = useState('')
   const [deviceId,setdeviceId] = useState('')
   const [showIndicator,setshowIndicator] = useState(false)
   const [selected, setSelected] = useState()
@@ -68,6 +70,7 @@ const [states,setstates]=useState('')
   
   const getApi =()=>{
 
+    setspinner(true)
     var url =AppUrlCollection.USER+'/'+AppConstance.Id;
 
     // var url =AppUrlCollection.USER;
@@ -83,7 +86,7 @@ const [states,setstates]=useState('')
       .then((response) =>  response.json() )
       .then((responseJson) => {
 
-
+        setspinner(false)
         setname(responseJson.Name)
         setemail(responseJson.Email)
         setphone(responseJson.Phone)
@@ -95,6 +98,10 @@ const [states,setstates]=useState('')
         setDrivePicture(responseJson.Driver_Pic)
         setstates(responseJson.States)
 
+        if(responseJson.Driver_Pic != null ||responseJson.Driver_Pic != '' ){
+          setimageuser(responseJson.Driver_Pic)
+          console.log(responseJson.Driver_Pic);
+        }
         if(responseJson.Payment_Type == '0')
         {
           setbankinfo(responseJson.Bank_Info)
@@ -158,7 +165,15 @@ const [states,setstates]=useState('')
     return (
       <>
            <SafeAreaView style={styles.container}>
-         
+           <Spinner
+        visible={spinner}
+        textContent={"Loading..."}
+        color	={AppColors.Appcolor}
+        animation	='fade'
+        size='large'
+        overlayColor='rgba(0, 0, 0, 0.25)'
+         textStyle={{ color: AppColors.Appcolor }}
+      />
          
       {/* <ImageBackground source={require('../assets/bk.png')} resizeMode="cover" style={styles.image}> 
         </ImageBackground> */}
@@ -166,9 +181,8 @@ const [states,setstates]=useState('')
 
         <View style={styles.headview}>
 
-<Ionicons name='menu-outline' 
-onPress={() => navigation.openDrawer()}
-style={{alignSelf:'center',}} size={30} color='black'/>
+        <Ionicons name='chevron-back' onPress={()=> {navigation.goBack()}} color={'grey'} style={{alignSelf:'center'}} size={25}/>
+
 <Text style={{color:"black",fontSize:16,alignSelf:'center',}}>Profile</Text>
 {/* <Text>Edit</Text> */}
 <Ionicons name='create-outline' 
@@ -190,7 +204,7 @@ style={{alignSelf:'center',}} size={30} color='black'/>
           {imageuser == ''?
                          <Image style={{  borderRadius:130/2,
                          height:130,
-                         width:130,}} source={{uri:'https://reactjs.org/logo-og.png'}} />
+                         width:130,}} source={require('../assets/NoImage.jpeg')} />
                     :
                          <Image style={{  borderRadius:130/2,
                          height:130,
@@ -204,6 +218,7 @@ style={{alignSelf:'center',}} size={30} color='black'/>
    
              <TextInput  
              editable={Editable} 
+             label="Name"
         placeholderTextColor={'grey'}
         onChangeText={(Text)=>{setname(Text)}}
         value={name}
@@ -211,15 +226,15 @@ style={{alignSelf:'center',}} size={30} color='black'/>
         placeholder="Name"/>
          <TextInput   
              editable={Editable} 
-
+             label="Email"
         placeholderTextColor={'grey'}
         onChangeText={(Text)=>{setemail(Text)}}
         value={email}
         style={styles.input}
-        placeholder="Enter Email "/>
+        placeholder="Email "/>
          <TextInput   
              editable={Editable} 
-
+             label="Phone"
         placeholderTextColor={'grey'}
         onChangeText={(Text)=>{setphone(Text)}}
         value={phone}
@@ -230,23 +245,25 @@ style={{alignSelf:'center',}} size={30} color='black'/>
        
          <TextInput   
              editable={Editable} 
-
+             label="Date of Birth"
         placeholderTextColor={'grey'}
         onChangeText={(Text)=>{setdateofbirth(Text)}}
         value={dateofbirth}
         style={styles.input}
+        placeholderTextColor={'grey'}
         placeholder="Date of Birth"/>
          <TextInput   
              editable={Editable} 
-
+             label="SNN"
         placeholderTextColor={'grey'}
         onChangeText={(Text)=>{setsnn(Text)}}
         value={snn}
         style={styles.input}
+
         placeholder="SNN"/> 
         <TextInput   
              editable={Editable} 
-
+             label="DL"
         onChangeText={(Text)=>{setdl(Text)}}
         value={dl}
         placeholderTextColor={'grey'}
@@ -254,96 +271,23 @@ style={{alignSelf:'center',}} size={30} color='black'/>
         placeholder="DL"/> 
         <TextInput   
              editable={Editable} 
+             label="MC Number"
         onChangeText={(Text)=>{setmcnumber(Text)}}
         value={mcnumber}
         placeholderTextColor={'grey'}
         style={styles.input}
-        placeholder=" MC Number"/> 
+        placeholder="MC Number"/> 
         <TextInput   
              editable={Editable} 
+             label="DOT Number"
         onChangeText={(Text)=>{setdotnumber(Text)}}
         value={dotnumber}
         placeholderTextColor={'grey'}
         style={styles.input}
         placeholder="DOT Number"/> 
 
-      <SelectList 
-      
-      dropdownStyles={{backgroundColor:"white", borderWidth: 1,borderColor:'#EFDF79',borderRadius:15,}}
-      boxStyles={{backgroundColor:"white", borderWidth: 1, height:44,  margin: 12,
-      alignSelf:"center",paddingHorizontal:10, alignContent:'center', width:"100%",borderColor:'#EFDF79',borderRadius:10,}}
-      setSelected={setSelected}  
-      
-      data={data}  />
+    
 
-{
-  selected == 0
-  ?
-  <View >
-   <TextInput   
-             editable={Editable} 
-
-            onChangeText={(Text)=>{setbankinfo(Text)}}
-            value={bankinfo}
-        placeholderTextColor={'grey'}
-        style={styles.DropDowninput}
-        placeholder="Bank Information"/>
-        <TextInput   
-             editable={Editable} 
-
-            onChangeText={(Text)=>{setbankacountnumber(Text)}}
-            value={bankacountnumber}
-        placeholderTextColor={'grey'}
-        style={styles.DropDowninput}
-        placeholder="Account Number"/>
-    </View>
-    :
-    selected == 1?
-
-    <View >
-        <TextInput   
-             editable={Editable} 
-
-        onChangeText={(Text)=>{setcreditcardnumber(Text)}}
-        value={creditcardnumber}
-        placeholderTextColor={'grey'}
-        style={styles.DropDowninput}
-        placeholder="Credit Card Number"
-        secureTextEntry={true}
-        /> 
-     <TextInput   
-             editable={Editable} 
-
-         onChangeText={(Text)=>{setexpiredate(Text)}}
-         value={expiredate}
-        placeholderTextColor={'grey'}
-        style={styles.DropDowninput}
-        placeholder="Expire Date"
-        secureTextEntry={true}
-        /> 
-         <TextInput   
-             editable={Editable} 
-
-         onChangeText={(Text)=>{setsecuritycode(Text)}}
-         value={securitycode}
-        placeholderTextColor={'grey'}
-        style={styles.DropDowninput}
-        placeholder="Security Code"/>
-        <TextInput   
-             editable={Editable} 
-
-        onChangeText={(Text)=>{setzipcode(Text)}}
-        value={zipcode}
-        placeholderTextColor={'grey'}
-        style={styles.DropDowninput}
-        placeholder="Zip Code "/>
-      
-    </View>
-    :
-    <View>
-
-    </View>
-}
 
     
 
@@ -375,14 +319,15 @@ const styles = StyleSheet.create({
       // marginTop: 170,
         // padding: 24,
         // backgroundColor: "transparent",
-        backgroundColor:"#EFDF79"
+        backgroundColor:AppColors.Appcolor
       },
     input: {
-      height: 40,
-      margin: 12,
+      height: 45,
+      margin: 3,
       alignSelf:"center",
-      padding: 10,
-      borderWidth: 1,
+      padding: 2,
+      color:'black',
+      fontWeight:'600',
       width:"100%",
       borderColor:editableColor, 
       borderRadius:10,
@@ -438,23 +383,16 @@ const styles = StyleSheet.create({
       alignSelf:'center' 
     },
       logtxt:{
-      // flex:1,
-      paddingVertical:10,
+      paddingVertical:5,
       marginTop:10,
       borderColor:'#EFDF79',
     borderWidth:1,
-    flex:1,
-    // backgroundColor:'rgba(0,0,0,0.3)',
     backgroundColor:"white",
     width:"100%",
-    // height:"%",
     alignSelf:"center",
-  paddingVertical:10,
-  paddingHorizontal:20,
-  // borderRadius:40,
+  paddingHorizontal:10,
   borderTopRightRadius:40,
   borderTopLeftRadius:40
-  // marginBottom:100,
 },
 header: {
   elevation: 0,
@@ -475,7 +413,7 @@ headview:{
   borderBottomLeftRadius:15,
   paddingHorizontal:10,
   justifyContent:'space-between',
-  backgroundColor:'#EFDF79'
+  backgroundColor:AppColors.Appcolor
 },
 image:{
   justifyContent: "center",

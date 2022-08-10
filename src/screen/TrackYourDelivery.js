@@ -391,7 +391,7 @@ let Clongitude = currentLongitude;
       <Appbar.Header style={styles.header}>
       <TouchableOpacity 
       
-      onPress={()=> {savedata()}}>
+      onPress={()=> {}}>
         <Text>Track your delivery</Text>
       </TouchableOpacity>
       
