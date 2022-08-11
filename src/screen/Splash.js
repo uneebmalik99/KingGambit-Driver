@@ -11,6 +11,7 @@ const deviceWidth = Dimensions.get("window").width;
 
 const Splash = ({navigation}) => {
 const [deviceid,setdeviceid] =useState('')
+const [spinner,setspinner] = useState(false)
   // componentDid
 
   const storeData = async (responseJson) => {
@@ -161,9 +162,10 @@ const [deviceid,setdeviceid] =useState('')
   }
 
   useEffect( async () => {
-   
-//  setTimeout(()=>{
+    console.log(AppConstance.notificationRecived)
 
+//  setTimeout(()=>{
+ console.log('----notifi')
 
   let fcmToken = await messaging().getToken();
   if (fcmToken) {
@@ -175,7 +177,7 @@ const [deviceid,setdeviceid] =useState('')
   AsyncStorage.getItem('Login').then((logn)=>{
     if ( logn == '1')
     {
-      loginApi()
+      // loginApi()
       navigation.navigate('AppDrawer')
     
     }

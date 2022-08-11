@@ -7,9 +7,11 @@ const deviceWidth = Dimensions.get("window").width;
 class AppConstance extends Component {
 
   static Login="0";
+  static notificationRecived="0"
   static Id ='';
   static Name = "" ;
   static Email = "" ;
+  static initialRouteName ='splash';
   static Password ='';
   static Phone = "" ;
   static DateofBirth = "" ;

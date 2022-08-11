@@ -1,4 +1,4 @@
-import * as React from "react";
+import  React,{useEffect} from "react";
 import {
   createStackNavigator,
   HeaderBackground,
@@ -21,6 +21,8 @@ import ChangePass from '../screen/ChangePass';
 import ConfirmationPage from '../screen/ConfirmationPage';
 import Profile from "../screen/Profile";
 import MyLocation from "../screen/MyLocation";
+import AppConstance from "../constance/AppConstance";
+import IncomingLoad from "../screen/IncomingLoad";
 
 const Stack = createStackNavigator();
 const AppDrawer = createDrawerNavigator();
@@ -70,7 +72,7 @@ const AppDrawerScreen = () => {
 const WelcomeStack = () => {
   
   return (
-    <Stack.Navigator initialRouteName={'Splash'}>
+    <Stack.Navigator>
         <Stack.Screen name="Splash" component={Splash} options={{
           headerShown: false
         }} />
@@ -97,10 +99,14 @@ const WelcomeStack = () => {
   );
 };
 
-const AppNavigator = () => {
+const AppNavigator = (props) => {
 
+  useEffect(() => {
+ 
+     console.log(AppConstance.notificationRecived)
+  }, []);
   return (
-    <Stack.Navigator initialRouteName="WelcomeStack">
+    <Stack.Navigator initialRouteName={AppConstance.initialRouteName}>
       <Stack.Screen
         name="WelcomeStack"
         component={WelcomeStack}
@@ -115,6 +121,11 @@ const AppNavigator = () => {
       <Stack.Screen
         name="allLoad"
         component={AllLoad}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="IncomingLoad"
+        component={IncomingLoad}
         options={{ headerShown: false }}
       />
       <Stack.Screen

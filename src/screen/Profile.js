@@ -250,7 +250,7 @@ style={{alignSelf:'center',}} size={30} color='black'/>
         onChangeText={(Text)=>{setdateofbirth(Text)}}
         value={dateofbirth}
         style={styles.input}
-        placeholderTextColor={'grey'}
+        // placeholderTextColor={'grey'}
         placeholder="Date of Birth"/>
          <TextInput   
              editable={Editable} 

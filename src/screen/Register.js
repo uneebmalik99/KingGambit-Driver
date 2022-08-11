@@ -7,12 +7,13 @@ import SelectList from 'react-native-dropdown-select-list'
 import DeviceInfo from 'react-native-device-info';
 import { CheckBox, Icon } from '@rneui/themed';
 import Ionicons from 'react-native-vector-icons/dist/Ionicons';
+import Feather from 'react-native-vector-icons/dist/Feather';
 // import ImagePicker from 'react-native-image-crop-picker';
 import Spinner from 'react-native-loading-spinner-overlay';
 // or ES6+ destructured imports
 import DocumentPicker from 'react-native-document-picker';
 import * as ImagePicker from "react-native-image-picker"
-
+import AppColors from '../Colors/AppColors';
 import { getUniqueId, getManufacturer } from 'react-native-device-info';
 
 const deviceHeight = Dimensions.get("window").height;
@@ -72,13 +73,29 @@ const Register = ({navigation}) => {
   ]
     
     )
-  const [showModal, setshowModal] = useState(false)
+    const [Filteredstates, setFilteredstates] = useState([
+      {
+        id:1,
+        statesname:'folrida'
+      },
+      {
+        id:2,
+        statesname:'Texes'
+      }
+    ]
+      
+      )
+    
+
+    const [statevalue ,setstatevalue] = useState('')
+    const [stateid,setstateid] = useState('')
+    const [showModal, setshowModal] = useState(false)
 
 
 
   const registerApi =()=>{
 
-    setshowIndicator(true)
+    setspinner(true)
     var value = new FormData()
 
     value.append('Name',name)
@@ -98,10 +115,14 @@ const Register = ({navigation}) => {
     value.append('Token','token')
     value.append('Role',"1")
     value.append('Device_id',deviceId)
-    // value.append('Driver_Pic', DriverPic.uri )
+    // value.append('Driver_Pic', DriverPic )
     // value.append('Zip_Code',zipcode)
     value.append('Payment_Type',paymentType)
     value.append('Vehicle_Type',Vehical)
+    value.append('State_id',stateid)
+    value.append('State_Name',statevalue)
+
+  
 
     // value.append('Driver_Pic',{
     //   uri:response.assets[0].uri,
@@ -122,11 +143,12 @@ const Register = ({navigation}) => {
   })
       .then((response) =>  response.json() )
       .then((responseJson) => {
-
+        console.log('login data response',responseJson);
+        setspinner(false)
           if(responseJson.result == 'SUCCESS'){
                 navigation.navigate('login')
             console.log('login data response',responseJson);
-            setshowIndicator(false)
+            setspinner(false)
           }else if(responseJson.status == 422){
             setspinner(false)
 
@@ -169,71 +191,43 @@ const galleryPic= async()=>{
     console.log(e)
   }
 
-
-
-
-  // let options = {
-  //   quality: 0.8,
-  //   videoQuality: 'low',
-  //   durationLimit: 30, //Video max duration in seconds
-  //   saveToPhotos: true,
-  // };
-  // ImagePicker.launchCamera(options, (response) => {
-  //   console.log('Response = ', response);
-
-  //   if (response.didCancel) {
-  //     // alert('User cancelled camera picker');
-  //     return;
-  //   } else if (response.errorCode == 'camera_unavailable') {
-  //     alert('Camera not available on device');
-  //     return;
-  //   } else if (response.errorCode == 'permission') {
-  //     alert('Permission not satisfied');
-  //     return;
-  //   } else if (response.errorCode == 'others') {
-  //     alert(response.errorMessage);
-  //     return;
-  //   }else{
-
-    
-  //     let temp = {} ;
-  //     temp.name = response.assets[0].fileName;
-  //     temp.size = response.assets[0].fileSize;
-  //     temp.type = response.assets[0].type;
-  //     temp.url = response.assets[0].uri;
-
-  //       // alert(JSON.stringify(temp))
-  //   }
-
-
-
-
-  //   // console.log('base64 -> ', response.base64);
-  //   // console.log('uri -> ', response.uri);
-  //   // console.log('width -> ', response.width);
-  //   // console.log('height -> ', response.height);
-  //   // console.log('fileSize -> ', response.fileSize);
-  //   // console.log('type -> ', response.type);
-  //   // console.log('fileName -> ', response.fileName);
-  //   // setFilePath(response);
-  // });
 }
-    // const galleryPic=()=>{
+    
+const searchFilterFunction = (text) => {
+  if (text) {
 
-    //   ImagePicker.openPicker({
-    //     width: 300,
-    //     height: 400,
-    //   }).then(image => {
-    //     console.log(image);
-    //     setimage(image)
-    //     setimageuser(image.path)
-    //   });
-    //   // console.log('img')
-    // }
+    const newData = states.filter(
+      function (item) {
 
- 
-    // let uriimage ='../assets/logocrop.png'
+        const itemData = item.state_name
+          ? item.state_name.toUpperCase()
+          : ''.toUpperCase();
+
+
+        const textData = text.toUpperCase();
+
+        if (itemData.indexOf(textData) > -1) {
+          return itemData.indexOf(textData) > -1;
+        }
+      });
+
+    setstates(newData)
+    //   setFilteredDataSource(newData);
+
+    //   setSearch(text);
+    console.log('text is ' + text);
+  } else {
+    // Inserted text is blank
+    setstates(Filteredstates)
+    console.log('blank');
+    //   this.setState({vehicleList: vehicleList2})
+    //   setFilteredDataSource(data);
+    //   setSearch(text);
+  }
+};
+
 const GetStates =()=>{
+  setspinner(true)
   var url = AppUrlCollection.STATES;
 
   fetch(url, {
@@ -244,8 +238,9 @@ const GetStates =()=>{
 })
     .then((response) =>  response.json() )
     .then((responseJson) => {
-
+setspinner(false)
       setstates(responseJson)
+      setFilteredstates(responseJson)
       console.log('states data response',responseJson);
 
         if(responseJson.message == 'SUCCESS'){
@@ -260,39 +255,36 @@ const GetStates =()=>{
   //   setspinner(false)  
     })
     .catch((error) => {
-      // setspinner(false)
+      setspinner(false)
       alert(error)
         console.warn(error)
     });
 }
-    const renderItem = ({ item }) => (
 
-      <View>
-        {/* <Text>{item.id}</Text> */}
-        <View style={{borderWidth:1,borderColor:'#EFDF79',marginBottom:10,borderRadius:10}}>
-<CheckBox
-      
-      title={item.state_name}
-      checkedIcon="dot-circle-o"
-      uncheckedIcon="circle-o"
-      checked={item.state_name == states ?  true : item.state_name == states ? true
-      : item.state_name == states? true :item.state_name == states? true:false }
+const renderstateslist = ({ item }) => {
 
-      // checked={item.state_name == 'Texes' || item.state_name == 'Alabama'||item.state_name == 'Arizona' 
-      // || item.state_name == 'Alaska'
-      // ?  true :false
-      // }
-      checkedColor='#EFDF79'
-      onPress={() => setCheck(!check)}
-    />
-</View>
+  let c;
+  if (statevalue == item.state_name) {
+    c = 1
+  }
+  return (
 
-     
-        </View>
+    <TouchableOpacity
+      onPress={() => { setshowModal(false); setstatevalue(item.state_name), setstateid(item.id) }}
+      style={{ marginVertical: 5, borderWidth: 0.5, flexDirection: 'row', borderColor: 'grey', borderRadius: 10, paddingVertical: 12, paddingHorizontal: 10, }}>
+
+      {c == null ?
+        <Ionicons name='ios-radio-button-off-sharp' color='grey' style={{ alignSelf: 'center' }} size={20} /> :
+        <Ionicons name='ios-radio-button-on' color={AppColors.Appcolor} style={{ alignSelf: 'center' }} size={20} />
+      }
 
 
- 
-   );
+      <Text style={{ alignSelf: 'center', color: AppColors.Appcolor, marginLeft: 5, }}>{item.state_name}</Text>
+    </TouchableOpacity>
+
+  )
+
+}
  
    useEffect(()=>{
     GetStates()
@@ -302,7 +294,7 @@ const GetStates =()=>{
            <SafeAreaView style={styles.container}>
          
         <Spinner
-          visible={showIndicator}
+          visible={spinner}
           textContent={'Loading...'}
           overlayColor='rgba(0, 0, 0, 0.25)'
           color	='#EFDF79'
@@ -310,6 +302,69 @@ const GetStates =()=>{
           // textStyle={styles.spinnerTextStyle}
         />
          
+
+         <Modal
+       transparent={true}
+       visible={showModal}
+       >
+        <SafeAreaView style={{backgroundColor:"#000000aa",flex:1}} >
+        <View style={{backgroundColor:"#ffffff",borderTopRightRadius:15,borderTopLeftRadius:15, flex:1}} >
+     
+        <View
+            style={{ width: deviceWidth, flexDirection: 'row', backgroundColor:AppColors.Appcolor, paddingHorizontal: 13, paddingVertical: 15, height: 55 }}>
+
+            <TouchableOpacity
+              style={{ justifyContent: 'center', paddingHorizontal:10, borderRadius:10,  }}
+              onPress={() => setshowModal(false)}
+
+            >
+            <Ionicons style={{ alignSelf: 'center', }} size={22} color='white' name='ios-close' />
+
+
+            </TouchableOpacity>
+
+            <View style={{ width: '70%', justifyContent: 'center', }}>
+              <Text style={{ alignSelf: 'center', color: 'white', fontWeight: 'bold', fontSize: 20 }}>STATES</Text>
+            </View>
+
+            <View style={{ width: '10%', justifyContent: 'center' }}>
+              <TouchableOpacity style={{ alignSelf: 'center', justifyContent: 'center' }}>
+              </TouchableOpacity>
+            </View>
+          </View>
+
+          <View style={{ marginHorizontal: 10,marginTop:10, justifyContent: 'center', paddingHorizontal: 5, borderBottomWidth:0.7,borderColor:AppColors.Appcolor, backgroundColor: 'white', flexDirection: 'row' }}>
+            <Feather style={{ alignSelf: 'center', }} size={18} color='grey' name='search' />
+
+            <TextInput style={{ backgroundColor: 'white', width: '90%', height: 40, paddingHorizontal: 10, borderRadius: 20 }}
+              onChangeText={text => searchFilterFunction(text)}
+              // onSubmitEditing={(Text) => searchFilterFunction(Text)}
+              // this.callingVehicleContainerService()
+              placeholder="Search State"
+              placeholderTextColor='grey'
+              underlineColorAndroid="transparent"
+            ></TextInput>
+
+
+          </View>
+
+
+  
+
+
+ <FlatList
+          data={states}
+          contentContainerStyle={{width:deviceWidth,marginTop:10, paddingHorizontal:'2%',paddingBottom:"20%"}}
+          renderItem={renderstateslist}
+          keyExtractor={item => item.id}
+        />
+
+
+</View>
+</SafeAreaView>
+
+       </Modal>
+
       <ImageBackground source={require('../assets/bk.png')} resizeMode="cover" style={styles.image}> 
         
         <Appbar.Header style={styles.header}>
@@ -404,65 +459,21 @@ const GetStates =()=>{
       onSelect={() => { setVehical(selected)}}
 
       data={VehicalType}  />
-        {/* Model Code */}
-       <Modal
-       transparent={true}
-       visible={showModal}
-       >
-        <View style={{backgroundColor:"#000000aa",flex:1}} >
-        <View style={{backgroundColor:"#ffffff",margin:20,padding:40,borderRadius:25,flex:1}} >
-     
-     
-     <TouchableOpacity
-       onPress={() =>setshowModal(false) }
+
+<TouchableOpacity
+       onPress={() =>setshowModal(true) }
        > 
-       {/* <Button
-       
-       ></Button> */}
        <TextInput   
         onChangeText={(Text)=>{setstates(Text)}}
-        value={states}
+        value={statevalue}
         editable={false}
         placeholderTextColor={'grey'}
-        style={styles.input}
-        placeholder="Close Model"/> 
+        style={[styles.input,{color:'black'}]}
+        placeholder="States"/> 
+
 
 </TouchableOpacity>
-     {/* <SelectList 
-      
-      dropdownStyles={{backgroundColor:"white", borderWidth: 1,borderColor:'#EFDF79',borderRadius:15,}}
-      boxStyles={{backgroundColor:"white", borderWidth: 1, height:44,  margin: 12,
-      alignSelf:"center",paddingHorizontal:10, alignContent:'center', width:"100%",
-      borderColor:'#EFDF79',borderRadius:10,}}
-      setSelected={setselectedState}  
-      onSelect={() => { setpaymentType(selected)}}
-
-      data={StateData}  /> */}
-
-<TextInput   
-        // onChangeText={(Text)=>{setstates(Text)}}
-        // value={states}
-        // editable={false}
-        placeholderTextColor={'grey'}
-        style={styles.input}
-        placeholder="Select State"/> 
- <FlatList
-          data={states}
-          // contentContainerStyle={{width:deviceWidth, paddingHorizontal:'2%',paddingBottom:"30%"}}
-          renderItem={renderItem}
-          keyExtractor={item => item.id}
-        />
-
-
-</View>
-</View>
-
-       </Modal>
-
-
-        {/* Model Code close*/}
-
-       <TouchableOpacity
+       {/* <TouchableOpacity
        onPress={() =>setshowModal(true) }
        > 
        <TextInput   
@@ -472,8 +483,9 @@ const GetStates =()=>{
         placeholderTextColor={'grey'}
         style={styles.input}
         placeholder="States"/> 
+        
 
-</TouchableOpacity>
+</TouchableOpacity> */}
       
       <SelectList 
       

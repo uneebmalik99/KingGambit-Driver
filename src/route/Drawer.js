@@ -83,7 +83,7 @@ export function DrawerContent(props) {
           <View style={{ flexDirection: "row",justifyContent:'space-around',  alignSelf:'center', width: "80%" }}>
             {/* <Title style={styles.title}>John Doe</Title> */}
             <Title style={styles.title}>
-              {AppConstance.Name}
+            label={'fh'}
             </Title>
             {/* <Caption style={styles.caption}>
               {AppConstance.USER_INFO.USER_EMAIL}
@@ -120,7 +120,7 @@ export function DrawerContent(props) {
               icon={({ color, size }) => (
                 <Icon name="car" size={size} color="black" />
               )}
-              label={AppConstance.Email}
+              label={'fh'}
               labelStyle={{ color: "black" }}
              
             />
@@ -140,7 +140,7 @@ export function DrawerContent(props) {
               icon={({ color, size }) => (
                 <FontAwesome name="ship" size={size - 2} color="black" />
               )}
-              label={AppConstance.Phone}
+              label={'fh'}
               labelStyle={{ color: "black" }}
               onPress={() => {
                 props.navigation.navigate("ContainerCarlist");
@@ -151,7 +151,7 @@ export function DrawerContent(props) {
               icon={({ color, size }) => (
                 <FontAwesome5 name="file-invoice" size={size} color="black" />
               )}
-              label={AppConstance.DateofBirth}
+              label={'fh'}
               labelStyle={{ color: "black" }}
               
             />

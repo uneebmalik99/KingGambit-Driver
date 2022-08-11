@@ -142,7 +142,17 @@ useEffect(()=>{
       </TouchableOpacity>
     
       </View>
+      <View   style={styles.allLoadd}>
+        
+        <TouchableOpacity
+        
+          onPress={() => navigation.navigate('notifee')}
+        >
+          <Feather name={'box'} style={{alignSelf:'center'}} size={30}   color={'black'} />
+         <Text style={{color:"black",fontSize:20}}>Notifee</Text>
+        </TouchableOpacity>
       
+        </View>
       {/* <View   style={styles.allLoadd}>
       <TouchableOpacity
         style={{justifyContent:'space-around'}}
