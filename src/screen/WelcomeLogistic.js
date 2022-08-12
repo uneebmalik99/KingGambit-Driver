@@ -1,122 +1,54 @@
-import React, { useEffect } from 'react'
-import { View, Text,TouchableOpacity,TextInput,SafeAreaView, StyleSheet, Button, ScrollView } from 'react-native'
+import React, { useState , useRef} from 'react'
+import { View, Text,TouchableOpacity,TextInput,StyleSheet,Button, Image } from 'react-native'
+
+import MapView,{Marker} from 'react-native-maps';
+
+import MapViewDirections from 'react-native-maps-directions';
+
+import MaterialCommunityIcons from 'react-native-vector-icons/dist/MaterialCommunityIcons';
+import Ionicons from 'react-native-vector-icons/dist/Ionicons';
 import { Appbar } from "react-native-paper";
 import AppConstance,{deviceHeight,deviceWidth} from "../constance/AppConstance"
-import Ionicons from 'react-native-vector-icons/dist/Ionicons';
-import Feather from 'react-native-vector-icons/dist/Feather';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import database from '@react-native-firebase/database';
-import MaterialCommunityIcons from 'react-native-vector-icons/dist/MaterialCommunityIcons';
 import AppColors from '../Colors/AppColors';
+import Geolocation from '@react-native-community/geolocation';
 
-const WelcomeLogistic = ({navigation}) => {
+const Maps = ({navigation}) => {
 
+  const [longitude,setlongitude] = useState()
+  const [latitude,setlatitude] = useState()
+// curt loacation
+Geolocation.getCurrentPosition(info =>
+  {
+    // console.log(info.coords.latitude)
+    // console.log(info.coords.longitude)
+    setlatitude(info.coords.latitude)
+    setlongitude(info.coords.longitude)
+    // console.log(longitude)
 
+  } );
 
-
-  const getData =async ()=>{
-
-    let Id = await AsyncStorage.getItem('Id')
-    let Name = await AsyncStorage.getItem('Name')
-    let Email = await AsyncStorage.getItem('Email')
-    let Phone= await AsyncStorage.getItem('Phone')
-    let DateofBirth= await AsyncStorage.getItem('DateofBirth')
-      //  let CompanyName= await AsyncStorage.getItem('CompanyName')
-       let SNN=  await AsyncStorage.getItem('SNN')
-       let DotNumber=  await AsyncStorage.getItem('DotNumber')
-       let McNumber=  await AsyncStorage.getItem('McNumber')
-       let DL=  await AsyncStorage.getItem('DL')
-      //  let EIN=  await AsyncStorage.getItem('EIN')
-     let Role= await AsyncStorage.getItem('Role')
-     let PaymentType=  await AsyncStorage.getItem('PaymentType')
-       let BankInfo=  await AsyncStorage.getItem('BankInfo')
-       let BankNumber=  await AsyncStorage.getItem('BankNumber')
-       let CreditCardNo=  await AsyncStorage.getItem('CreditCardNo')
-       let ExpireDate=  await AsyncStorage.getItem('ExpireDate')
-       let SecurityCode= await AsyncStorage.getItem('SecurityCode')
-       let ZipCode = await AsyncStorage.getItem('ZipCode')
-       let token = await AsyncStorage.getItem('Token')
-   
-   
-       AppConstance.Name=Name;
-       AppConstance.Id=Id;
-       AppConstance.Email=Email;
-       AppConstance.Phone=Phone;
-       AppConstance.DateofBirth=DateofBirth;
-       // AppConstance.CompanyName=CompanyName;
-       AppConstance.McNumber=McNumber;
-       AppConstance.DL=DL;
-       AppConstance.DotNumber=DotNumber;
-       AppConstance.SNN=SNN;
-       AppConstance.Role=Role;
-       AppConstance.PaymentType=PaymentType;
-       AppConstance.BankInfo=BankInfo;
-       AppConstance.BankNumber=BankNumber;
-       AppConstance.CreditCardNo=CreditCardNo;
-       AppConstance.ExpireDate=ExpireDate;
-       AppConstance.SecurityCode=SecurityCode;
-       AppConstance.ZipCode=ZipCode;
-   
-       AppConstance.AUTH_KEY=token;
-  }
-
-useEffect(()=>{
-
-  getData()
-
-
-    database().ref('/item').once('value').then((snapshot)=>   {console.log(snapshot)} )
+  const GOOGLE_MAPS_APIKEY ='AIzaSyC0PyPzbZ1oOzhm74aUjuXNxZcbD3bEhOo'
+  const[location,setLocation] =useState({
+    pickupLocation:{
+      latitude: 33.5651,
+      longitude: 73.0169,
+      latitudeDelta: 0.0922,
+      longitudeDelta: 0.0421,
+    },
+    dropUpLocation:{
+      latitude:32.4404,
+      longitude: 74.1203,
+      latitudeDelta: 0.0922,
+      longitudeDelta: 0.0421,
+    }
     
     
-   
+  })
+  const mapRef =useRef()
 
- 
-//  let Name = await AsyncStorage.getItem('Name')
-//  let Email = await AsyncStorage.getItem('Email')
-//  let Phone= await AsyncStorage.getItem('Phone')
-//  let DateofBirth= await AsyncStorage.getItem('DateofBirth')
-//     let CompanyName= await AsyncStorage.getItem('CompanyName')
-//     let SNN=  await AsyncStorage.getItem('SNN')
-//     let DotNumber=  await AsyncStorage.getItem('DotNumber')
-//     let McNumber=  await AsyncStorage.getItem('McNumber')
-//     let DL=  await AsyncStorage.getItem('DL')
-//     let EIN=  await AsyncStorage.getItem('EIN')
-//   let Role= await AsyncStorage.getItem('Role')
-//   let PaymentType=  await AsyncStorage.getItem('PaymentType')
-//     let BankInfo=  await AsyncStorage.getItem('BankInfo')
-//     let BankNumber=  await AsyncStorage.getItem('BankNumber')
-//     let CreditCardNo=  await AsyncStorage.getItem('CreditCardNo')
-//     let ExpireDate=  await AsyncStorage.getItem('ExpireDate')
-//     let SecurityCode= await AsyncStorage.getItem('SecurityCode')
-//     let ZipCode = await AsyncStorage.getItem('ZipCode')
-
-
-//     AppConstance.Name=Name;
-//     AppConstance.Email=Email;
-//     AppConstance.Phone=Phone;
-//     AppConstance.DateofBirth=DateofBirth;
-//     // AppConstance.CompanyName=CompanyName;
-//     AppConstance.McNumber=McNumber;
-//     AppConstance.DL=DL;
-//     AppConstance.DotNumber=DotNumber;
-//     AppConstance.SNN=SNN;
-//     AppConstance.Role=Role;
-//     AppConstance.PaymentType=PaymentType;
-//     AppConstance.BankInfo=BankInfo;
-//     AppConstance.BankNumber=BankNumber;
-//     AppConstance.CreditCardNo=CreditCardNo;
-//     AppConstance.ExpireDate=ExpireDate;
-//     AppConstance.SecurityCode=SecurityCode;
-//     AppConstance.ZipCode=ZipCode;
-
-//     AppConstance.AUTH_KEY=responseJson.DATA.token;
- 
-},[])
-
-  return (
-
-        <SafeAreaView style={styles.container}>
-
+  const {pickupLocation,dropUpLocation} = location
+    return (
+        <View style={styles.container}>
 <Appbar.Header style={styles.header}>
 
 <View style={styles.headview}>
@@ -124,85 +56,69 @@ useEffect(()=>{
   <Ionicons name='menu-outline' 
   onPress={() => navigation.openDrawer()}
   style={{alignSelf:'center',}} size={30} color='white'/>
-  <Text style={{color:"white",fontSize:16,alignSelf:'center' , }}>Home</Text>
+  <Text style={{color:"white",fontSize:16,alignSelf:'center' ,}}>Home</Text>
   <MaterialCommunityIcons  name='account-circle-outline' 
   onPress={() => { navigation.navigate('profile')}}
   style={{alignSelf:'center',}} size={30} color='white'/>
 </View>
 
 </Appbar.Header>
-      <View   style={styles.allLoadd}>
-        
-      <TouchableOpacity
-      
-        onPress={() => navigation.navigate('allLoad')}
-      >
-        <Feather name={'box'} style={{alignSelf:'center'}} size={30}   color={'black'} />
-       <Text style={{color:"black",fontSize:20}}>ALL Load</Text>
-      </TouchableOpacity>
+            <Text  style={styles.text}>Maps</Text>
+            <Text  style={styles.text}>latitude {latitude}</Text>
+            <Text  style={styles.text}>longitude {longitude}</Text>
+            {/* <View style={styles.mapShow}> */}
+    <MapView 
+    // ref={mapRef}
+    style={{width:"100%",height:"70%"}}
+    initialRegion={
+      pickupLocation
+    }
+  >
+    <Marker coordinate={{latitude:latitude,longitude:longitude}}>
+    <Image style={{width:55,height:55}} source={require('../assets/truck.jpg')} />
+    {/* <MaterialCommunityIcons name='truck-fast-outline' 
+style={{ height: 35, width: 45 }} size={40} color='black'/> */}
+</Marker>
+    {/* <Marker
+    coordinate={pickupLocation}
+    />
+    <Marker
+    coordinate={dropUpLocation}
+    /> */}
+
+  {/* <MapViewDirections
+    origin={pickupLocation}
+    // destination={dropUpLocation}
+    // apikey={GOOGLE_MAPS_APIKEY}
+    // stroke
+    strokeWidth={3}
+    strokeColor='red'
+   
+  /> */}
     
-      </View>
-      <View   style={styles.allLoadd}>
+  </MapView>
+            </View>
         
-        <TouchableOpacity
-        
-          onPress={() => navigation.navigate('notifee')}
-        >
-          <Feather name={'box'} style={{alignSelf:'center'}} size={30}   color={'black'} />
-         <Text style={{color:"black",fontSize:20}}>Notifee</Text>
-        </TouchableOpacity>
-      
-        </View>
-      {/* <View   style={styles.allLoadd}>
-      <TouchableOpacity
-        style={{justifyContent:'space-around'}}
-        onPress={() => navigation.navigate('profile')}
-      >
-        <Feather name={'box'} style={{alignSelf:'center'}} size={30} color={'black'} />
-
-       <Text style={{color:"black",fontSize:20}}>Profile</Text>
-      </TouchableOpacity>
-     
-      </View> */}
-      
-      {/* <View   style={styles.allLoadd}>
-      <TouchableOpacity
-        style={{justifyContent:'space-around'}}
-        onPress={() => navigation.navigate('trackyourDelivery')}
-      >
-        <Feather name={'box'} style={{alignSelf:'center'}} size={30} color={'black'} />
-
-       <Text style={{color:"black",fontSize:20}}>maps</Text>
-      </TouchableOpacity>
-     
-      </View> */}
-      
-
-      
-      {/* <TouchableOpacity style={styles.btnChkLoad}
-    
-    onPress={() => navigation.navigate('incomingLoad')}
-   >
-     <Text style={{color:"black"}}>Check ALL Lodad</Text>
-  </ TouchableOpacity> */}
-      {/* <Button title='Chk All Load' onPress={()=>navigation.navigate('incomingLoad')}></Button> */}
-
-{/* </ScrollView> */}
-
-    </SafeAreaView>
-    
-  )
+        // </View>
+    )
 }
+
+  
 const styles = StyleSheet.create({
   container: {
       flex: 1,
-    //   justifyContent: center,
-    backgroundColor: "#eaeaea",
-    height:deviceHeight,
-    width:deviceWidth,
-      // backgroundColor: "#eaeaea"
-    },
-    header: {
+  },
+  text:{
+    alignSelf:"center"
+},
+mapShow:{
+  height:"100%",
+  width:"100%",
+  // margin: 20,
+  // borderWidth: 1,
+  // padding: 10,
+},
+  header: {
       elevation: 0,
       backgroundColor: 'transparent',
       alignItems: "center",
@@ -215,8 +131,36 @@ const styles = StyleSheet.create({
       // alignSelf: "flex-start",
     
     },
-    
-    headview:{
+    btnBorder:{
+      borderColor:'#EFDF79',
+      borderWidth:3,
+      // borderRadius:200,
+      // height:100,
+      borderRadius:130/2,
+      height:130,
+      width:130,
+      justifyContent:"center",
+      alignSelf:"center"
+    },
+    btnregister :{
+    //  / / width:100,
+  padding:10,
+  // height:40,
+  // marginTop:20,
+  justifyContent:"center",
+  height:"70%",
+  width:'71%',
+  alignSelf:"center",
+  alignItems:"center",
+  borderRadius:400/2,
+  borderColor:'#EFDF79',
+  borderWidth:1,
+  backgroundColor:'#EFDF79',
+  alignContent:"center"
+  // fontSize:40
+  
+    },
+  headview:{
       height:'100%',
       paddingHorizontal:13,
       width:'100%',
@@ -226,38 +170,21 @@ const styles = StyleSheet.create({
       justifyContent:'space-between',
       backgroundColor:AppColors.Appcolor
     },
-    btnChkLoad:{
-      marginTop:20,
-      alignSelf:"center",
-      alignItems:"center",
-      borderRadius:400/2,
-      // borderColor:'#EFDF79',
-      padding:20,
-      borderWidth:1,
-      backgroundColor:'#EFDF79',
-      alignContent:"center"
-    },
   input: {
-    height: 40,
-    width:'80%',
-    // marginTop:80,
-    margin: 12,
-    borderWidth: 1,
-    padding: 10,
-    alignSelf:"center",
-    textAlign:"center",
-    color:"black",
-    borderColor:'#EFDF79'
-  },
-  text:{
+      height: 45,
+      margin: 3,
       alignSelf:"center",
-      marginTop:70,
-      color:"black"
-  },
-  allLoadd:{
-    marginTop:40, borderWidth:1.5,borderRadius:10,width:'80%', 
-    alignSelf:"center",height:'20%', justifyContent:"center",
-    alignItems:"center",borderColor:'#EFDF79'
-  }
-});
-export default WelcomeLogistic
+      padding: 2,
+      color:'black',
+      fontWeight:'600',
+      width:"70%",
+      borderColor:'#EFDF79',
+      borderWidth:1,
+      borderRadius:10,
+      backgroundColor:"white",
+      // width:190
+
+    },
+})
+
+export default Maps

@@ -83,7 +83,7 @@ export function DrawerContent(props) {
           <View style={{ flexDirection: "row",justifyContent:'space-around',  alignSelf:'center', width: "80%" }}>
             {/* <Title style={styles.title}>John Doe</Title> */}
             <Title style={styles.title}>
-            label={'fh'}
+            {/* label={'fh'} */}
             </Title>
             {/* <Caption style={styles.caption}>
               {AppConstance.USER_INFO.USER_EMAIL}
@@ -120,9 +120,11 @@ export function DrawerContent(props) {
               icon={({ color, size }) => (
                 <Icon name="car" size={size} color="black" />
               )}
-              label={'fh'}
+              label={'Loads'}
               labelStyle={{ color: "black" }}
-             
+              onPress={() => {
+                props.navigation.navigate("allLoad");
+              }}
             />
             {/* <DrawerItem
               icon={({ color, size }) => (
@@ -140,10 +142,10 @@ export function DrawerContent(props) {
               icon={({ color, size }) => (
                 <FontAwesome name="ship" size={size - 2} color="black" />
               )}
-              label={'fh'}
+              label={'Profile'}
               labelStyle={{ color: "black" }}
               onPress={() => {
-                props.navigation.navigate("ContainerCarlist");
+                props.navigation.navigate("profile");
               }}
             />
             <DrawerItem
@@ -151,9 +153,22 @@ export function DrawerContent(props) {
               icon={({ color, size }) => (
                 <FontAwesome5 name="file-invoice" size={size} color="black" />
               )}
-              label={'fh'}
+              label={'Setting'}
               labelStyle={{ color: "black" }}
-              
+              onPress={() => {
+                props.navigation.navigate("setting");
+              }}
+            />
+              <DrawerItem
+            style={{marginLeft:15}}
+              icon={({ color, size }) => (
+                <FontAwesome5 name="file-invoice" size={size} color="black" />
+              )}
+              label={'Contact Us'}
+              labelStyle={{ color: "black" }}
+              onPress={() => {
+                props.navigation.navigate("contact");
+              }}
             />
             {/* <DrawerItem
               icon={({ color, size }) => (

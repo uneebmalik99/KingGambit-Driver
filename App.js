@@ -4,7 +4,7 @@ import messaging from '@react-native-firebase/messaging';
 import { View, Text } from 'react-native'
 import AppNavigator from './src/route/AppNavigator'
 
-import { NavigationContainer , CommonActions} from '@react-navigation/native';
+import { NavigationContainer , CommonActions, useNavigation} from '@react-navigation/native';
 import {
   createStackNavigator,
   HeaderBackground,
@@ -30,10 +30,11 @@ import NotifeeTest from './src/screen/NotifeeTest';
 import AppConstance from './src/constance/AppConstance';
 import notifee , { EventType }from '@notifee/react-native';
 
-const App = ({navigation}) => {
+const App = () => {
 
   const [initialRouteName , setinitialRouteName] = useState('splash')
   const [loading, setLoading] = useState(true);
+  const Navigation = useNavigation();
 
   // useEffect(() => {
   //   const unsubscribe = messaging().onMessage(async remoteMessage => {
@@ -153,62 +154,23 @@ const  bootstrap =async()=> {
 }
 
 
-  useEffect(() => {
+useEffect((Navigation) => {
+  // Assume a message-notification contains a "type" property in the data payload of the screen to open
 
-    //  bootstrap()
+  messaging().onNotificationOpenedApp(remoteMessage => {
+    console.log(
+      'Notification caused app to open from background state:',
+      remoteMessage.notification,
+    );
+    Navigation.navigate('contact');
+  });
 
-    // messaging().onNotificationOpenedApp(remoteMessage=>{
-    //   console.log('open app',remoteMessage.notification)
-    // })
-
-    // messaging().setBackgroundMessageHandler(async remoteMessage => {
-    //   console.log('Message check in the background!', remoteMessage);
+  // Check whether an initial notification is available
   
-      
-  
-    // });
-
-    // const unsubscribe = messaging().onMessage(async remoteMessage => {
-
-      
-    //   // Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
-    //   console.log('notifiif')
-    //   onDisplayNotification(remoteMessage)
-
-    // });
-
-
-   
-
-    // return unsubscribe;
-    //    return notifee.onForegroundEvent(({ type, detail }) => {
-    //   switch (type) {
-    //     case EventType.DISMISSED:
-    //       console.log('User dismissed notification', detail.notification);
-
-    //       break;
-    //     case EventType.PRESS:
-    //       console.log('User pressed notification', detail.notification);
-          
-    //       // navigation.dispatch(
-    //       //   CommonActions.navigate({
-    //       //     name: 'login',
-    //       //     params: {
-    //       //       user: 'jane',
-    //       //     },
-    //       //   })
-    //       // );
-    //                 break;
-    //   }
-    // });
-    // bootstrap()
-    // .then(() => setLoading(false))
-    // .catch(console.error);
-  }, []);
-
-  if (loading) {
-    return null;
-  }
+}, []);
+  // if (loading) {
+  //   return null;
+  // }
   return (
     // <View>
     //   {/* <AppNavigator /> */}

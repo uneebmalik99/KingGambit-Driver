@@ -1,6 +1,7 @@
 import React, { useState , useEffect} from 'react'
 import { View, Text,StyleSheet,Button, ScrollView, SafeAreaView,ImageBackground ,Dimensions, TouchableOpacity, Alert, Image} from 'react-native'
 import { ActivityIndicator, Appbar } from "react-native-paper";
+import {  DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
 // import AppUrlCollection from '../UrlCollection/AppUrlCollection';
 import SelectList from 'react-native-dropdown-select-list'
 import DeviceInfo from 'react-native-device-info';
@@ -19,6 +20,18 @@ const deviceHeight = Dimensions.get("window").height;
 const deviceWidth = Dimensions.get("window").width
 let editableColor ='#EFDF79'
 
+
+const theme = {
+  ...DefaultTheme,
+  roundness: 2,
+  version: 3,
+  colors: {
+    ...DefaultTheme.colors,
+    primary: '#EFDF79',
+    secondary: '#f1c40f',
+    tertiary: '#a1b2c3'
+  },
+};
 
 const Profile = ({navigation}) => {
 
@@ -161,9 +174,10 @@ const [states,setstates]=useState('')
     }
 
  
-    let uriimage ='../assets/logocrop.png'
+    // let uriimage ='../assets/logocrop.png'
     return (
       <>
+         <PaperProvider theme={theme}>
            <SafeAreaView style={styles.container}>
            <Spinner
         visible={spinner}
@@ -222,7 +236,17 @@ style={{alignSelf:'center',}} size={30} color='black'/>
         placeholderTextColor={'grey'}
         onChangeText={(Text)=>{setname(Text)}}
         value={name}
-        style={[styles.input, {borderColor:name.length>0 && Editable == false ?"#EFDF79":"red"}]}
+        style={styles.input}
+        // style={[styles.input, {borderColor:name.length>0 && Editable == false ?"#EFDF79":"red"}]}
+        placeholder="Name"/>
+             <TextInput  
+             editable={Editable} 
+             label="Picture"
+        placeholderTextColor={'grey'}
+        onChangeText={(Text)=>{setDrivePicture(Text)}}
+        value={DrivePicture}
+        style={styles.input}
+        // style={[styles.input, {borderColor:name.length>0 && Editable == false ?"#EFDF79":"red"}]}
         placeholder="Name"/>
          <TextInput   
              editable={Editable} 
@@ -297,7 +321,7 @@ style={{alignSelf:'center',}} size={30} color='black'/>
             onPress={()=>{registerApi()}}
     >
         
-      <Text style={{color:"black",fontSize:15,}}>Save</Text>
+      <Text style={{color:"black",fontSize:15,}}>Update</Text>
    </ TouchableOpacity>
     </View>
 
@@ -306,7 +330,7 @@ style={{alignSelf:'center',}} size={30} color='black'/>
 
     </ScrollView>
     </SafeAreaView>
-        
+    </PaperProvider>
         </>
     )
 }
