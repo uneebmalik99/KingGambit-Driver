@@ -1,9 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Alert } from 'react-native';
 import messaging from '@react-native-firebase/messaging';
 import { View, Text } from 'react-native'
 import AppNavigator from './src/route/AppNavigator'
-import { NavigationContainer } from '@react-navigation/native';
+
+import { NavigationContainer , CommonActions} from '@react-navigation/native';
 import {
   createStackNavigator,
   HeaderBackground,
@@ -27,8 +28,12 @@ import MyLocation from './src/screen/MyLocation';
 import { DrawerContent } from './src/route/Drawer';
 import NotifeeTest from './src/screen/NotifeeTest';
 import AppConstance from './src/constance/AppConstance';
+import notifee , { EventType }from '@notifee/react-native';
+
 const App = ({navigation}) => {
 
+  const [initialRouteName , setinitialRouteName] = useState('splash')
+  const [loading, setLoading] = useState(true);
 
   // useEffect(() => {
   //   const unsubscribe = messaging().onMessage(async remoteMessage => {
@@ -80,6 +85,33 @@ const App = ({navigation}) => {
     );
   };
 
+
+
+  async function onDisplayNotification() {
+    console.log('notifee');
+    // Request permissions (required for iOS)
+    // await notifee.requestPermission()
+
+    // Create a channel (required for Android)
+    const channelId = await notifee.createChannel({
+      id: 'default',
+      name: 'Default Channel',
+    });
+
+    // Display a notification
+    await notifee.displayNotification({
+      title: 'Notification Title',
+      body: 'Main body content of the notification',
+      android: {
+        channelId,
+        // smallIcon: 'name-of-a-small-icon', // optional, defaults to 'ic_launcher'.
+        // pressAction is needed if you want the notification to open the app when pressed
+        pressAction: {
+          id: 'default',
+        },
+      },
+    });
+  }
   
 const WelcomeStack = () => {
   
@@ -110,27 +142,73 @@ const WelcomeStack = () => {
     </Stack.Navigator>
   );
 };
+
+const  bootstrap =async()=> {
+  const initialNotification = await notifee.getInitialNotification();
+
+  if (initialNotification) {
+    console.log('Notification caused application to open', initialNotification.notification);
+    console.log('Press action used to open the app', initialNotification.pressAction);
+  }
+}
+
+
   useEffect(() => {
+
+    //  bootstrap()
+
     // messaging().onNotificationOpenedApp(remoteMessage=>{
     //   console.log('open app',remoteMessage.notification)
     // })
 
-    messaging().setBackgroundMessageHandler(async remoteMessage => {
-      console.log('Message check in the background!', remoteMessage);
+    // messaging().setBackgroundMessageHandler(async remoteMessage => {
+    //   console.log('Message check in the background!', remoteMessage);
   
       
   
-    });
+    // });
 
-    const unsubscribe = messaging().onMessage(async remoteMessage => {
+    // const unsubscribe = messaging().onMessage(async remoteMessage => {
 
       
-      Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
-      console.log('notifiif')
-    });
+    //   // Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
+    //   console.log('notifiif')
+    //   onDisplayNotification(remoteMessage)
 
-    return unsubscribe;
+    // });
+
+
+   
+
+    // return unsubscribe;
+    //    return notifee.onForegroundEvent(({ type, detail }) => {
+    //   switch (type) {
+    //     case EventType.DISMISSED:
+    //       console.log('User dismissed notification', detail.notification);
+
+    //       break;
+    //     case EventType.PRESS:
+    //       console.log('User pressed notification', detail.notification);
+          
+    //       // navigation.dispatch(
+    //       //   CommonActions.navigate({
+    //       //     name: 'login',
+    //       //     params: {
+    //       //       user: 'jane',
+    //       //     },
+    //       //   })
+    //       // );
+    //                 break;
+    //   }
+    // });
+    // bootstrap()
+    // .then(() => setLoading(false))
+    // .catch(console.error);
   }, []);
+
+  if (loading) {
+    return null;
+  }
   return (
     // <View>
     //   {/* <AppNavigator /> */}
@@ -139,7 +217,7 @@ const WelcomeStack = () => {
 
     <NavigationContainer>
       {/* //WelcomeStack */}
-       {/* <Stack.Navigator initialRouteName={AppConstance.initialRouteName}>
+       <Stack.Navigator initialRouteName={initialRouteName}>
         <Stack.Screen name="Splash" component={Splash} options={{
           headerShown: false
         }} />
@@ -194,8 +272,8 @@ const WelcomeStack = () => {
         component={Profile}
         options={{ headerShown: false }}
       />
-    </Stack.Navigator> */}
-   <AppNavigator />
+    </Stack.Navigator>
+   {/* <AppNavigator /> */}
   </NavigationContainer>
   )
 }

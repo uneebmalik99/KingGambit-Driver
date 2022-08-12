@@ -114,8 +114,8 @@ const Register = ({navigation}) => {
     value.append('Security_Code',securitycode)
     value.append('Token','token')
     value.append('Role',"1")
-    value.append('Device_id',deviceId)
-    // value.append('Driver_Pic', DriverPic )
+    value.append('Device_id','09898')
+    value.append('Driver_Pic', DriverPic )
     // value.append('Zip_Code',zipcode)
     value.append('Payment_Type',paymentType)
     value.append('Vehicle_Type',Vehical)
@@ -124,12 +124,7 @@ const Register = ({navigation}) => {
 
   
 
-    // value.append('Driver_Pic',{
-    //   uri:response.assets[0].uri,
-    //      name:response.assets[0].fileName,
-    //      type: response.assets[0].type
-    //    });
-
+ 
     console.log(JSON.stringify(value));
 
     var url =AppUrlCollection.REGISTER;

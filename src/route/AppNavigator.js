@@ -23,6 +23,8 @@ import Profile from "../screen/Profile";
 import MyLocation from "../screen/MyLocation";
 import AppConstance from "../constance/AppConstance";
 import IncomingLoad from "../screen/IncomingLoad";
+import messaging from '@react-native-firebase/messaging';
+import notifee , { EventType }from '@notifee/react-native';
 
 const Stack = createStackNavigator();
 const AppDrawer = createDrawerNavigator();
@@ -99,11 +101,49 @@ const WelcomeStack = () => {
   );
 };
 
+async function onDisplayNotification() {
+  console.log('notifee');
+  // Request permissions (required for iOS)
+  // await notifee.requestPermission()
+
+  // Create a channel (required for Android)
+  const channelId = await notifee.createChannel({
+    id: 'default',
+    name: 'Default Channel',
+  });
+
+  // Display a notification
+  await notifee.displayNotification({
+    title: 'Notification Title',
+    body: 'Main body content of the notification',
+    android: {
+      channelId,
+      // smallIcon: 'name-of-a-small-icon', // optional, defaults to 'ic_launcher'.
+      // pressAction is needed if you want the notification to open the app when pressed
+      pressAction: {
+        id: 'default',
+      },
+    },
+  });
+}
+
+
 const AppNavigator = (props) => {
 
   useEffect(() => {
  
-     console.log(AppConstance.notificationRecived)
+
+     messaging().onMessage(async remoteMessage => {
+
+      
+      // Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
+      console.log('notifiif')
+      console.log('App navigator')
+
+      // onDisplayNotification(remoteMessage)
+
+    });
+
   }, []);
   return (
     <Stack.Navigator initialRouteName={AppConstance.initialRouteName}>
