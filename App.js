@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Alert } from 'react-native';
+import { Alert, FlatList } from 'react-native';
 import messaging from '@react-native-firebase/messaging';
-import { View, Text } from 'react-native'
+import { View, Text ,Modal, TouchableOpacity, SafeAreaView} from 'react-native'
 import AppNavigator from './src/route/AppNavigator'
 
-import { NavigationContainer , CommonActions, useNavigation} from '@react-navigation/native';
+import { NavigationContainer , CommonActions, useNavigation,createNavigationContainerRef} from '@react-navigation/native';
 import {
   createStackNavigator,
   HeaderBackground,
@@ -24,17 +24,34 @@ import TrackYourDelivery from './src/screen/TrackYourDelivery';
 import Profile from './src/screen/Profile';
 import WelcomeLogistic from './src/screen/WelcomeLogistic';
 import Maps from './src/screen/Maps';
+// import  from './src/screen/Maps';
 import MyLocation from './src/screen/MyLocation';
 import { DrawerContent } from './src/route/Drawer';
 import NotifeeTest from './src/screen/NotifeeTest';
 import AppConstance from './src/constance/AppConstance';
 import notifee , { EventType }from '@notifee/react-native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import AppColors from './src/Colors/AppColors';
+import IncomingLoad from './src/screen/IncomingLoad';
+
+
+
+
+const navigationRef = createNavigationContainerRef()
+
+function navigate(name, params) {
+  if (navigationRef.isReady()) {
+    navigationRef.navigate(name, params);
+  }
+}
 
 const App = () => {
 
   const [initialRouteName , setinitialRouteName] = useState('splash')
   const [loading, setLoading] = useState(true);
-  const Navigation = useNavigation();
+  const [notificationModal,setnotificationModal] = useState(false)
+  const [notificationList, setnotificationList] = useState([])
+  // const Navigation = useNavigation();
 
   // useEffect(() => {
   //   const unsubscribe = messaging().onMessage(async remoteMessage => {
@@ -154,7 +171,31 @@ const  bootstrap =async()=> {
 }
 
 
-useEffect((Navigation) => {
+useEffect(() => {
+
+
+
+
+
+
+  //foreGround
+
+  messaging().onMessage(async remoteMessage => {
+    // Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
+   
+    if(notificationModal != true)
+    {
+      setnotificationModal(true)
+    }
+
+    let newArray =[...notificationList,remoteMessage]
+    // newArray.push(remoteMessage)
+   
+    setnotificationList(newArray)
+
+    // notificationList.push('2')
+    
+  })
   // Assume a message-notification contains a "type" property in the data payload of the screen to open
 
   messaging().onNotificationOpenedApp(remoteMessage => {
@@ -162,24 +203,101 @@ useEffect((Navigation) => {
       'Notification caused app to open from background state:',
       remoteMessage.notification,
     );
-    Navigation.navigate('contact');
-  });
+    navigate('map');
+
+    })
 
   // Check whether an initial notification is available
+
+  messaging()
+  .getInitialNotification()
+  .then(remoteMessage => {
+    if (remoteMessage) {
+      console.log(
+        'Notification caused app to open from quit state:',
+        remoteMessage.notification,
+      );
+      // setinitialRouteName('register'); // e.g. "Settings"
+      // navigate('contact');
+      // console.log(initialRouteName)
+      AppConstance.notificationRecived='2'
+    }
+    // setLoading(false);
+  });
   
 }, []);
   // if (loading) {
   //   return null;
   // }
+  
+const renderNotificationListlist = ({ item }) => {
+
+
+  return (
+
+    <TouchableOpacity
+    onPress={()=>{
+
+      setnotificationModal(false)
+      navigate('incomingLoad',{item :item})
+
+    }
+    }
+      style={{ marginVertical: 5, borderWidth: 0.5, flexDirection: 'row', borderColor: 'grey', borderRadius: 10, paddingVertical: 12, paddingHorizontal: 10, }}>
+
+   
+
+      <Text style={{ alignSelf: 'center', color: AppColors.Appcolor, marginLeft: 5, }}>item.state_name</Text>
+    </TouchableOpacity>
+
+  )
+
+}
+const RootStack = createNativeStackNavigator();
   return (
     // <View>
     //   {/* <AppNavigator /> */}
     //   <Text>hi</Text>
     //  </View>
 
-    <NavigationContainer>
-      {/* //WelcomeStack */}
-       <Stack.Navigator initialRouteName={initialRouteName}>
+    
+    <NavigationContainer ref={navigationRef}>
+
+
+      {notificationModal == true ? 
+             <Modal
+             transparent={true}
+             visible={notificationModal}
+             >
+              <SafeAreaView style={{backgroundColor:"#000000aa",}} >
+
+               
+           <Text>hi mapo</Text>
+
+          <FlatList
+          data={notificationList}
+          contentContainerStyle={{marginTop:10, paddingHorizontal:'2%',paddingBottom:"20%"}}
+          renderItem={renderNotificationListlist}
+          keyExtractor={item => item.id}
+          extraData={notificationList}
+        />
+           <TouchableOpacity
+           style={{backgroundColor:"red"}}
+                onPress={()=>  setnotificationModal(false)}
+                >
+                <Text>hi mapo</Text>
+
+                </TouchableOpacity>
+      </SafeAreaView>
+      
+             </Modal>
+             :null
+  }
+
+
+            
+   
+       <Stack.Navigator initialRouteName={'Splash'}>
         <Stack.Screen name="Splash" component={Splash} options={{
           headerShown: false
         }} />
@@ -225,6 +343,11 @@ useEffect((Navigation) => {
         options={{ headerShown: false }}
       />
       <Stack.Screen
+        name="incomingLoad"
+        component={IncomingLoad}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
         name="trackyourDelivery"
         component={TrackYourDelivery}
         options={{ headerShown: false }}
@@ -235,7 +358,7 @@ useEffect((Navigation) => {
         options={{ headerShown: false }}
       />
     </Stack.Navigator>
-   {/* <AppNavigator /> */}
+
   </NavigationContainer>
   )
 }

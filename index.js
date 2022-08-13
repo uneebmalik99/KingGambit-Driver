@@ -26,11 +26,11 @@ import AppConstance from './src/constance/AppConstance';
 // });
 
 
-messaging().setBackgroundMessageHandler(async remoteMessage => {
-    console.log('Message index in the background!', remoteMessage);
+// messaging().setBackgroundMessageHandler(async remoteMessage => {
+//     console.log('Message index in the background!', remoteMessage);
 
-    AppConstance.initialRouteName ='profile'
+//     AppConstance.initialRouteName ='profile'
 
-  });
+//   });
  AppRegistry.registerComponent(appName, () => App);
  

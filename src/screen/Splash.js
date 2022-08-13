@@ -177,8 +177,15 @@ const [spinner,setspinner] = useState(false)
   AsyncStorage.getItem('Login').then((logn)=>{
     if ( logn == '1')
     {
+      if(AppConstance.notificationRecived=='2'){
+
+        navigation.navigate('register')
+
+      }else{
+        navigation.navigate('AppDrawer')
+
+      }
       // loginApi()
-      navigation.navigate('AppDrawer')
     
     }
     else if(logn == '0' || logn ==null){

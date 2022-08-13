@@ -1,9 +1,49 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import React from 'react'
 import { View, Text,TouchableOpacity,TextInput,StyleSheet } from 'react-native'
+import { ScrollView } from 'react-native-gesture-handler';
 
 import { Appbar } from "react-native-paper";
+import AppConstance from '../constance/AppConstance';
+import AppUrlCollection from '../UrlCollection/AppUrlCollection';
 
-const IncomingLoad = () => {
+const IncomingLoad = ({route,navigation}) => {
+
+const {item} = route.params;
+console.log('item data',item)
+
+  const AcceptLoad= async()=>{
+
+let driver_id = await   AsyncStorage.getItem('Id')
+alert(item.data.load_id)
+    let url = AppUrlCollection.Accept
+    let value = {};
+    value.load_id = item.data.load_id;
+    value.driver_id = driver_id;
+    value.User_id = parseInt(item.data.User_id);
+
+    fetch(url, {
+      method: 'PUT',
+      headers: {
+        'Content-Type':  'application/json',
+        
+      },
+      body:JSON.stringify(value) ,
+  })
+
+  .then((response) =>  response.json() )
+  .then((responseJson) => {
+
+     
+  console.log('accept Data response data response',responseJson);
+//   setspinner(false)  
+  })
+  .catch((error) => {
+    setspinner(false)
+    alert(error)
+      console.warn(error)
+  });
+  }
   return (
     <View>
   <Appbar.Header style={styles.header}>
@@ -12,6 +52,9 @@ const IncomingLoad = () => {
       </Text>
       
       </Appbar.Header>
+
+
+      <ScrollView>
     <TouchableOpacity
 style={{marginTop:20}}
 // onPress={() => navigation.navigate('maps')}
@@ -62,12 +105,27 @@ placeholderTextColor={'black'}
 </TouchableOpacity>
 <TouchableOpacity
 style={{marginTop:20}}
-// onPress={() => navigation.navigate('')}
+onPress={() => {AcceptLoad()}}
 >
 
 <TextInput   
 style={styles.input}
 placeholder="Accept Load"
+editable={false}
+
+placeholderTextColor={'black'}
+
+/>
+</TouchableOpacity>
+
+<TouchableOpacity
+style={{marginTop:20,marginBottom:50}}
+// onPress={() => navigation.navigate('')}
+>
+
+<TextInput   
+style={styles.input}
+placeholder="Deny Load"
 editable={false}
 placeholderTextColor={'black'}
 
@@ -83,6 +141,8 @@ placeholder="Save"
 editable={false}
 />
 </TouchableOpacity> */}
+
+</ScrollView>
 </View>
   )
 }
