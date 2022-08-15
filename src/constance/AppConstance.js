@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { View,ImageBackground, Text,TextInput,StyleSheet ,TouchableOpacity,Button, SafeAreaView, Dimensions, ScrollView } from 'react-native'
    
-const deviceHeight = Dimensions.get("window").height;
-const deviceWidth = Dimensions.get("window").width;
+export const deviceHeight = Dimensions.get("window").height;
+export const deviceWidth = Dimensions.get("window").width;
 
 class AppConstance extends Component {
 

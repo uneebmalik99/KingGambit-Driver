@@ -63,13 +63,10 @@ Geolocation.getCurrentPosition(info =>
 </View>
 
 </Appbar.Header>
-            <Text  style={styles.text}>Maps</Text>
-            <Text  style={styles.text}>latitude {latitude}</Text>
-            <Text  style={styles.text}>longitude {longitude}</Text>
-            {/* <View style={styles.mapShow}> */}
+           
     <MapView 
     // ref={mapRef}
-    style={{width:"100%",height:"70%"}}
+    style={{width:"100%",height:"100%"}}
     initialRegion={
       pickupLocation
     }

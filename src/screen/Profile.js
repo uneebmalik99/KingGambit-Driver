@@ -108,7 +108,8 @@ const [states,setstates]=useState('')
         setdl(responseJson.DL)
         setmcnumber(responseJson.MC_Number)
         setdotnumber(responseJson.Dot_Number)
-        setDrivePicture(responseJson.Driver_Pic)
+        setimageuser(responseJson.Driver_Pic)
+        console.log(responseJson.Driver_Pic);
         setstates(responseJson.States)
 
         if(responseJson.Driver_Pic != null ||responseJson.Driver_Pic != '' ){

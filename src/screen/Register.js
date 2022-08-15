@@ -15,6 +15,7 @@ import DocumentPicker from 'react-native-document-picker';
 import * as ImagePicker from "react-native-image-picker"
 import AppColors from '../Colors/AppColors';
 import { getUniqueId, getManufacturer } from 'react-native-device-info';
+import Snackbar from 'react-native-snackbar';
 
 const deviceHeight = Dimensions.get("window").height;
 const deviceWidth = Dimensions.get("window").width
@@ -141,7 +142,18 @@ const Register = ({navigation}) => {
         console.log('login data response',responseJson);
         setspinner(false)
           if(responseJson.result == 'SUCCESS'){
+
+            setTimeout(() => {
+              Snackbar.show({
+                text: 'Registered Successfully',
+                duration: Snackbar.LENGTH_SHORT,
+                backgroundColor	:AppColors.Appcolor,
+              });
+              navigation.navigate('login')
+            }, 200);
+            
                 navigation.navigate('login')
+
             console.log('login data response',responseJson);
             setspinner(false)
           }else if(responseJson.status == 422){

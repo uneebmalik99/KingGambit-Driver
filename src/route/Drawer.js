@@ -25,6 +25,8 @@ import AppConstance, {
 import { SafeAreaView } from "react-native-safe-area-context";
 import StarReview from 'react-native-star-review'
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import MaterialCommunityIcons from 'react-native-vector-icons/dist/MaterialCommunityIcons';
+
 
 export function DrawerContent(props) {
   const paperTheme = useTheme();
@@ -118,7 +120,7 @@ export function DrawerContent(props) {
             /> */}
             <DrawerItem
               icon={({ color, size }) => (
-                <Icon name="car" size={size} color="black" />
+                <AntDesign name="CodeSandbox" size={size} color="black" />
               )}
               label={'Loads'}
               labelStyle={{ color: "black" }}
@@ -140,8 +142,9 @@ export function DrawerContent(props) {
             /> */}
             <DrawerItem
               icon={({ color, size }) => (
-                <FontAwesome name="ship" size={size - 2} color="black" />
-              )}
+                <MaterialCommunityIcons  name='account-circle-outline' 
+                onPress={() => { navigation.navigate('profile')}}
+                style={{alignSelf:'center',}} size={30} color='black'/>              )}
               label={'Profile'}
               labelStyle={{ color: "black" }}
               onPress={() => {
@@ -151,7 +154,7 @@ export function DrawerContent(props) {
             <DrawerItem
             style={{marginLeft:15}}
               icon={({ color, size }) => (
-                <FontAwesome5 name="file-invoice" size={size} color="black" />
+                <Ionicons name="ios-settings-outline" size={size} color="black" />
               )}
               label={'Setting'}
               labelStyle={{ color: "black" }}
@@ -162,7 +165,7 @@ export function DrawerContent(props) {
               <DrawerItem
             style={{marginLeft:15}}
               icon={({ color, size }) => (
-                <FontAwesome5 name="file-invoice" size={size} color="black" />
+                <MaterialIcons name="contact-support" size={size} color="black" />
               )}
               label={'Contact Us'}
               labelStyle={{ color: "black" }}

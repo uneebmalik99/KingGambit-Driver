@@ -28,11 +28,13 @@ import Maps from './src/screen/Maps';
 import MyLocation from './src/screen/MyLocation';
 import { DrawerContent } from './src/route/Drawer';
 import NotifeeTest from './src/screen/NotifeeTest';
-import AppConstance from './src/constance/AppConstance';
+import AppConstance,{deviceHeight,deviceWidth} from './src/constance/AppConstance';
 import notifee , { EventType }from '@notifee/react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import AppColors from './src/Colors/AppColors';
 import IncomingLoad from './src/screen/IncomingLoad';
+import StarReview from 'react-native-star-review';
+import Ionicons from 'react-native-vector-icons/dist/Ionicons';
 
 
 
@@ -50,7 +52,11 @@ const App = () => {
   const [initialRouteName , setinitialRouteName] = useState('splash')
   const [loading, setLoading] = useState(true);
   const [notificationModal,setnotificationModal] = useState(false)
-  const [notificationList, setnotificationList] = useState([])
+  const [notificationList, setnotificationList] = useState([
+     {
+     id:1
+   }
+  ])
   // const Navigation = useNavigation();
 
   // useEffect(() => {
@@ -103,8 +109,6 @@ const App = () => {
     );
   };
 
-
-
   async function onDisplayNotification() {
     console.log('notifee');
     // Request permissions (required for iOS)
@@ -131,73 +135,65 @@ const App = () => {
     });
   }
   
-const WelcomeStack = () => {
-  
-  return (
-    <Stack.Navigator >
-        <Stack.Screen name="Splash" component={Splash} options={{
-          headerShown: false
-        }} />
-        <Stack.Screen name="login" component={Login} options={{
-          headerShown: false
-        }}/>
-        <Stack.Screen name="register" component={Register} options={{
-          headerShown: false
-        }}/>
-         <Stack.Screen name="forgetPass" component={ForgetPass}options={{
-          headerShown: false
-        }} />
-        <Stack.Screen name="verificationCode" component={VerificationCode} options={{
-          headerShown: false
-        }}/>
-          <Stack.Screen name="confirmationPage" component={ConfirmationPage} options={{
-          headerShown: false
-        }}/>
-        <Stack.Screen name="changePass" component={ChangePass}options={{
-          headerShown: false
-        }} />
+  const WelcomeStack = () => {
+    
+    return (
+      <Stack.Navigator >
+          <Stack.Screen name="Splash" component={Splash} options={{
+            headerShown: false
+          }} />
+          <Stack.Screen name="login" component={Login} options={{
+            headerShown: false
+          }}/>
+          <Stack.Screen name="register" component={Register} options={{
+            headerShown: false
+          }}/>
+          <Stack.Screen name="forgetPass" component={ForgetPass}options={{
+            headerShown: false
+          }} />
+          <Stack.Screen name="verificationCode" component={VerificationCode} options={{
+            headerShown: false
+          }}/>
+            <Stack.Screen name="confirmationPage" component={ConfirmationPage} options={{
+            headerShown: false
+          }}/>
+          <Stack.Screen name="changePass" component={ChangePass}options={{
+            headerShown: false
+          }} />
 
-    </Stack.Navigator>
-  );
-};
-
-const  bootstrap =async()=> {
-  const initialNotification = await notifee.getInitialNotification();
-
-  if (initialNotification) {
-    console.log('Notification caused application to open', initialNotification.notification);
-    console.log('Press action used to open the app', initialNotification.pressAction);
-  }
-}
-
-
-useEffect(() => {
+      </Stack.Navigator>
+    );
+  };
 
 
 
 
-
+  useEffect(() => {
 
   //foreGround
-
   messaging().onMessage(async remoteMessage => {
     // Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
-   
-    if(notificationModal != true)
-    {
-      setnotificationModal(true)
-    }
+   console.log('Foregrpund hkhk')
+          setnotificationModal(true)
 
-    let newArray =[...notificationList,remoteMessage]
-    // newArray.push(remoteMessage)
-   
-    setnotificationList(newArray)
+    // if(notificationModal != true)
+    // {
+    //   setnotificationModal(true)
+    //   setnotificationList(remoteMessage)
+    // }else{
+    //   let newArray =[...notificationList,remoteMessage]
+    //   // newArray.push(remoteMessage)
+    //   setnotificationList(newArray)
+    // }
+
+    console.log('data of notificayionlist'+JSON.stringify(notificationList));
+    console.log('data of notificayion'+JSON.stringify(remoteMessage));
 
     // notificationList.push('2')
     
   })
-  // Assume a message-notification contains a "type" property in the data payload of the screen to open
 
+  // Assume a message-notification contains a "type" property in the data payload of the screen to open
   messaging().onNotificationOpenedApp(remoteMessage => {
     console.log(
       'Notification caused app to open from background state:',
@@ -205,13 +201,10 @@ useEffect(() => {
     );
     navigate('map');
 
-    })
+  })
 
   // Check whether an initial notification is available
-
-  messaging()
-  .getInitialNotification()
-  .then(remoteMessage => {
+  messaging().getInitialNotification().then(remoteMessage => {
     if (remoteMessage) {
       console.log(
         'Notification caused app to open from quit state:',
@@ -231,36 +224,79 @@ useEffect(() => {
   // }
   
 const renderNotificationListlist = ({ item }) => {
-
-
   return (
 
-    <TouchableOpacity
-    onPress={()=>{
+    <View
+    // onPress={()=>{
+    //   setnotificationModal(false)
+    //   // navigate('incomingLoad',{item :item})   
+    
+    //   navigate('incomingLoad',{plat:33.0000,plong:73.0000,pAdd:'isb', dlat:33.23532,dlong:73.0234, dAdd:'lhr', tprice:'90', dprice:'80', vtype:"0"})
+    // }}
+    style={{backgroundColor:'white',height:deviceHeight*0.22, paddingBottom:'3%', borderRadius:8,  }}
+      >
+        <View style={{borderTopRightRadius:8, borderTopLeftRadius:8,height:5,backgroundColor:AppColors.Appcolor  }}>
+          </View>
 
-      setnotificationModal(false)
-      navigate('incomingLoad',{item :item})
+          <View style={{height:'66%',width:'100%',paddingHorizontal:'2%', flexDirection:'row', }}>
 
-    }
-    }
-      style={{ marginVertical: 5, borderWidth: 0.5, flexDirection: 'row', borderColor: 'grey', borderRadius: 10, paddingVertical: 12, paddingHorizontal: 10, }}>
 
+      <View style={{width:'70%',padding:3, }}>
+        <Text style={{fontSize:16, fontWeight:'500'}}>Load_Name</Text>
+        <Text style={{fontSize:12, fontWeight:'500'}}>load type</Text>
+        <Text style={{fontSize:12, fontWeight:'500'}}>DockNumber</Text>
+
+        <View style={{marginTop:5, flexDirection:'row'}}>
+        <Ionicons name='star'  size={20} color='#FF9529'/>
+        <Text style={{marginLeft:5,}}>4.7</Text>
+        <Text style={{marginLeft:5,}}>(233)</Text>
+
+        </View>
+
+        </View>
+
+        <View style={{width:'28%', padding:3, alignItems:'flex-end'  }}>
+
+          <Text style={{fontWeight:'800', fontSize:18}}>$ 200</Text>
+          <Text style={{fontSize:12}}>2 kg</Text>
+          <Text style={{fontSize:12}}>1.5 km</Text>
+
+
+        </View>
+
+
+          </View>
+
+          <View style={{height:'28%',width:'100%', marginTop:5, flexDirection:'row',justifyContent:'space-around', }}>
+
+
+          <TouchableOpacity style={{justifyContent:'center',width:'40%', backgroundColor:'#F4F6F6', borderRadius:5,}}>
+          <Text style={{fontWeight:'600',color:'red', alignSelf:'center'}}>Decline</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity 
+        onPress={()=> {
+
+          setnotificationModal(false)
+          navigate('incomingLoad',{plat:33.0000,plong:73.0000,pAdd:'isb', dlat:33.23532,dlong:73.0234, dAdd:'lhr', tprice:'90', dprice:'80', vtype:"0"})
+
+        }}
+        
+        style={{justifyContent:'center',width:'40%', backgroundColor:AppColors.Appcolor, borderRadius:5,}}>
+          <Text style={{fontWeight:'900',color:'white', alignSelf:'center'}}>Accept</Text>
+        </TouchableOpacity>
+
+
+    </View>
    
 
-      <Text style={{ alignSelf: 'center', color: AppColors.Appcolor, marginLeft: 5, }}>item.state_name</Text>
-    </TouchableOpacity>
+    </View>
 
   )
 
 }
 const RootStack = createNativeStackNavigator();
   return (
-    // <View>
-    //   {/* <AppNavigator /> */}
-    //   <Text>hi</Text>
-    //  </View>
-
-    
     <NavigationContainer ref={navigationRef}>
 
 
@@ -269,32 +305,46 @@ const RootStack = createNativeStackNavigator();
              transparent={true}
              visible={notificationModal}
              >
-              <SafeAreaView style={{backgroundColor:"#000000aa",}} >
+              <SafeAreaView style={{backgroundColor:"#0009", height:'100%'}} >
 
-               
-           <Text>hi mapo</Text>
+               <View style={{backgroundColor:'white',paddingHorizontal:'5%', justifyContent:'center', height:deviceHeight*0.08}}>
+               <TouchableOpacity 
+                onPress={()=> {  
+
+                 
+              
+                  let newArray =[...notificationList,'6']
+                 
+                  setnotificationList(newArray)
+                }}
+                style={{alignSelf:'flex-end'}}>
+                  <Text style={{color:AppColors.Appcolor, fontWeight:'600'}}>ADD</Text>
+                </TouchableOpacity>
+           
+                <TouchableOpacity 
+                onPress={()=> {  setnotificationModal(false)}}
+                style={{alignSelf:'flex-end'}}>
+                  <Text style={{color:AppColors.Appcolor, fontWeight:'600'}}>Cancel</Text>
+                </TouchableOpacity>
+                 </View>
 
           <FlatList
           data={notificationList}
           contentContainerStyle={{marginTop:10, paddingHorizontal:'2%',paddingBottom:"20%"}}
           renderItem={renderNotificationListlist}
           keyExtractor={item => item.id}
+          ItemSeparatorComponent={() => (
+              <View style={{ height: 10 }} />
+            )}
+           
           extraData={notificationList}
         />
-           <TouchableOpacity
-           style={{backgroundColor:"red"}}
-                onPress={()=>  setnotificationModal(false)}
-                >
-                <Text>hi mapo</Text>
-
-                </TouchableOpacity>
+        
       </SafeAreaView>
       
              </Modal>
              :null
   }
-
-
             
    
        <Stack.Navigator initialRouteName={'Splash'}>

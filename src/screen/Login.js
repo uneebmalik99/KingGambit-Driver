@@ -13,7 +13,7 @@ const deviceWidth = Dimensions.get("window").width;
 // const image = {require('    ')};
 const Login = ({navigation}) => {
 
-  const [email,setemail] = useState('test@gmail.com')
+  const [email,setemail] = useState('Driver2@gmail.com')
   const [password,setpassword] = useState('12345678')
   const [deviceid,setdeviceid] = useState(0)
   const [spinner,setspinner]=useState(false)
