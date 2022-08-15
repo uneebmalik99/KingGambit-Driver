@@ -53,9 +53,7 @@ const App = () => {
   const [loading, setLoading] = useState(true);
   const [notificationModal,setnotificationModal] = useState(false)
   const [notificationList, setnotificationList] = useState([
-     {
-     id:1
-   }
+
   ])
   // const Navigation = useNavigation();
 
@@ -173,21 +171,37 @@ const App = () => {
   //foreGround
   messaging().onMessage(async remoteMessage => {
     // Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
-   console.log('Foregrpund hkhk')
+
+
+    
           setnotificationModal(true)
+          let value = notificationList;
+          value.push(remoteMessage.data)
 
-    // if(notificationModal != true)
-    // {
-    //   setnotificationModal(true)
-    //   setnotificationList(remoteMessage)
-    // }else{
-    //   let newArray =[...notificationList,remoteMessage]
-    //   // newArray.push(remoteMessage)
-    //   setnotificationList(newArray)
-    // }
+          setnotificationList(value)
+          // notificationList.push(remoteMessage.data)
+          console.log(notificationList)
+          // notificationList.push({i:0})
 
-    console.log('data of notificayionlist'+JSON.stringify(notificationList));
-    console.log('data of notificayion'+JSON.stringify(remoteMessage));
+  //   if(notificationModal == false)
+  //   {
+  //     setnotificationModal(true)
+  //     // setnotificationList(remoteMessage.data)
+  //     let value = {}
+  //     value.ap = 'gft'
+  //     setnotificationList(value)
+
+  //     console.log('jfttrr'+notificationList)
+
+  //   }else{
+      
+  //     notificationList.push(remoteMessage.data)
+
+  //  console.log('ftytfvyu'+notificationList)
+  //   }
+
+    // console.log('data of notificayionlist'+JSON.stringify(notificationList));
+    // console.log('data of notificayion'+JSON.stringify(remoteMessage));
 
     // notificationList.push('2')
     
@@ -199,7 +213,16 @@ const App = () => {
       'Notification caused app to open from background state:',
       remoteMessage.notification,
     );
-    navigate('map');
+    // navigate('map');
+    setnotificationModal(true)
+
+    // setnotificationModal(true)
+          let value = notificationList;
+          value.push(remoteMessage.data)
+
+          setnotificationList(value)
+          // notificationList.push(remoteMessage.data)
+          console.log(notificationList)
 
   })
 
@@ -213,9 +236,19 @@ const App = () => {
       // setinitialRouteName('register'); // e.g. "Settings"
       // navigate('contact');
       // console.log(initialRouteName)
-      AppConstance.notificationRecived='2'
+      // AppConstance.notificationRecived='2'
     }
     // setLoading(false);
+    setnotificationModal(true)
+
+    // setnotificationModal(true)
+          let value = notificationList;
+          value.push(remoteMessage.data)
+          value.push(remoteMessage.data)
+
+          setnotificationList(value)
+          // notificationList.push(remoteMessage.data)
+          console.log(notificationList)
   });
   
 }, []);
@@ -242,13 +275,13 @@ const renderNotificationListlist = ({ item }) => {
 
 
       <View style={{width:'70%',padding:3, }}>
-        <Text style={{fontSize:16, fontWeight:'500'}}>Load_Name</Text>
-        <Text style={{fontSize:12, fontWeight:'500'}}>load type</Text>
+        <Text style={{fontSize:16, fontWeight:'500'}}>{item.Dock_Number}</Text>
+        <Text style={{fontSize:12, fontWeight:'500'}}>{item.Vehicle_Type}</Text>
         <Text style={{fontSize:12, fontWeight:'500'}}>DockNumber</Text>
 
         <View style={{marginTop:5, flexDirection:'row'}}>
         <Ionicons name='star'  size={20} color='#FF9529'/>
-        <Text style={{marginLeft:5,}}>4.7</Text>
+        <Text style={{marginLeft:5,}}>{item.Rating}</Text>
         <Text style={{marginLeft:5,}}>(233)</Text>
 
         </View>
@@ -257,9 +290,9 @@ const renderNotificationListlist = ({ item }) => {
 
         <View style={{width:'28%', padding:3, alignItems:'flex-end'  }}>
 
-          <Text style={{fontWeight:'800', fontSize:18}}>$ 200</Text>
-          <Text style={{fontSize:12}}>2 kg</Text>
-          <Text style={{fontSize:12}}>1.5 km</Text>
+          <Text style={{fontWeight:'800', fontSize:18}}>{item.Driver_Price}</Text>
+          <Text style={{fontSize:12}}>{item.Weight}kg</Text>
+          <Text style={{fontSize:12}}>{item.Distance}km</Text>
 
 
         </View>
@@ -278,12 +311,16 @@ const renderNotificationListlist = ({ item }) => {
         onPress={()=> {
 
           setnotificationModal(false)
-          navigate('incomingLoad',{plat:33.0000,plong:73.0000,pAdd:'isb', dlat:33.23532,dlong:73.0234, dAdd:'lhr', tprice:'90', dprice:'80', vtype:"0"})
+          navigate('incomingLoad',{item:item, plat:item.P_Latitude,plong:item.P_Longitude,pAdd:item.P_Address,
+             dlat:item.D_Latitude,dlong:item.D_Longitudes, dAdd:item.D_Address, 
+             tprice:item.Total_Price, dprice:item.Driver_Price, vtype:item.Vehicle_Type,dNumber:item.Dock_Number
+            ,pTime:item.Pick_up_Time,dTime:item.Drop_of_Time,weightLoad:item.Weight
+            })
 
         }}
         
         style={{justifyContent:'center',width:'40%', backgroundColor:AppColors.Appcolor, borderRadius:5,}}>
-          <Text style={{fontWeight:'900',color:'white', alignSelf:'center'}}>Accept</Text>
+          <Text style={{fontWeight:'900',color:'white', alignSelf:'center'}}>View</Text>
         </TouchableOpacity>
 
 
@@ -332,12 +369,12 @@ const RootStack = createNativeStackNavigator();
           data={notificationList}
           contentContainerStyle={{marginTop:10, paddingHorizontal:'2%',paddingBottom:"20%"}}
           renderItem={renderNotificationListlist}
+          extraData={notificationList}
           keyExtractor={item => item.id}
           ItemSeparatorComponent={() => (
               <View style={{ height: 10 }} />
             )}
            
-          extraData={notificationList}
         />
         
       </SafeAreaView>

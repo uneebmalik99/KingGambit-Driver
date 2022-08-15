@@ -16,6 +16,15 @@ const Maps = ({navigation}) => {
 
   const [longitude,setlongitude] = useState()
   const [latitude,setlatitude] = useState()
+
+
+  const [destinationLatitude,setdestinationLatitude] = useState(33.664703)
+  const [destinationLongitude,setdestinationLongitude] = useState(73.079547)
+
+
+  const [pickupLatitude,setpickupLatitude] = useState(33.658566)
+  const [pickupLongitude,setpickupLongitude] = useState(73.063308)
+
 // curt loacation
 Geolocation.getCurrentPosition(info =>
   {
@@ -71,6 +80,11 @@ Geolocation.getCurrentPosition(info =>
       pickupLocation
     }
   >
+
+
+
+
+
     <Marker coordinate={{latitude:latitude,longitude:longitude}}>
     <Image style={{width:55,height:55}} source={require('../assets/truck.jpg')} />
     {/* <MaterialCommunityIcons name='truck-fast-outline' 
@@ -83,15 +97,27 @@ style={{ height: 35, width: 45 }} size={40} color='black'/> */}
     coordinate={dropUpLocation}
     /> */}
 
-  {/* <MapViewDirections
-    origin={pickupLocation}
-    // destination={dropUpLocation}
-    // apikey={GOOGLE_MAPS_APIKEY}
+
+<Marker coordinate={{latitude:pickupLatitude,longitude:pickupLongitude}}>
+    {/* <MaterialCommunityIcons name='truck-fast-outline' 
+style={{ height: 35, width: 45 }} size={40} color='black'/> */}
+</Marker>
+
+  <MapViewDirections
+    origin={{latitude:pickupLatitude , longitude:pickupLongitude}}
+    destination={{latitude:destinationLatitude, longitude:destinationLongitude}}
+    apikey={GOOGLE_MAPS_APIKEY}
     // stroke
     strokeWidth={3}
     strokeColor='red'
    
-  /> */}
+  />
+<Marker coordinate={{latitude:destinationLatitude,longitude:destinationLongitude}}>
+    {/* <MaterialCommunityIcons name='truck-fast-outline' 
+style={{ height: 35, width: 45 }} size={40} color='black'/> */}
+</Marker>
+
+  
     
   </MapView>
             </View>

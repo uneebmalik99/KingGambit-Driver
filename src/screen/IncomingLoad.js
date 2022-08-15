@@ -23,10 +23,41 @@ import RBSheet from "react-native-raw-bottom-sheet";
 
 const IncomingLoad = ({route ,navigation}) => {
   
-  const {plat , plong, pAdd, dlat, dlong,dAdd,tprice,dprice,vtype} = route.params
+  const {plat , plong, pAdd, dlat, dlong,dAdd,tprice,dprice,vtype,pTime,dTime,dNumber,weightLoad} = route.params
+  const [longitude,setlongitude] = useState()
+  const [latitude,setlatitude] = useState()
+
+
+  const [destinationLatitude,setdestinationLatitude] = useState(dlat)
+  const [destinationLongitude,setdestinationLongitude] = useState(dlong)
+
+
+  const [pickupLatitude,setpickupLatitude] = useState(plat)
+  const [pickupLongitude,setpickupLongitude] = useState(plong)
   const refRBSheet = useRef();
   const refRBSheet2 = useRef();
+ console.log(tprice)
+ console.log(plong)
+//  const GOOGLE_MAPS_APIKEY ='AIzaSyC0PyPzbZ1oOzhm74aUjuXNxZcbD3bEhOo'
+ const[location,setLocation] =useState({
+   pickupLocation:{
+     latitude: 33.5651,
+     longitude: 73.0169,
+     latitudeDelta: 0.0922,
+     longitudeDelta: 0.0421,
+   },
+   dropUpLocation:{
+     latitude:32.4404,
+     longitude: 74.1203,
+     latitudeDelta: 0.0922,
+     longitudeDelta: 0.0421,
+   }
+   
+   
+ })
+//  const mapRef =useRef()
 
+ const {pickupLocation,dropUpLocation} = location
   const [mapState, setMapState] = useState({
 		initialRegion: {
 			latitude: 30.3753,
@@ -49,6 +80,7 @@ const IncomingLoad = ({route ,navigation}) => {
   const [currentloclon,setcurrentloclon ]=useState(-101.299591)
   const [pickupaddress , setpickupaddress] = useState(pAdd)
   const [ vehicletype , setvehicletype] = useState('0')
+  // const [ Total_Price , setTotal_Price] = useState(tprice)
   const [selected, setSelected] = useState()
 
   const data = [
@@ -102,16 +134,16 @@ const IncomingLoad = ({route ,navigation}) => {
   const [date, setDate] = useState(new Date())
   const [pickuptimeopen, setpickuptimeopen] = useState(false)
   const [dropofftimeopen, setdropofftimeopen] = useState(false) 
-  const [pickuptimedate, setpickuptimedate] = useState()
-  const [dropofftimedate, setdropofftimedate] = useState()
+  const [pickuptimedate, setpickuptimedate] = useState(pTime)
+  const [dropofftimedate, setdropofftimedate] = useState(dTime)
   
   const [loaddescription, setloaddescription]= useState('')
-  const [docknumber, setdocknumber] = useState('')
+  const [docknumber, setdocknumber] = useState(dNumber)
   const [price, setprice] = useState()
   const [distance, setdistance] =useState('')
   const [driverprice, setdriverprice] = useState(dprice)
   const [totalprice, settotalprice] = useState(tprice)
-  const [weight ,setweight] = useState('')
+  const [weight ,setweight] = useState(weightLoad)
 	const mapRef = useRef(null);
 
   const requestCameraPermission = async () => {
@@ -728,58 +760,6 @@ console.log( `Precise Distance\n\n${pdis} Meter\nOR\n${pdis / 1000} KM`
         </Modal>
 
 
-        <Modal  
-      animationType="fade"
-      visible={dmapmodel}
-      style={{height:deviceHeight, width:deviceWidth}}
-      >
-      <View style={styles.mapcontainer}>
-        
-      <MapView
-      scrollEnabled={true}
-      onRegionChange={onRegionChangeDropoff}
-
-        provider={PROVIDER_GOOGLE} // remove if not using Google Maps
-        style={styles.map}
-        showsUserLocation={true}
-       showsMyLocationButton={false}
-        initialRegion={{
-          latitude: currentloclat,
-          longitude: currentloclon,
-          latitudeDelta: 0.0622,
-          longitudeDelta: 0.0121,
-        }}
-        
-      >
-     
-      </MapView>
-      <View style={{position:'absolute',top:"3%",flexDirection:'row', justifyContent:'space-between',  width:deviceWidth, paddingHorizontal:'4%'}}>
-     
-
-        <TextInput
-        
-        style={{width:'100%',paddingHorizontal:10, height:40,borderWidth:0.8,alignSelf:'center',  borderColor:AppColors.Appcolor, borderRadius:10, backgroundColor:'white'}}
-        placeholder='Search here'
-        />
- 
-        </View>
-  
-
-<View style={{top:'50%', left:'50%', position:'absolute'}}>
-  <Image  style={{height:deviceHeight*0.12, width:deviceWidth*0.12}} source={require('../assets/locationimage3.png')} resizeMode="contain" />
-  </View>
-
-<View style={{position:'absolute',bottom:'7%', alignSelf:'flex-start', width:deviceWidth, paddingHorizontal:'5%'}}>
-        
-        <TouchableOpacity 
-        onPress={()=> { daddressgenerator() ,setdmapmodel(false) }}
-        style={{backgroundColor:AppColors.Appcolor,height:deviceHeight*0.08,justifyContent:'center', borderRadius:25}}>
-          <Text style={{color:'white',fontWeight:'600',fontSize:18, alignSelf:'center'}}>Done</Text>
-          </TouchableOpacity>
-        </View>
-    </View>
-
-        </Modal>
 
  <DatePicker
         modal
@@ -832,7 +812,56 @@ console.log( `Precise Distance\n\n${pdis} Meter\nOR\n${pdis / 1000} KM`
     
       <View style={styles.mapcontainer}>
         
-        <MapView
+
+
+      <MapView 
+    // ref={mapRef}
+    style={{width:"100%",height:"100%"}}
+    initialRegion={
+      pickupLocation
+    }
+  >
+
+
+
+
+
+    <Marker coordinate={{latitude:latitude,longitude:longitude}}>
+    <Image style={{width:55,height:55}} source={require('../assets/truck.jpg')} />
+    {/* <MaterialCommunityIcons name='truck-fast-outline' 
+style={{ height: 35, width: 45 }} size={40} color='black'/> */}
+</Marker>
+    {/* <Marker
+    coordinate={pickupLocation}
+    />
+    <Marker
+    coordinate={dropUpLocation}
+    /> */}
+
+
+<Marker coordinate={{latitude:pickupLatitude,longitude:pickupLongitude}}>
+    {/* <MaterialCommunityIcons name='truck-fast-outline' 
+style={{ height: 35, width: 45 }} size={40} color='black'/> */}
+</Marker>
+
+  <MapViewDirections
+    origin={{latitude:pickupLatitude , longitude:pickupLongitude}}
+    destination={{latitude:destinationLatitude, longitude:destinationLongitude}}
+    apikey={GOOGLE_MAPS_APIKEY}
+    // stroke
+    strokeWidth={3}
+    strokeColor='red'
+   
+  />
+<Marker coordinate={{latitude:destinationLatitude,longitude:destinationLongitude}}>
+    {/* <MaterialCommunityIcons name='truck-fast-outline' 
+style={{ height: 35, width: 45 }} size={40} color='black'/> */}
+</Marker>
+
+  
+    
+  </MapView>
+        {/* <MapView
         mapRef
         scrollEnabled={true}
         onMapReady={() => setIsMapReady(true)}
@@ -846,23 +875,8 @@ console.log( `Precise Distance\n\n${pdis} Meter\nOR\n${pdis / 1000} KM`
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421,
         }}
-        // region={{latitude:platitude, 
-        //   longitude:plongitude, 
-        //   latitudeDelta: 0.0922,
-        //   longitudeDelta: 0.0421,}} 
-        //  onRegionChangeComplete={async ({
-        //   latitude,
-        //   longitude,
-        //   latitudeDelta,
-        //   longitudeDelta,
-        // }) => {
-        //   await setAddress({
-        //     latitude,
-        //     longitude,
-        //     latitudeDelta,
-        //     longitudeDelta,
-        //   });
-        // }}
+       
+
         >
   
    
@@ -887,7 +901,7 @@ console.log( `Precise Distance\n\n${pdis} Meter\nOR\n${pdis / 1000} KM`
 
 
 
-        </MapView>
+        </MapView> */}
        
     
  
@@ -919,118 +933,18 @@ console.log( `Precise Distance\n\n${pdis} Meter\nOR\n${pdis / 1000} KM`
          </View>
           </View>
 
-          {/* <View style={{flexDirection:'row', width:deviceWidth, height:'18%'}}>
-          <FontAwesome name='dollar' style={{alignSelf:'center'}}  size={15} />
-          <TouchableOpacity style={{width:'85%',marginLeft:12, height:'95%',borderBottomWidth:0.4,borderColor:'#CACFD2',}}>
-          <Text style={{fontSize:15, textAlignVertical:'center',width:'100%',  height:'100%', textAlign:'left'}}>{totalprice}</Text>
-         </TouchableOpacity>
-          </View> */}
-
-          {/* <View style={{flexDirection:'row',  width:deviceWidth, height:'18%'}}>
-          <MaterialIcons name='text-snippet' style={{alignSelf:'center'}}  size={15} />
-          <TouchableOpacity style={{width:'85%',marginLeft:12, height:'95%',borderBottomWidth:0.4,borderColor:'#CACFD2',}}>
-          <Text style={{fontSize:15, textAlignVertical:'center',width:'100%',  height:'100%', textAlign:'left'}}>{docknumber}</Text>
-         </TouchableOpacity>
-          </View>
-       */}
+          
 
          
 
-{/* <TouchableOpacity
-style={{width:'95%',alignSelf:'center',borderRadius:400/2,height:'25%',justifyContent:'center', backgroundColor:AppColors.Appcolor}}
-onPress={() => CreateLoadAPI()}
->
-<Text   
-style={{alignSelf:'center',fontSize:17, color:'white'}}>Next</Text>
-</TouchableOpacity> */}
+
 
 </View>
-        
-       {/* <GooglePlacesAutocomplete
-       placeholder='Search'
-       GooglePlacesDetailsQuery={{
-         fields: 'geometry',
-       }}
-       fetchDetails={true}
- 
-       styles={{
-         textInput:{
-           height:'100%',
-           borderWidth:1.2,borderColor:AppColors.Appcolor,borderRadius:10,
-         },
-         loader: {
-          backgroundColor:'red'
-         },
-         
-        }}
- 
-        renderLeftButton={()=>(
-         <TouchableOpacity 
-         onPress={()=> {setpmapmodel(false)}} 
-         style={{backgroundColor:AppColors.Appcolor,width:'12%',marginTop:0, justifyContent:'center', borderRadius:10,marginRight:5}}>
-      <Ionicons   name='md-close-outline'  color={'white'} style={{alignSelf:'center'}} size={25}/>
- 
-           </TouchableOpacity>
-        )}
-       onPress={(data, details = null) => {
-         // 'details' is provided when fetchDetails = true
-         console.log(data);
- 
-       }}
-       query={{
-         key: GOOGLE_MAPS_APIKEY,
-         language: 'en',
-       }}
-     />
 
-<GooglePlacesAutocomplete
-       placeholder='Search'
-       GooglePlacesDetailsQuery={{
-         fields: 'geometry',
-       }}
-       fetchDetails={true}
- 
-       styles={{
-         textInput:{
-           height:'100%',
-           borderWidth:1.2,borderColor:AppColors.Appcolor,borderRadius:10,
-         },
-         loader: {
-          backgroundColor:'red'
-         },
-         
-        }}
- 
-        renderLeftButton={()=>(
-         <TouchableOpacity 
-         onPress={()=> {setpmapmodel(false)}} 
-         style={{backgroundColor:AppColors.Appcolor,width:'12%',marginTop:0, justifyContent:'center', borderRadius:10,marginRight:5}}>
-      <Ionicons   name='md-close-outline'  color={'white'} style={{alignSelf:'center'}} size={25}/>
- 
-           </TouchableOpacity>
-        )}
-       onPress={(data, details = null) => {
-         // 'details' is provided when fetchDetails = true
-         console.log(data);
- 
-       }}
-       query={{
-         key: GOOGLE_MAPS_APIKEY,
-         language: 'en',
-       }}
-     /> */}
-        
      
    
 
-{/* <TouchableOpacity 
-          onPress={async()=> {  
-            addressgenerator(platitude,plongitude)
-  
-           setpmapmodel(false)}}
-          style={{backgroundColor:AppColors.Appcolor,height:deviceHeight*0.08,justifyContent:'center', borderRadius:25}}>
-            <Text style={{color:'white',fontWeight:'600',fontSize:18, alignSelf:'center'}}>Create Load</Text>
-            </TouchableOpacity> */}
+
          </View>
 
 
@@ -1056,7 +970,8 @@ style={{alignSelf:'center',fontSize:17, color:'white'}}>Next</Text>
    <View style={{flexDirection:'row', width:'35%',}}>
    <FontAwesome name='dollar' style={{alignSelf:'center'}}  size={15} />
    <View style={{width:'65%',marginLeft:10, height:'95%',borderBottomWidth:0.4,borderColor:'#CACFD2',}}>
-   <Text style={{fontSize:15, textAlignVertical:'center',width:'100%',  height:'100%', textAlign:'left'}}>{totalprice}</Text>
+   <Text style={{fontSize:15, textAlignVertical:'center',width:'100%',  height:'100%', textAlign:'left'}}>
+    {totalprice}</Text>
   </View>
   </View>
 
