@@ -35,6 +35,7 @@ import AppColors from './src/Colors/AppColors';
 import IncomingLoad from './src/screen/IncomingLoad';
 import StarReview from 'react-native-star-review';
 import Ionicons from 'react-native-vector-icons/dist/Ionicons';
+import Rating from './src/screen/Rating';
 
 
 
@@ -53,6 +54,8 @@ const App = () => {
   const [loading, setLoading] = useState(true);
   const [notificationModal,setnotificationModal] = useState(false)
   const [notificationList, setnotificationList] = useState([
+  ])
+  const [notificationListUpdate, setnotificationListUpdate] = useState([
 
   ])
   // const Navigation = useNavigation();
@@ -88,6 +91,11 @@ const App = () => {
           component={Maps}
           options={{ headerShown: false }}
         />
+           {/* <AppDrawer.Screen
+          name="rating"
+          component={Rating}
+          options={{ headerShown: false }}
+        /> */}
   
       
   
@@ -170,18 +178,52 @@ const App = () => {
 
   //foreGround
   messaging().onMessage(async remoteMessage => {
+
+
     // Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
-
-
-    
           setnotificationModal(true)
-          let value = notificationList;
-          value.push(remoteMessage.data)
 
-          setnotificationList(value)
+          // if(notificationList.length<1){
+
+          //   let v = {}
+          //   v.ff= remoteMessage.data.D_Address;
+          //   // notificationList.push(v)
+          //   setnotificationList(remoteMessage.data.D_Address)
+          //   console.log('if wali',notificationList)
+          //   console.log('if wali')
+
+          // }
+          // else{
+            let newArray ={i:0}
+            console.log('else  wali')
+
+            notificationList.push(newArray)
+                  setnotificationList(newArray)
+                  console.log(notificationList)
+                  // console.log(newArray)
+          // }
+          
+          // let value = notificationList;
+          // value.push(remoteMessage.data)
+        
+
+        // notificationList.push(remoteMessage.data)
+        //   // setnotificationList(remoteMessage.data)
+        //   console.log(notificationList)
+
+
           // notificationList.push(remoteMessage.data)
-          console.log(notificationList)
+          // console.log('rrrrrrrrrr'+remoteMessage.data)
           // notificationList.push({i:0})
+
+
+          // let v = [...notificationListUpdate,notificationList]
+
+          // setnotificationListUpdate(v)
+          // console.log(v)
+          // console.log(notificationListUpdate)
+          // notificationListUpdate.push(notificationList)
+          // setnotificationListUpdate(notificationList)
 
   //   if(notificationModal == false)
   //   {
@@ -365,6 +407,8 @@ const RootStack = createNativeStackNavigator();
                 </TouchableOpacity>
                  </View>
 
+{notificationList.length>0 ?
+
           <FlatList
           data={notificationList}
           contentContainerStyle={{marginTop:10, paddingHorizontal:'2%',paddingBottom:"20%"}}
@@ -376,7 +420,9 @@ const RootStack = createNativeStackNavigator();
             )}
            
         />
-        
+        :null
+          
+          }
       </SafeAreaView>
       
              </Modal>

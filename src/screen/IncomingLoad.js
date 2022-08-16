@@ -1,5 +1,6 @@
 import React,{useState,useRef, useEffect} from 'react'
-import { View,Button,Modal,Image, Text,TouchableOpacity,TextInput,SafeAreaView, StyleSheet, ScrollView, PermissionsAndroid } from 'react-native'
+import { View,Button,Modal,Image, Text,TouchableOpacity,TextInput,SafeAreaView, 
+  StyleSheet, ScrollView, PermissionsAndroid } from 'react-native'
 import AppConstance,{deviceHeight,deviceWidth} from "../constance/AppConstance"
 import DatePicker from 'react-native-date-picker'
 import { Appbar } from "react-native-paper";
@@ -461,80 +462,38 @@ console.log( `Precise Distance\n\n${pdis} Meter\nOR\n${pdis / 1000} KM`
       refRBSheet2.current.close()
     }
   }
+ 
 
-  const CreateLoadAPI =()=>{
+  const AcceptAPI =()=>{
 
     setspinner(true)
 
-    console.log(platitude, plongitude)
 
     let value = {};
-    value.User_id = AppConstance.Id;
-
-    value.P_Address=pickupaddress;
-    value.P_Latitude = platitude;
-    value.P_Longitude= plongitude,
-
-    value.D_Address= dropoffaddress
-    value.D_Latitude = dlatitude;
-    value.D_Longitudes= dlongitude,
-
-    value.Load_Description='none';
-    value.Dock_Number=docknumber
-    value.Destination= "vdvd";
-    value.Vehicle_Type= vtype
-
-    value.Pick_up_Time=pickuptimedate
-    value.Drop_of_Time = dropofftimedate;
-
-    value.Pricing='5' 
-    value.Driver_Price=driverprice
-    value.Total_Price=totalprice
-    value.Status="0"
-
-   
+    value.User_id = item.User_id;
+    value.driver_id=AppConstance.Id;
+    value.load_id = item.load_id;
+    
 
     console.log(value);
     // alert(JSON.stringaify(value))
-    console.log(value);
 
-    var url =AppUrlCollection.CREATELOAD;
+    var url =AppUrlCollection.ACCEPT;
 
     fetch(url, {
-      method: 'POST',
+      method: 'PUT',
       headers: {
         'Content-Type':  'application/json',
-        'Authorization': 'Bearer '+AppConstance.AUTH_KEY,
+        // 'Authorization': 'Bearer '+AppConstance.AUTH_KEY,
       },
       body: JSON.stringify(value),
   })
       .then((response) =>  response.json() )
       .then((responseJson) => {
         // navigation.navigate('welcome')
-        console.log('login data response',responseJson);
+        console.log('accpt data response',responseJson);
         setspinner(false)
-          if(responseJson.j == 'iih'){
-            // alert(responseJson.DATA.user.Bank_Info)
-            // alert(JSON.stringify(responseJson))
-            setspinner(false)
-            console.log('login data response',responseJson);
-            
-
-            // alert(responseJson.DATA)
-            // storeData(responseJson)
-
-        //  loginServiceCall( responseJson , responseJson.user.role, responseJson.user.username, responseJson.user.role_name, responseJson.user.photo)
-
-          }else if(responseJson.status == 422){
-            setspinner(false)
-
-            alert(responseJson.errors.password)
-          }else if(responseJson.status == 401){
-            setspinner(false)
-
-            alert(responseJson.error)
-          }
-      console.log('login data response',responseJson);
+        navigation.navigate('welcomeLogistic',{item:responseJson.data})
     //   setspinner(false)  
       })
       .catch((error) => {
@@ -932,26 +891,9 @@ style={{ height: 35, width: 45 }} size={40} color='black'/> */}
           <Text style={{fontSize:16, textAlignVertical:'center',width:'100%',  height:'100%', textAlign:'left'}}>{dAdd}</Text>
          </View>
           </View>
-
-          
-
-         
-
-
-
 </View>
-
-     
-   
-
-
          </View>
-
-
-
          <View style={{bottom:'9%',position:'absolute',alignSelf:'center', height:deviceHeight*0.2, margin:10, paddingVertical:2,backgroundColor:'white',borderColor:AppColors.Appcolor,borderWidth:0, borderRadius:5, flexDirection:'column',   width:'95%', paddingHorizontal:'2%'}}>
-
-   
 
 <View style={{height:'98%',justifyContent:'center', paddingHorizontal:'1%'}}>
 
@@ -1032,10 +974,9 @@ style={{ height: 35, width: 45 }} size={40} color='black'/> */}
 
 <TouchableOpacity 
    onPress={async()=> {  
-    //  addressgenerator(platitude,plongitude)
-      // CreateLoadAPI()
-    
-    // setpmapmodel(false)
+
+      AcceptAPI()
+                                                                                                                                                                                                                                                                                                                                       
   }
   }
    style={{backgroundColor:AppColors.Appcolor , width:'40%', height:deviceHeight*0.08,justifyContent:'center', borderRadius:10}}>

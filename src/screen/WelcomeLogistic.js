@@ -1,7 +1,8 @@
 import React, { useState , useRef} from 'react'
-import { View, Text,TouchableOpacity,TextInput,StyleSheet,Button, Image } from 'react-native'
+import { View, Text,TouchableOpacity,TextInput,StyleSheet,Button, Image ,Modal, SafeAreaView} from 'react-native'
 
 import MapView,{Marker} from 'react-native-maps';
+import DocumentPicker from 'react-native-document-picker';
 
 import MapViewDirections from 'react-native-maps-directions';
 
@@ -11,8 +12,10 @@ import { Appbar } from "react-native-paper";
 import AppConstance,{deviceHeight,deviceWidth} from "../constance/AppConstance"
 import AppColors from '../Colors/AppColors';
 import Geolocation from '@react-native-community/geolocation';
+import StarReview from 'react-native-star-review'
 
 const Maps = ({navigation}) => {
+  const [pmapmodel , setpmapmodel] = useState(false)
 
   const [longitude,setlongitude] = useState()
   const [latitude,setlatitude] = useState()
@@ -24,7 +27,18 @@ const Maps = ({navigation}) => {
 
   const [pickupLatitude,setpickupLatitude] = useState(33.658566)
   const [pickupLongitude,setpickupLongitude] = useState(73.063308)
+  const [confirmationPic,setconfirmationPic] = useState('')
+  const [confirmationPicName,setconfirmationPicName] = useState('')
+  const [sealedPicName,setsealedPicName] = useState('')
+  const [sealedPic,setsealedPic] = useState('')
 
+  const [showModal, setshowModal] = useState(false)
+  const[maxRating,setMaxRating] = useState([1,2,3,4,5])
+  const[defaultRating,setDefaultRating] = useState(1)
+  const[message,setMessage] = useState('')
+
+  const starImgFilled ='https://raw.githubusercontent.com/tranhonghan/images/main/star_filled.png'
+  const starImgCorner ='https://raw.githubusercontent.com/tranhonghan/images/main/star_corner.png'
 // curt loacation
 Geolocation.getCurrentPosition(info =>
   {
@@ -54,7 +68,63 @@ Geolocation.getCurrentPosition(info =>
     
   })
   const mapRef =useRef()
+  const galleryConfirmationPic= async()=>{
 
+
+    try {
+      const pickerResult = await DocumentPicker.pickSingle({
+        type: [DocumentPicker.types.images],
+  
+        presentationStyle: 'fullScreen',
+        copyTo: 'cachesDirectory',
+      })
+      console.log(pickerResult)
+      const str = pickerResult.name;
+
+const last = str.slice(-10);
+console.log(last); 
+      setconfirmationPicName(last)
+      setconfirmationPic(pickerResult)
+
+      
+    } catch (e) {
+      console.log(e)
+    }
+  
+  }
+
+
+
+const openRatingModal=()=>{
+  setshowModal(true)
+
+}
+  const gallerySealedPic= async()=>{
+
+
+    try {
+      const pickerResult = await DocumentPicker.pickSingle({
+        type: [DocumentPicker.types.images],
+  
+        presentationStyle: 'fullScreen',
+        copyTo: 'cachesDirectory',
+      })
+      // console.log(pickerResult.name)
+      const str = pickerResult.name;
+
+      const last = str.slice(-10);
+      console.log(last); 
+            setsealedPicName(last)
+      setsealedPic(pickerResult.name)
+      // value.append('Driver_Pic', pickerResult)
+  
+      // setimageuser(pickerResult.uri)
+      // setimage([pickerResult])
+    } catch (e) {
+      console.log(e)
+    }
+  
+  }
   const {pickupLocation,dropUpLocation} = location
     return (
         <View style={styles.container}>
@@ -72,10 +142,120 @@ Geolocation.getCurrentPosition(info =>
 </View>
 
 </Appbar.Header>
-           
+
+{/* <Modal  
+  animationType="fade"
+  visible={pmapmodel}
+  transparent={true}
+  style={{ backgroundColor:'black',height:"70%",borderWidth:1,
+  }}
+  >
+  <View style={{backgroundColor:'red',alignSelf:"center"}}>
+<Text>hbdhjfbj</Text>
+
+
+</View>
+
+    </Modal>  */}
+    {/* <View style={{backgroundColor:"lightgrey"}}> */}
+      <Modal
+       transparent={true}
+       visible={showModal}
+       animationType="fade"
+       
+       >
+        
+        <SafeAreaView style={{backgroundColor:"#000000aa",flex:1}} >
+        <View style={{backgroundColor:"#ffffff",borderTopRightRadius:15,borderTopLeftRadius:15
+        ,width:"90%" ,alignSelf:"center",height:"40%",justifyContent:"center",marginTop:"40%",
+        borderWidth:1,borderColor:AppColors.Appcolor}} >
+     
+ <View 
+            style={styles.customRatingBarStyle}
+            >
+                {
+                    maxRating.map((item,key)=>{
+                        return(
+                            <TouchableOpacity
+                            activeOpacity={0.7}
+                            key={item}
+                            onPress ={()=> setDefaultRating(item)}
+                            >
+                                <Image
+                                    style={styles.starImgStyle}
+                                    source={
+                                        item <= defaultRating ?
+                                        {uri: starImgFilled}
+                                        :
+                                        {uri : starImgCorner}
+                                    }
+                                />
+                                
+                            </TouchableOpacity>
+                        )
+                    })
+                    
+                }
+                
+            </View>
+     <View >
+     <Text style={styles.text}>
+               
+               {
+                   defaultRating +"/"+ maxRating.length
+               }
+               </Text>
+<TextInput 
+// style={{}}
+placeholder="Feedback Message" 
+            // value={message} 
+            numberOfLines={4}
+            multiline={true}
+            style={{borderWidth:1,borderColor:AppColors.Appcolor,width:"90%"
+          ,alignSelf:"center"}}
+            onChangeText={text=>setMessage(text)}/>
+
+
+           </View>
+
+           <View style={{flexDirection:"row",justifyContent:'space-around',width:"100%",
+           height:'33%',marginTop:"3%"}}>
+
+<TouchableOpacity 
+ onPress={()=>setshowModal(false)}
+style={{justifyContent:'center',width:'40%', backgroundColor:AppColors.Appcolor,
+ borderRadius:15,height:"50%",}}>
+          <Text style={{fontWeight:'600',color:'white', alignSelf:'center'}}>
+            Ignore</Text>
+        </TouchableOpacity>
+        <TouchableOpacity 
+        //  onPress={gallerySealedPic}
+        style={{justifyContent:'center',width:'40%', backgroundColor:AppColors.Appcolor, borderRadius:15,
+        height:"50%"}}>
+          <Text style={{fontWeight:'600',color:'white', alignSelf:'center'}}>
+        Submit                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+          </Text>
+        </TouchableOpacity>
+        
+            </View>
+
+
+  
+
+
+ 
+
+
+</View>
+
+</SafeAreaView>
+
+       </Modal>
+       {/* </View> */}
+
     <MapView 
     // ref={mapRef}
-    style={{width:"100%",height:"100%"}}
+    style={{width:"100%",height:"70%"}}
     initialRegion={
       pickupLocation
     }
@@ -120,9 +300,44 @@ style={{ height: 35, width: 45 }} size={40} color='black'/> */}
   
     
   </MapView>
-            </View>
+  <View style={{width:"100%",height:"40%",borderWidth:1,borderTopLeftRadius:15,borderTopRightRadius:15,padding:5,}}>
+  <View style={{flexDirection:"row",justifyContent:'space-around',width:"100%",height:'33%'
+  }}>
+
+<TouchableOpacity 
+ onPress={galleryConfirmationPic}
+style={{justifyContent:'center',width:'40%', backgroundColor:AppColors.Appcolor,
+ borderRadius:15,height:"50%",}}>
+          <Text style={{fontWeight:'600',color:'white', alignSelf:'center'}}>
+            {confirmationPic==''?"Confirmation":  confirmationPicName}</Text>
+        </TouchableOpacity>
+        <TouchableOpacity 
+         onPress={gallerySealedPic}
+        style={{justifyContent:'center',width:'40%', backgroundColor:AppColors.Appcolor, borderRadius:15,
+        height:"50%"}}>
+          <Text style={{fontWeight:'600',color:'white', alignSelf:'center'}}>
+          {sealedPic==''?"Sealed":  sealedPicName}
+          </Text>
+        </TouchableOpacity>
         
-        // </View>
+            </View>
+            <View style={{alignSelf:'center'}}>
+            <StarReview 
+          style={{alignSelf:'center'}}
+              ratings={3}
+              stars={5}
+              starColor="#EFDF79"
+            />
+              </View>
+            <TouchableOpacity
+            onPress={openRatingModal}
+            style={{justifyContent:'center',width:'40%', backgroundColor:AppColors.Appcolor,alignSelf:"center",
+             borderRadius:15,
+        height:"18%",}}>
+          <Text style={{fontWeight:'600',color:'white', alignSelf:'center'}}>Delivered</Text>
+        </TouchableOpacity>
+            </View>
+         </View>
     )
 }
 
@@ -130,6 +345,7 @@ style={{ height: 35, width: 45 }} size={40} color='black'/> */}
 const styles = StyleSheet.create({
   container: {
       flex: 1,
+      marginBottom:"2%"
   },
   text:{
     alignSelf:"center"
@@ -208,6 +424,35 @@ mapShow:{
       // width:190
 
     },
+    box2:{
+      paddingHorizontal:40
+  },
+  text:{
+      fontSize:22,
+      textAlign:"center",
+      marginTop:10
+  },
+   card:{
+       margin:10,
+       elevation:2,
+       borderWidth:1,borderRadius:8,borderColor:"#6615EF",
+       opacity:1
+   },
+   img:{
+     width:'100%',
+     height:"6.5%"
+   },
+   customRatingBarStyle:{
+     justifyContent:"center",
+     flexDirection:"row",
+     marginTop:30
+   },
+   starImgStyle:{
+       width:40,
+       height:40,
+       resizeMode:'cover'
+
+   }
 })
 
 export default Maps

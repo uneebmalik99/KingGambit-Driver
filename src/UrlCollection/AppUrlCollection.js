@@ -10,7 +10,7 @@ AppUrlCollection extends Component{
     static LOADS = AppUrlCollection.BASE_URL+'loadinfo';
     static LOAD = AppUrlCollection.BASE_URL+'load';
     static  STATES = AppUrlCollection.BASE_URL+'stateinfo'
-    static  Accept = AppUrlCollection.BASE_URL+'acceptload'
+    static  ACCEPT = AppUrlCollection.BASE_URL+'acceptload'
    
 
 }

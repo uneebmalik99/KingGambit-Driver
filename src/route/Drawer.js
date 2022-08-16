@@ -82,7 +82,8 @@ export function DrawerContent(props) {
             style={{ width: "50%", height: "40%", alignSelf: "center" }}
             source={require("../assets/logocrop.png")}
           />
-          <View style={{ flexDirection: "row",justifyContent:'space-around',  alignSelf:'center', width: "80%" }}>
+          <View style={{ flexDirection: "row",justifyContent:'space-around',  
+          alignSelf:'center', width: "80%" }}>
             {/* <Title style={styles.title}>John Doe</Title> */}
             <Title style={styles.title}>
             {/* label={'fh'} */}
