@@ -1,5 +1,6 @@
 import React,{useState,useEffect} from 'react'
-import { View,ImageBackground,BackHandler, Text,TextInput,StyleSheet ,ActivityIndicator,TouchableOpacity,Button, SafeAreaView, Dimensions, ScrollView, Alert } from 'react-native'
+import { View,ImageBackground,BackHandler, Text,TextInput,StyleSheet ,ActivityIndicator,
+  TouchableOpacity,Button, SafeAreaView, Dimensions, ScrollView, Alert } from 'react-native'
 import { Appbar } from "react-native-paper";
 import AppUrlCollection from '../UrlCollection/AppUrlCollection';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -12,8 +13,8 @@ const deviceHeight = Dimensions.get("window").height;
 const deviceWidth = Dimensions.get("window").width;
 // const image = {require('    ')};
 const Login = ({navigation}) => {
-
-  const [email,setemail] = useState('Driver2@gmail.com')
+  // 'Driver2@gmail.com'
+  const [email,setemail] = useState()
   const [password,setpassword] = useState('12345678')
   const [deviceid,setdeviceid] = useState(0)
   const [spinner,setspinner]=useState(false)
@@ -26,6 +27,7 @@ const Login = ({navigation}) => {
     // alert(JSON.stringify(responseJson.DATA.user))
     AppConstance.Login="1"
     AppConstance.Id =responseJson.DATA.user.id.toString()
+    // alert(AppConstance.Id)
     AppConstance.Name=responseJson.DATA.user.Name;
     AppConstance.Email=responseJson.DATA.user.Email;
     AppConstance.Password=responseJson.DATA.user.Password;
@@ -115,6 +117,43 @@ const Login = ({navigation}) => {
     BackHandler.exitApp();
     return true;
   }
+
+
+  // const passRegex=/[0-9a-zA-Z]{6,}/
+  // const emailRegex = /\S+@\S+\.\S+/;
+  // const emailRegex = '';
+// email ^[\w.+\-]+@gmail\.com$
+// any email ([a-zA-Z0-9_.-]+)@([a-zA-Z]+)([\.])([a-zA-Z]+)
+
+const validateEmail = (event) => {
+  // const email = event;
+ let emailRegex = /^[a-zA-z]+$/
+  if (!emailRegex.test(event)) {
+  //   setIsValid(true);
+     console.log('invalid email')
+    //  setemail('')
+    // setMessage('Your Email Looks Good!');
+    // setValidEmail(true)
+  } else {
+  //   setIsValid(false);
+    setMessage('Please Enter a Valid Email!');
+    setemail('')
+  }
+};
+const validatePass = (event) => {
+  // const email = event;
+  if (passRegex.test(event)) {
+  //   setIsValid(true);
+
+    setPassMessage('Your Password Looks Good!');
+  //   setValidPass(true)
+  } else {
+  //   setIsValid(false);
+    setPassMessage('Please Enter at Least (6 Number) Valid Password!');
+    setPassword('')
+
+  }
+};
   useEffect(async () => {
 
 
@@ -263,13 +302,26 @@ else {
            <View style={styles.logtxt}>  
 
             <View style={{ width:"90%",marginTop:20,alignSelf:"center",paddingHorizontal:10}}>
-              <TextInput   
+              {/* <TextInput   
         style={styles.input}
         onChangeText={(Text)=>{setemail(Text)}}
         value={email}
+        // onBlur={()=>validateEmail(email)}
+        // onBlur={()=>{validateEmail()}}
+        placeholder="Enter Username or Email "
+        placeholderTextColor={'grey'}
+        /> */}
+            <TextInput   
+        style={styles.input}
+        onChangeText={(Text)=>{setemail(Text)}}
+        value={email}
+        // onBlur={()=>validateEmail(email)}
+        // onBlur={()=>{validateEmail()}}
         placeholder="Enter Username or Email "
         placeholderTextColor={'grey'}
         />
+        
+        <Text style={{color:'#6315EF'}}>{message } </Text>
             <TextInput
         style={styles.input}
         // onChangeText={onChangeNumber}
@@ -283,6 +335,8 @@ else {
 
         
       />
+       <Text style={{color:'#6315EF'}}>{passMessage } </Text>
+
            
            <TouchableOpacity 
    

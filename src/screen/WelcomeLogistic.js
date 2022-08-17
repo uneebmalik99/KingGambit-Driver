@@ -1,4 +1,4 @@
-import React, { useState , useRef} from 'react'
+import React, { useState ,useEffect, useRef} from 'react'
 import { View, Text,TouchableOpacity,TextInput,StyleSheet,Button, Image ,Modal, SafeAreaView} from 'react-native'
 
 import MapView,{Marker} from 'react-native-maps';
@@ -13,8 +13,12 @@ import AppConstance,{deviceHeight,deviceWidth} from "../constance/AppConstance"
 import AppColors from '../Colors/AppColors';
 import Geolocation from '@react-native-community/geolocation';
 import StarReview from 'react-native-star-review'
-
+import AppUrlCollection from '../UrlCollection/AppUrlCollection';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+// import AppConstance from '../constance/AppConstance';
 const Maps = ({navigation}) => {
+
+  // alert( AppConstance.Id);
   const [pmapmodel , setpmapmodel] = useState(false)
 
   const [longitude,setlongitude] = useState()
@@ -23,7 +27,8 @@ const Maps = ({navigation}) => {
 
   const [destinationLatitude,setdestinationLatitude] = useState(33.664703)
   const [destinationLongitude,setdestinationLongitude] = useState(73.079547)
-
+  const [spinner,setspinner]=useState(false)
+ 
 
   const [pickupLatitude,setpickupLatitude] = useState(33.658566)
   const [pickupLongitude,setpickupLongitude] = useState(73.063308)
@@ -93,11 +98,127 @@ console.log(last);
   
   }
 
+  const getdata = async () => {
 
 
+    try {
+      setspinner(true)
+
+   let Id =  await AsyncStorage.getItem('Id')
+    let Name =  await AsyncStorage.getItem('Name')
+    let Email = await AsyncStorage.getItem('Email')
+    let Phone = await AsyncStorage.getItem('Phone')
+    let DateofBirth = await AsyncStorage.getItem('DateofBirth')
+    let DotNumber = await AsyncStorage.getItem('DotNumber')
+    let SNN = await AsyncStorage.getItem('SNN')
+    let Role = await AsyncStorage.getItem('Role')
+    let McNumber = await AsyncStorage.getItem('McNumber')
+    let DL = await AsyncStorage.getItem('DL')
+    
+    let PaymentType = await AsyncStorage.getItem('PaymentType')
+    AppConstance.Login = "0";
+    AppConstance.Id=Id;
+    AppConstance.Name=Name;
+    AppConstance.Email=Email;
+    AppConstance.SNN =SNN;
+    AppConstance.DL =DL;
+    AppConstance.McNumber=McNumber;
+    AppConstance.Phone=Phone;
+    AppConstance.DateofBirth=DateofBirth;
+    AppConstance.Role=Role;
+    AppConstance.PaymentType=PaymentType;
+
+    if(PaymentType	== "0"){
+      let BankInfo =await AsyncStorage.getItem('BankInfo')
+      let BankNumber =await AsyncStorage.getItem('BankNumber')
+      AppConstance.BankInfo=BankInfo;
+      AppConstance.BankNumber=BankNumber;
+    }else{
+      let CreditCardNo = await AsyncStorage.getItem('CreditCardNo')
+      let ExpireDate =await AsyncStorage.getItem('ExpireDate')
+     let SecurityCode= await AsyncStorage.getItem('SecurityCode')
+      let ZipCode =await AsyncStorage.getItem('ZipCode')
+      AppConstance.CreditCardNo=CreditCardNo;
+      AppConstance.ExpireDate=ExpireDate;
+      AppConstance.SecurityCode=SecurityCode;
+      AppConstance.ZipCode=ZipCode;
+    }
+
+    let Token = await AsyncStorage.getItem('Token')
+    AppConstance.AUTH_KEY=Token;
+    setspinner(false)
+
+    }
+    
+     catch (e) {
+      setspinner(false)
+alert(e)
+      console.log(e)
+    }
+
+
+   
+    setspinner(false)
+
+
+
+  
+  
+  }
+
+
+  useEffect(()=>{
+
+ getdata()
+
+
+  
+  },[])
+  // alert( AppConstance.Id);
 const openRatingModal=()=>{
   setshowModal(true)
 
+
+}
+
+
+const submit = async ()=>{
+  let Id = await AsyncStorage.getItem('Id')
+
+
+  let value = {};
+  value.User_id = 53;
+  value.Driver_Id=Id;
+  value.load_id = '430';
+  value.Status = '2',
+  value.Rating = '4',
+
+
+  // value.Have_Load = '0',
+  
+
+  fetch(AppUrlCollection.STATUS_UPDATE, {
+    method: 'PUT',
+    headers: {
+      'Content-Type':  'application/json',
+    },
+    body: JSON.stringify(value),
+})
+    .then((response) =>  response.json() )
+    .then((responseJson) => {
+
+
+      console.log('login data response',responseJson);
+
+    console.log('login data response',responseJson);
+  //   setspinner(false)  
+    })
+    .catch((error) => {
+      // setspinner(false)
+      alert(error)
+        console.warn(error)
+    });
+  
 }
   const gallerySealedPic= async()=>{
 
@@ -229,7 +350,7 @@ style={{justifyContent:'center',width:'40%', backgroundColor:AppColors.Appcolor,
             Ignore</Text>
         </TouchableOpacity>
         <TouchableOpacity 
-        //  onPress={gallerySealedPic}
+         onPress={()=>submit()}
         style={{justifyContent:'center',width:'40%', backgroundColor:AppColors.Appcolor, borderRadius:15,
         height:"50%"}}>
           <Text style={{fontWeight:'600',color:'white', alignSelf:'center'}}>

@@ -6,6 +6,7 @@ import DatePicker from 'react-native-date-picker'
 import { Appbar } from "react-native-paper";
 import Ionicons from 'react-native-vector-icons/dist/Ionicons';
 import FontAwesome from 'react-native-vector-icons/dist/FontAwesome';
+import database from '@react-native-firebase/database';
 import MaterialIcons from 'react-native-vector-icons/dist/MaterialIcons';
 import MapView, { AnimatedRegion, Animated, PROVIDER_GOOGLE ,Geojson, Marker} from 'react-native-maps'; // remove PROVIDER_GOOGLE import if not using Google Maps
 import Geolocation from '@react-native-community/geolocation';
@@ -20,21 +21,23 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 import BottomSheet from 'reanimated-bottom-sheet';
 import RBSheet from "react-native-raw-bottom-sheet";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const IncomingLoad = ({route ,navigation}) => {
   
-  const {plat , plong, pAdd, dlat, dlong,dAdd,tprice,dprice,vtype,pTime,dTime,dNumber,weightLoad} = route.params
-  const [longitude,setlongitude] = useState()
-  const [latitude,setlatitude] = useState()
+  const {item, plat , plong, pAdd, dlat, dlong,dAdd,tprice,dprice,vtype,pTime,dTime,dNumber,weightLoad} = route.params
+  const [longitude,setlongitude] = useState(-122.4324)
+  const [latitude,setlatitude] = useState(37.78825)
 
 
-  const [destinationLatitude,setdestinationLatitude] = useState(dlat)
-  const [destinationLongitude,setdestinationLongitude] = useState(dlong)
+  const [destinationLatitude,setdestinationLatitude] = useState(parseFloat(dlat))
+  const [destinationLongitude,setdestinationLongitude] = useState(parseFloat(dlong))
 
 
-  const [pickupLatitude,setpickupLatitude] = useState(plat)
-  const [pickupLongitude,setpickupLongitude] = useState(plong)
+  const [pickupLatitude,setpickupLatitude] = useState(parseFloat(plat))
+  const [pickupLongitude,setpickupLongitude] = useState(parseFloat(plong))
+  const [driver_id,setdriver_id] = useState()
   const refRBSheet = useRef();
   const refRBSheet2 = useRef();
  console.log(tprice)
@@ -197,19 +200,11 @@ const IncomingLoad = ({route ,navigation}) => {
          Geolocation.getCurrentPosition(
           (position) => {
             console.log(position);
-            setcurrentloclat(position.coords.latitude)
-            setcurrentloclon(position.coords.longitude)
-						let currentLatitude =position.coords.latitude
-            let currentLongitude = position.coords.longitude
+            setlatitude(position.coords.latitude)
+            setlongitude(position.coords.longitude)
+
             
-            			setMapState({
-					...mapState,
-					region: {
-						...mapState.region,
-						currentLatitude,
-						currentLongitude,
-					},
-				});
+            			
             Geocoder.from(position.coords.latitude, position.coords.longitude)
             .then(json => {
               var addressComponent = json.results[0].formatted_address;
@@ -343,10 +338,16 @@ console.log( `Precise Distance\n\n${pdis} Meter\nOR\n${pdis / 1000} KM`
     // alert(platitude+'plong  '+plongitude+' dlat'+dlatitude+'plong '+dlongitude)
     // mapRef.current?.fitToCoordinates([origin ,destination], {edgepadding})
   }
-  useEffect(()=>{
+  useEffect(async ()=>{
+   let Id = await AsyncStorage.getItem('Id')
+    setdriver_id(Id)
+    console.log('D_id',Id)
+    console.log(AppConstance.Id)
+    alert(AppConstance.Id)
+    console.log('appvon id'+AppConstance.Id)
     Geocoder.init("AIzaSyC0PyPzbZ1oOzhm74aUjuXNxZcbD3bEhOo"); // use a valid API key
 
-    getloation();
+    callLocation();
     // requestCameraPermission()
 
 
@@ -464,15 +465,18 @@ console.log( `Precise Distance\n\n${pdis} Meter\nOR\n${pdis / 1000} KM`
   }
  
 
-  const AcceptAPI =()=>{
+  const AcceptAPI =async ()=>{
 
     setspinner(true)
+    let Id = await AsyncStorage.getItem('Id')
 
 
     let value = {};
     value.User_id = item.User_id;
-    value.driver_id=AppConstance.Id;
+    value.driver_id=Id;
     value.load_id = item.load_id;
+    value.status = '1',
+    value.Have_Load = '1',
     
 
     console.log(value);
@@ -490,6 +494,19 @@ console.log( `Precise Distance\n\n${pdis} Meter\nOR\n${pdis / 1000} KM`
   })
       .then((response) =>  response.json() )
       .then((responseJson) => {
+
+
+        database()
+        .ref('/kingGamBit/Loads/'+item.load_id)
+        .set({
+          C_Latitude: latitude,
+          C_Longitude: longitude,
+          Driver_id:Id,
+          Status:'1',
+          User_id:item.User_id
+        })
+        .then(() => console.log('Data set.'));
+
         // navigation.navigate('welcome')
         console.log('accpt data response',responseJson);
         setspinner(false)
@@ -502,6 +519,8 @@ console.log( `Precise Distance\n\n${pdis} Meter\nOR\n${pdis / 1000} KM`
           console.warn(error)
       });
       
+     
+
   }
 
   const renderContent = () => (
@@ -694,30 +713,7 @@ console.log( `Precise Distance\n\n${pdis} Meter\nOR\n${pdis / 1000} KM`
 
       
 
-      <Modal  
-      animationType="fade"
-      visible={pmapmodel}
-      transparent={true}
-      style={{height:deviceHeight*0.5,marginTop:10, backgroundColor:'green', bottom:0, width:deviceWidth}}
-      >
-      <View style={{backgroundColor:'red',bottom:0, height:deviceHeight*0.3}}>
-<Text>hbdhjfbj</Text>
-
-{/* <View style={{position:'absolute',bottom:'7%', alignSelf:'flex-start', width:deviceWidth, paddingHorizontal:'5%'}}>
-        
-        <TouchableOpacity 
-        onPress={async()=> {  
-          addressgenerator(platitude,plongitude)
-
-         setpmapmodel(false)}}
-        style={{backgroundColor:AppColors.Appcolor,height:deviceHeight*0.08,justifyContent:'center', borderRadius:25}}>
-          <Text style={{color:'white',fontWeight:'600',fontSize:18, alignSelf:'center'}}>Done</Text>
-          </TouchableOpacity>
-        </View> */}
-    </View>
-
-        </Modal>
-
+  
 
 
  <DatePicker
@@ -777,7 +773,12 @@ console.log( `Precise Distance\n\n${pdis} Meter\nOR\n${pdis / 1000} KM`
     // ref={mapRef}
     style={{width:"100%",height:"100%"}}
     initialRegion={
-      pickupLocation
+      {
+        latitude:pickupLatitude,longitude:pickupLongitude,
+        latitudeDelta: 0.0922,
+        longitudeDelta: 0.0421,
+        
+      }
     }
   >
 
@@ -787,15 +788,9 @@ console.log( `Precise Distance\n\n${pdis} Meter\nOR\n${pdis / 1000} KM`
 
     <Marker coordinate={{latitude:latitude,longitude:longitude}}>
     <Image style={{width:55,height:55}} source={require('../assets/truck.jpg')} />
-    {/* <MaterialCommunityIcons name='truck-fast-outline' 
-style={{ height: 35, width: 45 }} size={40} color='black'/> */}
+
 </Marker>
-    {/* <Marker
-    coordinate={pickupLocation}
-    />
-    <Marker
-    coordinate={dropUpLocation}
-    /> */}
+   
 
 
 <Marker coordinate={{latitude:pickupLatitude,longitude:pickupLongitude}}>
@@ -813,8 +808,7 @@ style={{ height: 35, width: 45 }} size={40} color='black'/> */}
    
   />
 <Marker coordinate={{latitude:destinationLatitude,longitude:destinationLongitude}}>
-    {/* <MaterialCommunityIcons name='truck-fast-outline' 
-style={{ height: 35, width: 45 }} size={40} color='black'/> */}
+
 </Marker>
 
   
@@ -898,7 +892,9 @@ style={{ height: 35, width: 45 }} size={40} color='black'/> */}
 <View style={{height:'98%',justifyContent:'center', paddingHorizontal:'1%'}}>
 
 <TouchableOpacity style={{width:'100%',marginLeft:12, height:'30%',borderBottomWidth:0.4,borderColor:'#CACFD2',}}>
-   <TextInput style={{fontSize:15, textAlignVertical:'center',width:'100%',  height:'100%', textAlign:'left'}} 
+   <TextInput 
+   editable={false}
+   style={{fontSize:15, textAlignVertical:'center',width:'100%',  height:'100%', textAlign:'left'}} 
    value={weight}
    onChangeText={(text)=> {setweight(text)}}
    placeholder={'Weight'}
@@ -912,14 +908,19 @@ style={{ height: 35, width: 45 }} size={40} color='black'/> */}
    <View style={{flexDirection:'row', width:'35%',}}>
    <FontAwesome name='dollar' style={{alignSelf:'center'}}  size={15} />
    <View style={{width:'65%',marginLeft:10, height:'95%',borderBottomWidth:0.4,borderColor:'#CACFD2',}}>
-   <Text style={{fontSize:15, textAlignVertical:'center',width:'100%',  height:'100%', textAlign:'left'}}>
+   <Text
+   
+   style={{fontSize:15, textAlignVertical:'center',width:'100%',  height:'100%', textAlign:'left'}}>
     {totalprice}</Text>
   </View>
   </View>
 
   <TouchableOpacity style={{width:'65%',marginLeft:12, height:'95%',borderBottomWidth:0.4,borderColor:'#CACFD2',}}>
-   <TextInput style={{fontSize:15, textAlignVertical:'center',width:'100%',  height:'100%', textAlign:'left'}} 
+   <TextInput
+   editable={false}
+   style={{fontSize:15, textAlignVertical:'center',width:'100%',  height:'100%', textAlign:'left'}} 
    value={docknumber}
+
    onChangeText={(text)=> {setdocknumber(text)}}
    placeholder={'Dock Number'}
    placeholderTextColor={'grey'}
@@ -933,19 +934,24 @@ style={{ height: 35, width: 45 }} size={40} color='black'/> */}
    <View style={{flexDirection:'row',width:'45%',}}>
    <FontAwesome name='clock-o' style={{alignSelf:'center'}}  size={15} />
    <TouchableOpacity 
-     onPress={()=> {setpickuptimeopen(true)}}
+   disabled={false}
+    //  onPress={()=> {setpickuptimeopen(true)}}
    style={{width:'90%', marginLeft:8, height:'95%',borderBottomWidth:0.4,borderColor:'#CACFD2',}}>
-   <Text style={{fontSize:14, textAlignVertical:'center',width:'100%',  height:'100%', textAlign:'left'}}>{pickuptimedate == '' || pickuptimedate== null ? 'Pick Up time':pickuptimedate}</Text>
+   <Text style={{fontSize:14, textAlignVertical:'center',width:'100%',  height:'100%', textAlign:'left'}}>
+    {pickuptimedate == '' || pickuptimedate== null ? 'Pick Up time':pickuptimedate}</Text>
   </TouchableOpacity>
   </View>
 
   
 
   <TouchableOpacity 
-  onPress={()=> {setdropofftimeopen(true)}}
+  disabled={false}
+  // onPress={()=> {setdropofftimeopen(true)}}
   style={{width:'48%',flexDirection:'row', marginLeft:0, height:'95%',borderBottomWidth:0.4,borderColor:'#CACFD2',}}>
   <FontAwesome name='clock-o' style={{alignSelf:'center'}}  size={15} />
-   <Text style={{fontSize:15,marginLeft:8, textAlignVertical:'center', width:'85%',  height:'100%', textAlign:'left'}}>{dropofftimedate == '' ||dropofftimedate == null ?'Drop off time': dropofftimedate }</Text>
+   <Text style={{fontSize:15,marginLeft:8, textAlignVertical:'center', width:'85%',  
+   height:'100%', textAlign:'left'}}>
+    {dropofftimedate == '' ||dropofftimedate == null ?'Drop off time': dropofftimedate }</Text>
   </TouchableOpacity>
 
    </View>

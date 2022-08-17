@@ -172,133 +172,233 @@ const App = () => {
   };
 
 
+  useEffect(async() => {
 
 
-  useEffect(() => {
-
-  //foreGround
-  messaging().onMessage(async remoteMessage => {
 
 
-    // Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
-          setnotificationModal(true)
+    messaging().onMessage(async remoteMessage => {
+      // Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
+     
+      if(notificationModal != true)
+      {
+        setnotificationModal(true)
+      }
+  
+      setnotificationList(oldArray => [...oldArray, remoteMessage.data]);
 
-          // if(notificationList.length<1){
-
-          //   let v = {}
-          //   v.ff= remoteMessage.data.D_Address;
-          //   // notificationList.push(v)
-          //   setnotificationList(remoteMessage.data.D_Address)
-          //   console.log('if wali',notificationList)
-          //   console.log('if wali')
-
-          // }
-          // else{
-            let newArray ={i:0}
-            console.log('else  wali')
-
-            notificationList.push(newArray)
-                  setnotificationList(newArray)
-                  console.log(notificationList)
-                  // console.log(newArray)
-          // }
-          
-          // let value = notificationList;
-          // value.push(remoteMessage.data)
-        
-
-        // notificationList.push(remoteMessage.data)
-        //   // setnotificationList(remoteMessage.data)
-        //   console.log(notificationList)
-
-
-          // notificationList.push(remoteMessage.data)
-          // console.log('rrrrrrrrrr'+remoteMessage.data)
-          // notificationList.push({i:0})
-
-
-          // let v = [...notificationListUpdate,notificationList]
-
-          // setnotificationListUpdate(v)
-          // console.log(v)
-          // console.log(notificationListUpdate)
-          // notificationListUpdate.push(notificationList)
-          // setnotificationListUpdate(notificationList)
-
-  //   if(notificationModal == false)
-  //   {
-  //     setnotificationModal(true)
-  //     // setnotificationList(remoteMessage.data)
-  //     let value = {}
-  //     value.ap = 'gft'
-  //     setnotificationList(value)
-
-  //     console.log('jfttrr'+notificationList)
-
-  //   }else{
-      
-  //     notificationList.push(remoteMessage.data)
-
-  //  console.log('ftytfvyu'+notificationList)
-  //   }
-
-    // console.log('data of notificayionlist'+JSON.stringify(notificationList));
-    // console.log('data of notificayion'+JSON.stringify(remoteMessage));
-
-    // notificationList.push('2')
-    
-  })
-
-  // Assume a message-notification contains a "type" property in the data payload of the screen to open
-  messaging().onNotificationOpenedApp(remoteMessage => {
-    console.log(
-      'Notification caused app to open from background state:',
-      remoteMessage.notification,
-    );
-    // navigate('map');
-    setnotificationModal(true)
-
-    // setnotificationModal(true)
-          let value = notificationList;
-          value.push(remoteMessage.data)
-
-          setnotificationList(value)
-          // notificationList.push(remoteMessage.data)
-          console.log(notificationList)
-
-  })
-
-  // Check whether an initial notification is available
-  messaging().getInitialNotification().then(remoteMessage => {
-    if (remoteMessage) {
+   
+      console.log('uihugufyfy'+notificationList);
+      console.log('data notification',remoteMessage);
+  
+    })
+    // Assume a message-notification contains a "type" property in the data payload of the screen to open
+  
+    messaging().onNotificationOpenedApp(remoteMessage => {
       console.log(
-        'Notification caused app to open from quit state:',
+        'Notification caused app to open from background state:',
         remoteMessage.notification,
       );
-      // setinitialRouteName('register'); // e.g. "Settings"
-      // navigate('contact');
-      // console.log(initialRouteName)
-      // AppConstance.notificationRecived='2'
-    }
-    // setLoading(false);
-    setnotificationModal(true)
-
-    // setnotificationModal(true)
-          let value = notificationList;
-          value.push(remoteMessage.data)
-          value.push(remoteMessage.data)
-
-          setnotificationList(value)
-          // notificationList.push(remoteMessage.data)
-          console.log(notificationList)
-  });
+      // navigate('map');
+      if(notificationModal != true)
+      {
+        setnotificationModal(true)
+      }
   
-}, []);
+      setnotificationList(oldArray => [...oldArray, remoteMessage.data]);
+
+   
+      console.log('uihugufyfy'+notificationList);
+  
+      })
+  
+    // Check whether an initial notification is available
+  
+    messaging().getInitialNotification().then(remoteMessage => {
+      if (remoteMessage) {
+        console.log(
+          'Notification caused app to open from quit state:',
+          remoteMessage.notification,
+        );
+        // setinitialRouteName('register'); // e.g. "Settings"
+        // navigate('contact');
+        // console.log(initialRouteName)
+        // AppConstance.notificationRecived='2'
+
+        if(notificationModal != true)
+        {
+          setnotificationModal(true)
+        }
+    
+        setnotificationList(oldArray => [...oldArray, remoteMessage.data]);
+  
+     
+        console.log('uihugufyfy'+notificationList);
+      }
+     
+      // setLoading(false);
+    });
+
+  }, []);
+
+
+
+//   useEffect(() => {
+
+//   //foreGround
+//   messaging().onMessage(async remoteMessage => {
+
+
+//     // Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
+//           setnotificationModal(true)
+
+//           // if(notificationList.length<1){
+
+//           //   let v = {}
+//           //   v.ff= remoteMessage.data.D_Address;
+//           //   // notificationList.push(v)
+//           //   setnotificationList(remoteMessage.data.D_Address)
+//           //   console.log('if wali',notificationList)
+//           //   console.log('if wali')
+
+//           // }
+//           // else{
+//             let newArray ={i:0}
+//             console.log('else  wali')
+
+//             notificationList.push(newArray)
+//                   setnotificationList(newArray)
+//                   console.log(notificationList)
+//                   // console.log(newArray)
+//           // }
+          
+//           // let value = notificationList;
+//           // value.push(remoteMessage.data)
+        
+
+//         // notificationList.push(remoteMessage.data)
+//         //   // setnotificationList(remoteMessage.data)
+//         //   console.log(notificationList)
+
+
+//           // notificationList.push(remoteMessage.data)
+//           // console.log('rrrrrrrrrr'+remoteMessage.data)
+//           // notificationList.push({i:0})
+
+
+//           // let v = [...notificationListUpdate,notificationList]
+
+//           // setnotificationListUpdate(v)
+//           // console.log(v)
+//           // console.log(notificationListUpdate)
+//           // notificationListUpdate.push(notificationList)
+//           // setnotificationListUpdate(notificationList)
+
+//   //   if(notificationModal == false)
+//   //   {
+//   //     setnotificationModal(true)
+//   //     // setnotificationList(remoteMessage.data)
+//   //     let value = {}
+//   //     value.ap = 'gft'
+//   //     setnotificationList(value)
+
+//   //     console.log('jfttrr'+notificationList)
+
+//   //   }else{
+      
+//   //     notificationList.push(remoteMessage.data)
+
+//   //  console.log('ftytfvyu'+notificationList)
+//   //   }
+
+//     // console.log('data of notificayionlist'+JSON.stringify(notificationList));
+//     // console.log('data of notificayion'+JSON.stringify(remoteMessage));
+
+//     // notificationList.push('2')
+    
+//   })
+
+//   // Assume a message-notification contains a "type" property in the data payload of the screen to open
+//   messaging().onNotificationOpenedApp(remoteMessage => {
+//     console.log(
+//       'Notification caused app to open from background state:',
+//       remoteMessage.notification,
+//     );
+//     // navigate('map');
+//     setnotificationModal(true)
+
+//     // setnotificationModal(true)
+//           let value = notificationList;
+//           value.push(remoteMessage.data)
+
+//           setnotificationList(value)
+//           // notificationList.push(remoteMessage.data)
+//           console.log(notificationList)
+
+//   })
+
+//   // Check whether an initial notification is available
+//   messaging().getInitialNotification().then(remoteMessage => {
+//     if (remoteMessage) {
+//       console.log(
+//         'Notification caused app to open from quit state:',
+//         remoteMessage.notification,
+//       );
+//       // setinitialRouteName('register'); // e.g. "Settings"
+//       // navigate('contact');
+//       // console.log(initialRouteName)
+//       // AppConstance.notificationRecived='2'
+//     }
+//     // setLoading(false);
+//     setnotificationModal(true)
+
+//     // setnotificationModal(true)
+//           let value = notificationList;
+//           value.push(remoteMessage.data)
+//           value.push(remoteMessage.data)
+
+//           setnotificationList(value)
+//           // notificationList.push(remoteMessage.data)
+//           console.log(notificationList)
+//   });
+  
+// }, []);
   // if (loading) {
   //   return null;
   // }
+
+  const deleteItem =(item,index) =>{
+
+const newData =[...notificationList];
+// const index = notificationList.findIndex(notificationList=> notificationList.key === item.key)
+console.log(index)
+newData.splice(index,1);
+setnotificationList(newData)
+// for(var i =0;i<= notificationList.length;i++)
+// {
+//   if(i== index)
+//   {
+//     notificationList.splice(index,1)
+//   }
+// }
+if(notificationList.length<=1)
+{
+  console.log("sajljdfasfll")
+  setnotificationModal(false)
+}
+console.log('jkukuukkk'+notificationList.length);
+
+// let t = notificationList.filter((item,index)=>index !== index)
+// setnotificationList(t)
+
+    // const filteredData = notificationList.filter((index ,item)=> index !== index6);
+    // //Updating List Data State with NEW Data.
+    // setnotificationList(filteredData);
+  }
   
-const renderNotificationListlist = ({ item }) => {
+  
+const renderNotificationListlist = ({ item ,index}) => {
+  console.log(index);
   return (
 
     <View
@@ -318,8 +418,7 @@ const renderNotificationListlist = ({ item }) => {
 
       <View style={{width:'70%',padding:3, }}>
         <Text style={{fontSize:16, fontWeight:'500'}}>{item.Dock_Number}</Text>
-        <Text style={{fontSize:12, fontWeight:'500'}}>{item.Vehicle_Type}</Text>
-        <Text style={{fontSize:12, fontWeight:'500'}}>DockNumber</Text>
+        <Text style={{fontSize:12, fontWeight:'500'}}>{item.Vehicle_Type == '0' ? "reefer van":item.Vehicle_Type == '1' ?"dry van":item.Vehicle_Type == '2' ?"flatbed van":null}</Text>
 
         <View style={{marginTop:5, flexDirection:'row'}}>
         <Ionicons name='star'  size={20} color='#FF9529'/>
@@ -332,7 +431,7 @@ const renderNotificationListlist = ({ item }) => {
 
         <View style={{width:'28%', padding:3, alignItems:'flex-end'  }}>
 
-          <Text style={{fontWeight:'800', fontSize:18}}>{item.Driver_Price}</Text>
+          <Text style={{fontWeight:'800', fontSize:18}}>${item.Driver_Price}</Text>
           <Text style={{fontSize:12}}>{item.Weight}kg</Text>
           <Text style={{fontSize:12}}>{item.Distance}km</Text>
 
@@ -345,7 +444,9 @@ const renderNotificationListlist = ({ item }) => {
           <View style={{height:'28%',width:'100%', marginTop:5, flexDirection:'row',justifyContent:'space-around', }}>
 
 
-          <TouchableOpacity style={{justifyContent:'center',width:'40%', backgroundColor:'#F4F6F6', borderRadius:5,}}>
+          <TouchableOpacity
+          onPress={()=>{deleteItem(item,index)}}
+          style={{justifyContent:'center',width:'40%', backgroundColor:'#F4F6F6', borderRadius:5,}}>
           <Text style={{fontWeight:'600',color:'red', alignSelf:'center'}}>Decline</Text>
         </TouchableOpacity>
 
@@ -353,8 +454,8 @@ const renderNotificationListlist = ({ item }) => {
         onPress={()=> {
 
           setnotificationModal(false)
-          navigate('incomingLoad',{item:item, plat:item.P_Latitude,plong:item.P_Longitude,pAdd:item.P_Address,
-             dlat:item.D_Latitude,dlong:item.D_Longitudes, dAdd:item.D_Address, 
+          navigate('incomingLoad',{item:item, plat:parseFloat(item.P_Latitude),plong:parseFloat(item.P_Longitude),pAdd:item.P_Address,
+             dlat:parseFloat(item.D_Latitude),dlong:parseFloat(item.D_Longitudes), dAdd:item.D_Address, 
              tprice:item.Total_Price, dprice:item.Driver_Price, vtype:item.Vehicle_Type,dNumber:item.Dock_Number
             ,pTime:item.Pick_up_Time,dTime:item.Drop_of_Time,weightLoad:item.Weight
             })
@@ -403,6 +504,7 @@ const RootStack = createNativeStackNavigator();
                 <TouchableOpacity 
                 onPress={()=> {  setnotificationModal(false)}}
                 style={{alignSelf:'flex-end'}}>
+                 
                   <Text style={{color:AppColors.Appcolor, fontWeight:'600'}}>Cancel</Text>
                 </TouchableOpacity>
                  </View>
@@ -414,7 +516,7 @@ const RootStack = createNativeStackNavigator();
           contentContainerStyle={{marginTop:10, paddingHorizontal:'2%',paddingBottom:"20%"}}
           renderItem={renderNotificationListlist}
           extraData={notificationList}
-          keyExtractor={item => item.id}
+          keyExtractor={({item,index}) => index}
           ItemSeparatorComponent={() => (
               <View style={{ height: 10 }} />
             )}
