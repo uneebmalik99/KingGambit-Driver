@@ -16,17 +16,22 @@ import StarReview from 'react-native-star-review'
 import AppUrlCollection from '../UrlCollection/AppUrlCollection';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Spinner from 'react-native-loading-spinner-overlay';
+import { set } from 'react-native-reanimated';
 
 // import AppConstance from '../constance/AppConstance';
-const Maps = ({navigation}) => {
+const Maps = ({route, navigation}) => {
 
   // alert( AppConstance.Id);
   
+  // const { data } = rout0e.params;
+
   const [ViewShow,setViewShow] = useState(false)  
   const [pmapmodel , setpmapmodel] = useState(false)
 
-  const [longitude,setlongitude] = useState()
-  const [latitude,setlatitude] = useState()
+  const [longitude,setlongitude] = useState(73.079547)
+  const [latitude,setlatitude] = useState(33.664703)
+  const [haveLoad,sethaveLoad] = useState('0')
+  const [chkk,setchkk] = useState('0')
 
 
   const [destinationLatitude,setdestinationLatitude] = useState(33.664703)
@@ -79,99 +84,8 @@ console.log(info)
     
   })
   const mapRef =useRef()
-  // const storeData = async (responseJson) => {
 
-  //   // alert(JSON.stringify(responseJson.DATA.user))
-  //   AppConstance.Login="1"
-  //   AppConstance.Id =responseJson.DATA.user.id.toString()
-  //   // alert(AppConstance.Id)
-  //   AppConstance.Name=responseJson.DATA.user.Name;
-  //   AppConstance.Email=responseJson.DATA.user.Email;
-  //   AppConstance.Password=responseJson.DATA.user.Password;
-
-  //   AppConstance.Phone=responseJson.DATA.user.Phone;
-  //   AppConstance.DateofBirth=responseJson.DATA.user.Date_of_Birth;
-  //   // AppConstance.CompanyName=responseJson.DATA.user.Company_Name;
-  //   AppConstance.snn=responseJson.DATA.user.snn;
-  //   AppConstance.Role=responseJson.DATA.user.Role;
-  //   AppConstance.PaymentType=responseJson.DATA.user.Payment_Type;
-  //   AppConstance.BankInfo=responseJson.DATA.user.Bank_Info;
-  //   AppConstance.BankNumber=responseJson.DATA.user.Bank_Number;
-  //   AppConstance.CreditCardNo=responseJson.DATA.user.Credit_Card_No;
-  //   AppConstance.ExpireDate=responseJson.DATA.user.Expire_Date;
-  //   AppConstance.SecurityCode=responseJson.DATA.user.Security_Code;
-  //   AppConstance.ZipCode=responseJson.DATA.user.Zip_Code;
-
-  //   AppConstance.AUTH_KEY=responseJson.DATA.token;
-
-  //   try {
-  //   await AsyncStorage.setItem('Login',"1")
-  //   await AsyncStorage.setItem('Id',responseJson.DATA.user.id.toString())
-
-
-  //   await AsyncStorage.setItem('Name', responseJson.DATA.user.Name)
-  //   await AsyncStorage.setItem('Email', responseJson.DATA.user.Email)
-  //   await AsyncStorage.setItem('Password', responseJson.DATA.user.Password)
-
-  //   await AsyncStorage.setItem('Phone', responseJson.DATA.user.Phone)
-  //   await AsyncStorage.setItem('DateofBirth', responseJson.DATA.user.Date_of_Birth)
-    
-  //   // if (responseJson.DATA.user.Company_Name!= null){
-  //   //   // await AsyncStorage.setItem('SNN', responseJson.DATA.user.SNN)
-  //   //   await AsyncStorage.setItem('CompanyName', responseJson.DATA.user.Company_Name)
-
-
-  //   // }
-  //     // await AsyncStorage.setItem('CompanyName', responseJson.DATA.user.Company_Name)
-    
-  //   if (responseJson.DATA.user.SNN != null){
-  //     await AsyncStorage.setItem('SNN', responseJson.DATA.user.SNN)
-
-  //   }
-  //   if (responseJson.DATA.user.Dot_Number != null){
-  //     await AsyncStorage.setItem('DotNumber', responseJson.DATA.user.Dot_Number)
-
-  //   }
-  //   if (responseJson.DATA.user.MC_Number != null){
-  //     await AsyncStorage.setItem('McNumber', responseJson.DATA.user.MC_Number)
-
-  //   }
-  //   if (responseJson.DATA.user.DL != null){
-  //     await AsyncStorage.setItem('DL', responseJson.DATA.user.DL)
-
-  //   }
-    
-     
-  //     // await AsyncStorage.setItem('DL', responseJson.DATA.user.DL)
-    
-   
-  //   await AsyncStorage.setItem('Role', responseJson.DATA.user.Role)
-
-  //   await AsyncStorage.setItem('PaymentType', responseJson.DATA.user.Payment_Type)
-  //   if(responseJson.DATA.user.Payment_Type	 == "0"){
-  //     await AsyncStorage.setItem('BankInfo', responseJson.DATA.user.Bank_Info)
-  //     await AsyncStorage.setItem('BankNumber', responseJson.DATA.user.Bank_Number)
-  //   }else{
-  //     await AsyncStorage.setItem('CreditCardNo', responseJson.DATA.user.Credit_Card_No)
-  //     await AsyncStorage.setItem('ExpireDate', responseJson.DATA.user.Expire_Date)
-  //     await AsyncStorage.setItem('SecurityCode', responseJson.DATA.user.Security_Code)
-  //     await AsyncStorage.setItem('ZipCode', responseJson.DATA.user.Zip_Code)
-  //   }
-
-  //   await AsyncStorage.setItem('Token', responseJson.DATA.token)
-  //   setspinner(false)
-
-  //   navigation.navigate('AppDrawer')
-
-  //   }
-  //    catch (e) {
-  //     console.log(e)
-  //   }
-  
-  // }
-
-
-  const GetUserInfo =()=>{
+  const GetUserInfo = async ()=>{
 
     setspinner(true)
     var url =AppUrlCollection.USER+'/'+AppConstance.Id;
@@ -189,6 +103,10 @@ console.log(info)
       .then((response) =>  response.json() )
       .then((responseJson) => {
 
+        AsyncStorage.setItem('HaveLoad',responseJson.DATA.user.Have_Load)
+        AppConstance.HaveLoad =responseJson.DATA.user.Have_Load;
+
+        sethaveLoad(responseJson.DATA.user.Have_Load)
         setspinner(false)
         
    
@@ -458,6 +376,7 @@ console.log(last);
     let Role = await AsyncStorage.getItem('Role')
     let McNumber = await AsyncStorage.getItem('McNumber')
     let DL = await AsyncStorage.getItem('DL')
+    let HaveLoad = await AsyncStorage.getItem('HaveLoad')
     
     let PaymentType = await AsyncStorage.getItem('PaymentType')
     AppConstance.Login = "0";
@@ -471,7 +390,9 @@ console.log(last);
     AppConstance.DateofBirth=DateofBirth;
     AppConstance.Role=Role;
     AppConstance.PaymentType=PaymentType;
-
+    AppConstance.HaveLoad=HaveLoad;
+   
+    console.log(Id)
     if(PaymentType	== "0"){
       let BankInfo =await AsyncStorage.getItem('BankInfo')
       let BankNumber =await AsyncStorage.getItem('BankNumber')
@@ -492,6 +413,122 @@ console.log(last);
     AppConstance.AUTH_KEY=Token;
     setspinner(false)
 
+
+    var url =AppUrlCollection.USER+'/'+Id;
+
+    // var url =AppUrlCollection.USER;
+    fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type':  'application/json',
+        'Accept':'application/json',
+        'Authorization': "Bearer "+AppConstance.AUTH_KEY
+      }
+     
+  })
+      .then((response) =>  response.json() )
+      .then((responseJson) => {
+
+        AsyncStorage.setItem('HaveLoad',responseJson.Have_Load)
+        AppConstance.HaveLoad =responseJson.Have_Load;
+
+        sethaveLoad(responseJson.Have_Load)
+        setspinner(false)
+        
+   
+   console.log('---------------'+ JSON.stringify( responseJson))
+  //  console.log(responseJson.Data.user)
+   AppConstance.Id=responseJson.id;
+   AppConstance.Name=responseJson.Name;
+   AppConstance.Email=responseJson.Email;
+   AppConstance.SNN =responseJson.SNN;
+   AppConstance.DL =responseJson.DL;
+   AppConstance.McNumber=responseJson.MC_Number;
+   AppConstance.Phone=responseJson.Phone;
+   AppConstance.DateofBirth=responseJson.Date_of_Birth;
+   AppConstance.Role=responseJson.Role;
+   AppConstance.PaymentType=responseJson.Payment_Type;
+   AppConstance.HaveLoad=responseJson.Have_Load;
+
+   if(responseJson.Payment_Type	== "0"){
+     
+     AppConstance.BankInfo=responseJson.Bank_Info;
+     AppConstance.BankNumber=responseJson.Bank_Number;
+   }else{
+
+     AppConstance.CreditCardNo=responseJson.Credit_Card_No;
+     AppConstance.ExpireDate=responseJson.Expire_Date;
+     AppConstance.SecurityCode=responseJson.Security_Code;
+    //  AppConstance.ZipCode=ZipCode;
+   }
+
+  //  AppConstance.AUTH_KEY=responseJson.Token;
+   setspinner(false)
+
+   
+        // setname(responseJson.Name)
+        // setemail(responseJson.Email)
+        // setphone(responseJson.Phone)
+        // setdateofbirth(responseJson.Date_of_Birth)
+        // setsnn(responseJson.SNN)
+        // setdl(responseJson.DL)
+        // setmcnumber(responseJson.MC_Number)
+        // setdotnumber(responseJson.Dot_Number)
+        // setimageuser(responseJson.Driver_Pic)
+        // console.log(responseJson.Driver_Pic);
+        // setstates(responseJson.States)
+
+
+        // if(responseJson.Driver_Pic != null ||responseJson.Driver_Pic != '' ){
+        //   setimageuser(responseJson.Driver_Pic)
+        //   console.log(responseJson.Driver_Pic);
+        // }
+        // if(responseJson.Payment_Type == '0')
+        // {
+        //   setbankinfo(responseJson.Bank_Info)
+        //   setbankacountnumber(responseJson.Bank_Number)
+        // }
+        // else 
+        // {
+        //   setcreditcardnumber(responseJson.Credit_Card_No)
+        //   setexpiredate(responseJson.Expire_Date)
+        //   setsecuritycode(responseJson.Security_Code)
+          
+        // }
+
+          if(responseJson.result == 'SUCCESS'){
+            // alert(responseJson.DATA.user.Bank_Info)
+            // alert(JSON.stringify(responseJson))
+
+            console.log('login data response',responseJson);
+            // alert(responseJson.DATA)
+
+        //  loginServiceCall( responseJson , responseJson.user.role, responseJson.user.username, responseJson.user.role_name, responseJson.user.photo)
+
+          }else if(responseJson.status == 422){
+            setspinner(false)
+
+            alert(responseJson.errors.password)
+          }else if(responseJson.status == 401){
+            setspinner(false)
+
+            alert(responseJson.error)
+          }
+      console.log('login data below error response',responseJson);
+      // console.log('have Load',responseJson.Have_Load)
+      // AsyncStorage.setItem()
+      // if(responseJson.Have_Load == '1')
+      // {
+      //   setViewShow(true)
+      
+      // }
+    //   setspinner(false)  
+      })
+      .catch((error) => {
+        setspinner(false)
+        alert(error)
+          console.warn(error)
+      });
     }
     
      catch (e) {
@@ -511,10 +548,23 @@ alert(e)
   }
 
 
-  useEffect(()=>{
+  useEffect(async ()=>{
 
+
+   
+      if(await route.params?.post)
+      {
+        alert('asfasklfjla')
+      }
+     setchkk(route.params?.post)
+   
+
+     console.log(chkk)
+   
+
+    // alert(r)
  getdata()
- GetUserInfo()
+//  GetUserInfo()
 
   
   },[])
@@ -595,21 +645,7 @@ const submit = async ()=>{
         overlayColor='rgba(0, 0, 0, 0.25)'
          textStyle={{ color: AppColors.Appcolor }}
       />
-{/* <Modal  
-  animationType="fade"
-  visible={pmapmodel}
-  transparent={true}
-  style={{ backgroundColor:'black',height:"70%",borderWidth:1,
-  }}
-  >
-  <View style={{backgroundColor:'red',alignSelf:"center"}}>
-<Text>hbdhjfbj</Text>
 
-
-</View>
-
-    </Modal>  */}
-    {/* <View style={{backgroundColor:"lightgrey"}}> */}
       <Modal
        transparent={true}
        visible={showModal}
@@ -703,38 +739,33 @@ style={{justifyContent:'center',width:'40%', backgroundColor:AppColors.Appcolor,
 </SafeAreaView>
 
        </Modal>
-       {/* </View> */}
 
     <MapView 
     // ref={mapRef}
-    style={{width:"100%",height:"70%"}}
+    style={{width:"100%",height:haveLoad=='1'? "70%":'100%'}}
     initialRegion={
       pickupLocation
     }
   >
 
 
-
-
-
+{
+  haveLoad == '1' ?
     <Marker coordinate={{latitude:latitude,longitude:longitude}}>
     <Image style={{width:55,height:55}} source={require('../assets/truck.jpg')} />
-    {/* <MaterialCommunityIcons name='truck-fast-outline' 
-style={{ height: 35, width: 45 }} size={40} color='black'/> */}
-</Marker>
-    {/* <Marker
-    coordinate={pickupLocation}
-    />
-    <Marker
-    coordinate={dropUpLocation}
-    /> */}
-
-
-<Marker coordinate={{latitude:pickupLatitude,longitude:pickupLongitude}}>
-    {/* <MaterialCommunityIcons name='truck-fast-outline' 
-style={{ height: 35, width: 45 }} size={40} color='black'/> */}
-</Marker>
-
+    </Marker>
+    :
+    null
+    }
+{
+  haveLoad == '1' ?
+    <Marker coordinate={{latitude:pickupLatitude,longitude:pickupLongitude}}>
+    </Marker>
+  :
+  null
+  }
+  {
+  haveLoad == '1' ?
   <MapViewDirections
     origin={{latitude:pickupLatitude , longitude:pickupLongitude}}
     destination={{latitude:destinationLatitude, longitude:destinationLongitude}}
@@ -744,15 +775,25 @@ style={{ height: 35, width: 45 }} size={40} color='black'/> */}
     strokeColor='red'
    
   />
-<Marker coordinate={{latitude:destinationLatitude,longitude:destinationLongitude}}>
-    {/* <MaterialCommunityIcons name='truck-fast-outline' 
-style={{ height: 35, width: 45 }} size={40} color='black'/> */}
-</Marker>
-
-  
+  :
+  null
+  }
+    {
+  haveLoad == '1' ?
+    <Marker coordinate={{latitude:destinationLatitude,longitude:destinationLongitude}}>
+    </Marker>
+    :
+    null
+    }
     
   </MapView>
 
+  
+
+
+
+
+{haveLoad == '1'?
 
 
 
@@ -760,51 +801,7 @@ style={{ height: 35, width: 45 }} size={40} color='black'/> */}
   
   style={{width:"100%",height:"40%",borderWidth:1,borderTopLeftRadius:15,
   borderTopRightRadius:15,padding:5,}}>
-    {/* {
-      
-      ViewShow ?
-      <View>
-  <View style={{flexDirection:"row",justifyContent:'space-around',width:"100%",height:'33%'
-  }}>
-
-<TouchableOpacity 
- onPress={galleryConfirmationPic}
-style={{justifyContent:'center',width:'40%', backgroundColor:AppColors.Appcolor,
- borderRadius:15,height:"50%",}}>
-          <Text style={{fontWeight:'600',color:'white', alignSelf:'center'}}>
-            {confirmationPic==''?"Confirmation":  confirmationPicName}</Text>
-        </TouchableOpacity>
-        <TouchableOpacity 
-         onPress={gallerySealedPic}
-        style={{justifyContent:'center',width:'40%', backgroundColor:AppColors.Appcolor, borderRadius:15,
-        height:"50%"}}>
-          <Text style={{fontWeight:'600',color:'white', alignSelf:'center'}}>
-          {sealedPic==''?"Sealed":  sealedPicName}
-          </Text>
-        </TouchableOpacity>
-        
-            </View>
-            <View style={{alignSelf:'center'}}>
-            <StarReview 
-          style={{alignSelf:'center'}}
-              ratings={3}
-              stars={5}
-              starColor="#EFDF79"
-            />
-              </View>
-            <TouchableOpacity
-            onPress={openRatingModal}
-            style={{justifyContent:'center',width:'40%', backgroundColor:AppColors.Appcolor,alignSelf:"center",
-             borderRadius:15,
-        height:"18%",}}>
-          <Text style={{fontWeight:'600',color:'white', alignSelf:'center'}}>Delivered</Text>
-        </TouchableOpacity>
-</View>
-:
-
-null
-
-           }  */}
+  
            
            <View>
   <View style={{flexDirection:"row",justifyContent:'space-around',width:"100%",height:'33%'
@@ -845,6 +842,8 @@ style={{justifyContent:'center',width:'40%', backgroundColor:AppColors.Appcolor,
 </View>
            
            </View>
+
+           : null}
 
 
 

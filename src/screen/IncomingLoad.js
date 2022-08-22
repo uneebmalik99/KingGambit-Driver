@@ -514,7 +514,12 @@ console.log( `Precise Distance\n\n${pdis} Meter\nOR\n${pdis / 1000} KM`
         // navigation.navigate('welcome')
         console.log('accpt data response',responseJson);
         setspinner(false)
-        navigation.navigate('welcomeLogistic',{item:responseJson.data})
+        // navigation.navigate('welcomeLogistic',{item:responseJson.data})
+        navigation.navigate({name:'welcomeLogistic', 
+        params: { post: 'jhjjjjj' },
+        merge: true,
+      });
+
     //   setspinner(false)  
       })
       .catch((error) => {

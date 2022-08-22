@@ -37,6 +37,7 @@ const Login = ({navigation}) => {
     AppConstance.Name=responseJson.DATA.user.Name;
     AppConstance.Email=responseJson.DATA.user.Email;
     AppConstance.Password=responseJson.DATA.user.Password;
+    AppConstance.HaveLoad=responseJson.DATA.user.Have_load
 
     AppConstance.Phone=responseJson.DATA.user.Phone;
     AppConstance.DateofBirth=responseJson.DATA.user.Date_of_Birth;
@@ -61,6 +62,7 @@ const Login = ({navigation}) => {
     await AsyncStorage.setItem('Name', responseJson.DATA.user.Name)
     await AsyncStorage.setItem('Email', responseJson.DATA.user.Email)
     await AsyncStorage.setItem('Password', responseJson.DATA.user.Password)
+    await AsyncStorage.setItem('HaveLoad', responseJson.DATA.user.Have_Load)
 
     await AsyncStorage.setItem('Phone', responseJson.DATA.user.Phone)
     await AsyncStorage.setItem('DateofBirth', responseJson.DATA.user.Date_of_Birth)

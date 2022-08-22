@@ -124,6 +124,7 @@ const [spinner,setspinner] = useState(false)
     setspinner(false)
 
     navigation.navigate('AppDrawer')
+    // navigation.navigate('welcomeLogistic',{data:0})
 
     }
      catch (e) {

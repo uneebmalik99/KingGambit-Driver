@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { View,ImageBackground,Dimensions, Text,TextInput,StyleSheet ,TouchableOpacity,Button, SafeAreaView } from 'react-native'
 import { Appbar } from "react-native-paper";
 import Ionicons from 'react-native-vector-icons/dist/Ionicons';
@@ -7,7 +7,11 @@ import Ionicons from 'react-native-vector-icons/dist/Ionicons';
 const deviceHeight = Dimensions.get("window").height;
 const deviceWidth = Dimensions.get("window").width
 
-const VerificationCode = ({navigation}) => {
+const VerificationCode = ({navigation,route}) => {
+
+  const [verification,setverification] = useState()
+    const {password} = route.params;
+    console.log('camr'+password)
   return (
   <>
   <SafeAreaView style={styles.container}>
@@ -31,11 +35,12 @@ const VerificationCode = ({navigation}) => {
 
      <View style={styles.logtxt}>   
       <View style={{ width:"90%",marginTop:20,alignSelf:"center",paddingHorizontal:10}}>
-        <TextInput   
-  style={styles.input}
-  placeholder="Enter Code "
-  placeholderTextColor={'grey'}
-  />
+      <TextInput   
+        placeholderTextColor={'grey'}
+        onChangeText={(Text)=>{setverification(Text)}}
+        value={verification}
+        style={styles.input}
+        placeholder="Enter Code "/>
      
      
     
@@ -46,7 +51,22 @@ const VerificationCode = ({navigation}) => {
  <TouchableOpacity 
 style={styles.btnBorderSize}
 // title="Login"
-onPress={() => navigation.navigate('confirmationPage')}
+onPress={() =>{ 
+  
+  if(verification==password)
+  {
+    navigation.navigate('confirmationPage')
+  }
+  else
+  {
+    alert('wronge code')
+  }
+
+}
+
+  }
+
+  
 >
   <Text style={{color:"black",fontSize:15,}}>Submit</Text>
 

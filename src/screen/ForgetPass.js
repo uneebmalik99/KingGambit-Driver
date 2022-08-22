@@ -17,6 +17,7 @@ const ForgetPass = ({navigation}) => {
   const [spinner,setspinner] = useState(false)  
 
   const [email,setemail] = useState('')
+  const [Passwordreset,setPasswordreset] = useState()
 
 
   const ForgetApi =()=>{
@@ -35,31 +36,10 @@ const ForgetPass = ({navigation}) => {
       .then((responseJson) => {
         console.log('login data response',responseJson);
         setspinner(false)
-          if(responseJson.result == 'SUCCESS'){
+        navigation.navigate('verificationCode',{password:responseJson.Password_reset_Token.password_resets})
 
-            setTimeout(() => {
-              Snackbar.show({
-                text: 'Registered Successfully',
-                duration: Snackbar.LENGTH_SHORT,
-                backgroundColor	:AppColors.Appcolor,
-              });
-              navigation.navigate('login')
-            }, 200);
-            
-                navigation.navigate('login')
-
-            console.log('login data response',responseJson);
-            setspinner(false)
-          }else if(responseJson.status == 422){
-            setspinner(false)
-
-            alert(responseJson.errors.password)
-          }else if(responseJson.status == 401){
-            setspinner(false)
-
-            alert(responseJson.error)
-          }
-      console.log('login data response',responseJson);
+         
+    
     //   setspinner(false)  
       })
       .catch((error) => {
@@ -125,9 +105,9 @@ style={styles.btnBorderSize}
 // title="Login"
 onPress={() =>{ 
   
-  navigation.navigate('verificationCode')
   // alert("forget call")
   ForgetApi()
+
   }}
 >
   <Text style={{color:"black",fontSize:15,}}>Submit</Text>
