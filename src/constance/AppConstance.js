@@ -33,6 +33,7 @@ class AppConstance extends Component {
   static AUTH_KEY = "";
   
   static USER_TOKEN = "";
+  static HaveLoad =""
   }
 
   export default AppConstance;

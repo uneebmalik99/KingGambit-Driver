@@ -39,6 +39,8 @@ import com.swmansion.gesturehandler.RNGestureHandlerPackage;
 import com.reactnative.ivpusic.imagepicker.PickerPackage;
 // react-native-image-picker
 import com.imagepicker.ImagePickerPackage;
+// react-native-location-enabler
+import com.reactnativelocationenabler.LocationEnablerPackage;
 // react-native-maps
 import com.airbnb.android.react.maps.MapsPackage;
 // react-native-reanimated
@@ -110,6 +112,7 @@ public class PackageList {
       new RNGestureHandlerPackage(),
       new PickerPackage(),
       new ImagePickerPackage(),
+      new LocationEnablerPackage(),
       new MapsPackage(),
       new ReanimatedPackage(),
       new SafeAreaContextPackage(),

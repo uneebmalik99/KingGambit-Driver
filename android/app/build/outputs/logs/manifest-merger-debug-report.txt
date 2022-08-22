@@ -22,6 +22,7 @@ MERGED from [:react-native-geolocation-service] E:\TRT\KingGambit-Driver\node_mo
 MERGED from [:react-native-gesture-handler] E:\TRT\KingGambit-Driver\node_modules\react-native-gesture-handler\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-9:12
 MERGED from [:react-native-image-crop-picker] E:\TRT\KingGambit-Driver\node_modules\react-native-image-crop-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-33:12
 MERGED from [:react-native-image-picker] E:\TRT\KingGambit-Driver\node_modules\react-native-image-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-21:12
+MERGED from [:react-native-location-enabler] E:\TRT\KingGambit-Driver\node_modules\react-native-location-enabler\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-9:12
 MERGED from [:react-native-maps] E:\TRT\KingGambit-Driver\node_modules\react-native-maps\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-12:12
 MERGED from [:react-native-safe-area-context] E:\TRT\KingGambit-Driver\node_modules\react-native-safe-area-context\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-9:12
 MERGED from [:react-native-screens] E:\TRT\KingGambit-Driver\node_modules\react-native-screens\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-9:12
@@ -350,6 +351,8 @@ MERGED from [:react-native-image-crop-picker] E:\TRT\KingGambit-Driver\node_modu
 MERGED from [:react-native-image-crop-picker] E:\TRT\KingGambit-Driver\node_modules\react-native-image-crop-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
 MERGED from [:react-native-image-picker] E:\TRT\KingGambit-Driver\node_modules\react-native-image-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
 MERGED from [:react-native-image-picker] E:\TRT\KingGambit-Driver\node_modules\react-native-image-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
+MERGED from [:react-native-location-enabler] E:\TRT\KingGambit-Driver\node_modules\react-native-location-enabler\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
+MERGED from [:react-native-location-enabler] E:\TRT\KingGambit-Driver\node_modules\react-native-location-enabler\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
 MERGED from [:react-native-maps] E:\TRT\KingGambit-Driver\node_modules\react-native-maps\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
 MERGED from [:react-native-maps] E:\TRT\KingGambit-Driver\node_modules\react-native-maps\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
 MERGED from [:react-native-safe-area-context] E:\TRT\KingGambit-Driver\node_modules\react-native-safe-area-context\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41

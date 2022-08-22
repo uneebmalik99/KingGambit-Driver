@@ -1,6 +1,7 @@
 import React from 'react'
 import { View,ImageBackground,Dimensions, Text,TextInput,StyleSheet ,TouchableOpacity,Button, SafeAreaView } from 'react-native'
 import { Appbar } from "react-native-paper";
+import Ionicons from 'react-native-vector-icons/dist/Ionicons';
 
 
 const deviceHeight = Dimensions.get("window").height;
@@ -16,8 +17,14 @@ const VerificationCode = ({navigation}) => {
 <Appbar.Header style={styles.header}>
 
 <View style={styles.headview}>
-  <Text style={styles.register_txt}>Verification Code</Text>
-</View>
+          <View style={{justifyContent:"center"}}>
+            <Ionicons name='chevron-back' onPress={()=> {navigation.goBack()}} color={'grey'} 
+            style={{alignSelf:'center'}} size={25}/>
+            </View>
+          <Text style={{color:"black",fontSize:16,alignSelf:'center'}}>Verification</Text>
+          <View>
+            </View>
+        </View>
 
 </Appbar.Header>
 
@@ -61,13 +68,11 @@ const styles = StyleSheet.create({
     header: {
       elevation: 0,
       backgroundColor: 'transparent',
-      borderBottomRightRadius:15,
-      borderBottomLeftRadius:15,
       alignItems: "center",
+      justifyContent: "center",
+      width:deviceWidth,
       paddingHorizontal:0,
       paddingVertical:0,
-      justifyContent: "center",
-      borderRadius:15
     },
   input: {
     height: 60,
@@ -89,8 +94,11 @@ const styles = StyleSheet.create({
     width:'100%',
     borderBottomRightRadius:15,
     borderBottomLeftRadius:15,
-    justifyContent:'center',
-    backgroundColor:'#EFDF79'
+    justifyContent:'space-between',
+    paddingHorizontal:10,
+    backgroundColor:'#EFDF79',
+  flexDirection:'row',
+
   },
   register_txt:{
   fontSize:16,

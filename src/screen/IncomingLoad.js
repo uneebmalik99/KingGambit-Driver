@@ -338,6 +338,8 @@ console.log( `Precise Distance\n\n${pdis} Meter\nOR\n${pdis / 1000} KM`
     // alert(platitude+'plong  '+plongitude+' dlat'+dlatitude+'plong '+dlongitude)
     // mapRef.current?.fitToCoordinates([origin ,destination], {edgepadding})
   }
+
+  
   useEffect(async ()=>{
    let Id = await AsyncStorage.getItem('Id')
     setdriver_id(Id)
@@ -346,9 +348,9 @@ console.log( `Precise Distance\n\n${pdis} Meter\nOR\n${pdis / 1000} KM`
     alert(AppConstance.Id)
     console.log('appvon id'+AppConstance.Id)
     Geocoder.init("AIzaSyC0PyPzbZ1oOzhm74aUjuXNxZcbD3bEhOo"); // use a valid API key
+   await requestCameraPermission()
 
-    callLocation();
-    // requestCameraPermission()
+    await callLocation();
 
 
   
@@ -478,8 +480,10 @@ console.log( `Precise Distance\n\n${pdis} Meter\nOR\n${pdis / 1000} KM`
     value.status = '1',
     value.Have_Load = '1',
     
-
     console.log(value);
+
+   AsyncStorage.setItem('Load_id',item.load_id)
+
     // alert(JSON.stringaify(value))
 
     var url =AppUrlCollection.ACCEPT;

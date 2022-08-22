@@ -1,6 +1,7 @@
 import React,{useState,useEffect} from 'react'
 import { View,ImageBackground,BackHandler, Text,TextInput,StyleSheet ,ActivityIndicator,
-  TouchableOpacity,Button, SafeAreaView, Dimensions, ScrollView, Alert } from 'react-native'
+
+TouchableOpacity,Button, SafeAreaView, Dimensions, ScrollView, Alert,PermissionsAndroid } from 'react-native'
 import { Appbar } from "react-native-paper";
 import AppUrlCollection from '../UrlCollection/AppUrlCollection';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -9,6 +10,11 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import DeviceInfo from 'react-native-device-info';
 import messaging from '@react-native-firebase/messaging';
 import AppColors from '../Colors/AppColors'
+import LocationEnabler from 'react-native-location-enabler';
+
+
+
+
 const deviceHeight = Dimensions.get("window").height;
 const deviceWidth = Dimensions.get("window").width;
 // const image = {require('    ')};
@@ -154,9 +160,59 @@ const validatePass = (event) => {
 
   }
 };
+// chck Location Permission
+const {
+  PRIORITIES: { HIGH_ACCURACY },
+  useLocationSettings,
+} = LocationEnabler;
+const requestLocationPermission =async()=> {
+  const chckLocationPermission = PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION);
+  if (chckLocationPermission === PermissionsAndroid.RESULTS.GRANTED) {
+      alert("You' rr access for the location");
+    
+  } else {
+      try {
+          const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+              {
+                  'title': 'Cool Location App required Location permission',
+                  'message': 'We required Location permission in order to get device location ' +
+                      'Please grant us.'
+              }
+          )
+          if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+              // alert("You've access for the location");
+              setTimeout(()=>{
+                {!enabled ?
+                  requestResolution()
+                  :
+                  console.log('not enabled ')
+                }
+              },1500)
+          } else {
+              alert("You don't have access for the location");
+          }
+      } catch (err) {
+          alert(err)
+      }
+  }
+};
+const [enabled, requestResolution] = useLocationSettings(
+  {
+    priority: HIGH_ACCURACY, // default BALANCED_POWER_ACCURACY
+    alwaysShow: true, // default false
+    needBle: true, // default false
+  },
+  false /* optional: default undefined */
+);
   useEffect(async () => {
 
+    requestLocationPermission()
 
+    {!enabled ?
+          requestResolution()
+          :
+          console.log('not enabled ')
+        }
     BackHandler.addEventListener("hardwareBackPress", handleBackButtonClick);
   
     let fcmToken = await messaging().getToken();
@@ -252,11 +308,13 @@ else {
 
         //  loginServiceCall( responseJson , responseJson.user.role, responseJson.user.username, responseJson.user.role_name, responseJson.user.photo)
 
-          }else if(responseJson.status == 422){
+          }
+          else if(responseJson.status == 422){
             setspinner(false)
 
             alert(responseJson.errors.password)
-          }else if(responseJson.status == 401){
+          }
+          else if(responseJson.status == 401){
             setspinner(false)
 
             alert(responseJson.error)

@@ -1,36 +1,118 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { View,ImageBackground,Dimensions, Text,TextInput,StyleSheet ,TouchableOpacity,Button, SafeAreaView } from 'react-native'
 import { Appbar } from "react-native-paper";
+
+import Ionicons from 'react-native-vector-icons/dist/Ionicons';
+import AppUrlCollection from '../UrlCollection/AppUrlCollection';
+import Snackbar from 'react-native-snackbar';
+import Spinner from 'react-native-loading-spinner-overlay';
+import AppColors from '../Colors/AppColors';
 
 
 const deviceHeight = Dimensions.get("window").height;
 const deviceWidth = Dimensions.get("window").width
 
 const ForgetPass = ({navigation}) => {
+
+  const [spinner,setspinner] = useState(false)  
+
+  const [email,setemail] = useState('')
+
+
+  const ForgetApi =()=>{
+
+    let value = {}
+    value.Email = email
+    var url =AppUrlCollection.Submit_Forget;
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type':  'application/json',
+      },
+      body:JSON.stringify( value),
+  })
+      .then((response) =>  response.json() )
+      .then((responseJson) => {
+        console.log('login data response',responseJson);
+        setspinner(false)
+          if(responseJson.result == 'SUCCESS'){
+
+            setTimeout(() => {
+              Snackbar.show({
+                text: 'Registered Successfully',
+                duration: Snackbar.LENGTH_SHORT,
+                backgroundColor	:AppColors.Appcolor,
+              });
+              navigation.navigate('login')
+            }, 200);
+            
+                navigation.navigate('login')
+
+            console.log('login data response',responseJson);
+            setspinner(false)
+          }else if(responseJson.status == 422){
+            setspinner(false)
+
+            alert(responseJson.errors.password)
+          }else if(responseJson.status == 401){
+            setspinner(false)
+
+            alert(responseJson.error)
+          }
+      console.log('login data response',responseJson);
+    //   setspinner(false)  
+      })
+      .catch((error) => {
+        setspinner(false)
+
+        alert(error)
+              // navigation.navigate('login')
+
+          console.warn(error)
+      });
+ 
+  
+  }
+
+
+
   return (
  
   <>
   <SafeAreaView style={styles.container}>
+  <Spinner
+          visible={spinner}
+          textContent={'Loading...'}
+          overlayColor='rgba(0, 0, 0, 0.25)'
+          color	='#EFDF79'
+          textStyle={{ color: '#EFDF79' }}
+          // textStyle={styles.spinnerTextStyle}
+        />
   <ImageBackground source={require('../assets/bk.png')} resizeMode="cover" style={styles.image}>
   </ImageBackground>
 
 <Appbar.Header style={styles.header}>
 
 <View style={styles.headview}>
-  
-  <Text style={styles.register_txt}>Forget Password</Text>
-</View>
+          <View style={{justifyContent:"center"}}>
+            <Ionicons name='chevron-back' onPress={()=> {navigation.goBack()}} color={'grey'} style={{alignSelf:'center'}} size={25}/>
+            </View>
+          <Text style={{color:"black",fontSize:16,alignSelf:'center'}}>Forget Password</Text>
+          <View>
+            </View>
+        </View>
 
 </Appbar.Header>
 
 
      <View style={styles.logtxt}>   
       <View style={{ width:"90%",marginTop:20,alignSelf:"center",paddingHorizontal:10}}>
-        <TextInput   
-  style={styles.input}
-  placeholder="Enter Email "
-  placeholderTextColor={'grey'}
-  />
+      <TextInput   
+        placeholderTextColor={'grey'}
+        onChangeText={(Text)=>{setemail(Text)}}
+        value={email}
+        style={styles.input}
+        placeholder="Enter Email "/>
      
      
     
@@ -41,7 +123,12 @@ const ForgetPass = ({navigation}) => {
  <TouchableOpacity 
 style={styles.btnBorderSize}
 // title="Login"
-onPress={() => navigation.navigate('verificationCode')}
+onPress={() =>{ 
+  
+  navigation.navigate('verificationCode')
+  // alert("forget call")
+  ForgetApi()
+  }}
 >
   <Text style={{color:"black",fontSize:15,}}>Submit</Text>
 
@@ -93,7 +180,8 @@ const styles = StyleSheet.create({
     justifyContent:'center',
     borderBottomRightRadius:15,
     borderBottomLeftRadius:15,
-    justifyContent:'center',
+    paddingHorizontal:10,
+    justifyContent:'space-between',
     backgroundColor:'#EFDF79'
   },
   register_txt:{

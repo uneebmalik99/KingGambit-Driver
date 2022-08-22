@@ -1,6 +1,7 @@
 import React from 'react'
 import { View,ImageBackground,Dimensions, Text,TextInput,StyleSheet ,TouchableOpacity,Button, SafeAreaView } from 'react-native'
 import { Appbar } from "react-native-paper";
+import Ionicons from 'react-native-vector-icons/dist/Ionicons';
 
 
 const deviceHeight = Dimensions.get("window").height;
@@ -16,17 +17,28 @@ const ConfirmationPage = ({navigation}) => {
 <Appbar.Header style={styles.header}>
 
 <View style={styles.headview}>
-  <Text style={styles.register_txt}>Confirmation Page</Text>
-</View>
+          <View style={{justifyContent:"center"}}>
+            <Ionicons name='chevron-back' onPress={()=> {navigation.goBack()}} color={'grey'} 
+            style={{alignSelf:'center'}} size={25}/>
+            </View>
+          <Text style={{color:"black",fontSize:16,alignSelf:'center'}}>Change Password</Text>
+          <View>
+            </View>
+        </View>
 
 </Appbar.Header>
 
 
      <View style={styles.logtxt}>   
       <View style={{ width:"90%",marginTop:20,alignSelf:"center",paddingHorizontal:10}}>
+      <TextInput   
+  style={styles.input}
+  placeholder="New Password "
+  placeholderTextColor={'grey'}
+  />
         <TextInput   
   style={styles.input}
-  placeholder="Enter Email "
+  placeholder="Confirm New Password "
   placeholderTextColor={'grey'}
   />
      
@@ -89,8 +101,11 @@ const styles = StyleSheet.create({
     width:'100%',
     borderBottomRightRadius:15,
     borderBottomLeftRadius:15,
-    justifyContent:'center',
-    backgroundColor:'#EFDF79'
+    justifyContent:'space-between',
+    paddingHorizontal:10,
+    backgroundColor:'#EFDF79',
+  flexDirection:'row',
+
   },
   register_txt:{
   fontSize:16,
