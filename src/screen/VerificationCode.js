@@ -10,7 +10,7 @@ const deviceWidth = Dimensions.get("window").width
 const VerificationCode = ({navigation,route}) => {
 
   const [verification,setverification] = useState()
-    const {password} = route.params;
+    const {password,Data} = route.params;
     console.log('camr'+password)
   return (
   <>
@@ -55,7 +55,7 @@ onPress={() =>{
   
   if(verification==password)
   {
-    navigation.navigate('confirmationPage')
+    navigation.navigate('confirmationPage',{item:Data})
   }
   else
   {

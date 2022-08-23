@@ -36,7 +36,11 @@ const ForgetPass = ({navigation}) => {
       .then((responseJson) => {
         console.log('login data response',responseJson);
         setspinner(false)
-        navigation.navigate('verificationCode',{password:responseJson.Password_reset_Token.password_resets})
+        navigation.navigate('verificationCode',
+        {
+          password:responseJson.Password_reset_Token.password_resets ,
+          Data:responseJson
+        })
 
          
     
@@ -101,6 +105,7 @@ const ForgetPass = ({navigation}) => {
 
 <View style={styles.btnBorder}>
  <TouchableOpacity 
+ disabled={email == ''? true:false}
 style={styles.btnBorderSize}
 // title="Login"
 onPress={() =>{ 

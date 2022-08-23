@@ -1,13 +1,65 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { View,ImageBackground,Dimensions, Text,TextInput,StyleSheet ,TouchableOpacity,Button, SafeAreaView } from 'react-native'
 import { Appbar } from "react-native-paper";
 import Ionicons from 'react-native-vector-icons/dist/Ionicons';
+import AppUrlCollection from '../UrlCollection/AppUrlCollection';
+import Spinner from 'react-native-loading-spinner-overlay';
+import AppColors from '../Colors/AppColors';
+import Snackbar from 'react-native-snackbar';
 
 
 const deviceHeight = Dimensions.get("window").height;
 const deviceWidth = Dimensions.get("window").width
 
-const ConfirmationPage = ({navigation}) => {
+const ConfirmationPage = ({navigation,route}) => {
+
+  const {item} = route.params;
+  const [NewPass,setNewPass] = useState()
+  const [ConfirmationNewPass,setConfirmationNewPass] = useState()
+  console.log(item)
+
+
+
+  const ResetApi =()=>{
+
+    let value = {}
+    // value.Email = email
+
+
+    value.user_id = item.Password_reset_Token.id
+   value.reset_token = item.Password_reset_Token.password_resets
+    value.new_password = ConfirmationNewPass
+
+    var url =AppUrlCollection.Submit_Reset;
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type':  'application/json',
+      },
+      body:JSON.stringify( value),
+  })
+      .then((response) =>  response.json() )
+      .then((responseJson) => {
+        console.log('forgts data response',responseJson);
+        // setspinner(false)
+        // navigation.navigate('verificationCode',{password:responseJson.Password_reset_Token.password_resets})
+        navigation.navigate('login')
+         
+    
+    //   setspinner(false)  
+      })
+      .catch((error) => {
+        // setspinner(false)
+
+        alert(error)
+              // navigation.navigate('login')
+
+          console.warn(error)
+      });
+ 
+  
+  }
+
   return (
   <>
   <SafeAreaView style={styles.container}>
@@ -34,10 +86,14 @@ const ConfirmationPage = ({navigation}) => {
       <TextInput   
   style={styles.input}
   placeholder="New Password "
+  onChangeText={(text)=>{setNewPass(text)}}
+  value={NewPass}
   placeholderTextColor={'grey'}
   />
         <TextInput   
   style={styles.input}
+  onChangeText={(text)=>{setConfirmationNewPass(text)}}
+  value={ConfirmationNewPass}
   placeholder="Confirm New Password "
   placeholderTextColor={'grey'}
   />
@@ -50,8 +106,10 @@ const ConfirmationPage = ({navigation}) => {
 <View style={styles.btnBorder}>
  <TouchableOpacity 
 style={styles.btnBorderSize}
+// disabled={NewPass == ''? true:false}
+disabled={NewPass && ConfirmationNewPass == ''? true : false}
 // title="Login"
-onPress={() => navigation.navigate('login')}
+onPress={() => ResetApi()}
 >
   <Text style={{color:"black",fontSize:15,}}>Submit</Text>
 
