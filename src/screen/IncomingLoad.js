@@ -42,6 +42,8 @@ const IncomingLoad = ({route ,navigation}) => {
   const refRBSheet2 = useRef();
  console.log(tprice)
  console.log(plong)
+ console.log(item)
+ console.log(item.load_id)
 //  const GOOGLE_MAPS_APIKEY ='AIzaSyC0PyPzbZ1oOzhm74aUjuXNxZcbD3bEhOo'
  const[location,setLocation] =useState({
    pickupLocation:{
@@ -515,8 +517,15 @@ console.log( `Precise Distance\n\n${pdis} Meter\nOR\n${pdis / 1000} KM`
         console.log('accpt data response',responseJson);
         setspinner(false)
         // navigation.navigate('welcomeLogistic',{item:responseJson.data})
-        navigation.navigate({name:'welcomeLogistic', 
-        params: { post: 'jhjjjjj' },
+      //   navigation.navigate({name:'welcomeLogistic', 
+      //   params: { post: 'jhjjjjj' },
+      //   merge: true,
+      // });
+
+
+      navigation.navigate({
+        name: 'welcomeLogistic',
+        params: { post: item.load_id },
         merge: true,
       });
 

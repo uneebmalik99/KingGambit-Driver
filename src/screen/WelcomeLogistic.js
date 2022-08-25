@@ -20,7 +20,10 @@ import { set } from 'react-native-reanimated';
 
 // import AppConstance from '../constance/AppConstance';
 const Maps = ({route, navigation}) => {
-
+ 
+      // const {Item,Data} =route.params
+      // console.log(Item)
+      // console.log(Data)
   // alert( AppConstance.Id);
   
   // const { data } = rout0e.params;
@@ -31,7 +34,7 @@ const Maps = ({route, navigation}) => {
   const [longitude,setlongitude] = useState(73.079547)
   const [latitude,setlatitude] = useState(33.664703)
   const [haveLoad,sethaveLoad] = useState('0')
-  const [chkk,setchkk] = useState('0')
+  const [chkk,setchkk] = useState('')
 
 
   const [destinationLatitude,setdestinationLatitude] = useState(33.664703)
@@ -41,10 +44,15 @@ const Maps = ({route, navigation}) => {
 
   const [pickupLatitude,setpickupLatitude] = useState(33.658566)
   const [pickupLongitude,setpickupLongitude] = useState(73.063308)
+  const [D_Address,setD_Address] = useState('')
+  const [P_Address,setP_Address] = useState('')
+  const [Weight,setWeight] = useState('')
+  const [Vehicle_Type,setVehicle_Type] = useState('')
   const [confirmationPic,setconfirmationPic] = useState('')
+  const [sealedPic,setsealedPic] = useState('')
+
   const [confirmationPicName,setconfirmationPicName] = useState('')
   const [sealedPicName,setsealedPicName] = useState('')
-  const [sealedPic,setsealedPic] = useState('')
 
   const [showModal, setshowModal] = useState(false)
   const[maxRating,setMaxRating] = useState([1,2,3,4,5])
@@ -432,6 +440,12 @@ console.log(last);
         AsyncStorage.setItem('HaveLoad',responseJson.Have_Load)
         AppConstance.HaveLoad =responseJson.Have_Load;
 
+        // alert(responseJson.load_id)
+        if(responseJson.Have_Load == '1' && responseJson.load_id != null)
+        {
+          console.log('condition working')
+          LoadApi(responseJson.load_id)
+        }
         sethaveLoad(responseJson.Have_Load)
         setspinner(false)
         
@@ -514,7 +528,7 @@ console.log(last);
 
             alert(responseJson.error)
           }
-      console.log('login data below error response',responseJson);
+      // console.log('login data below error response',responseJson);
       // console.log('have Load',responseJson.Have_Load)
       // AsyncStorage.setItem()
       // if(responseJson.Have_Load == '1')
@@ -546,20 +560,86 @@ alert(e)
   
   
   }
+  const LoadApi =(load_id)=>{
+
+        // alert(AppConstance.Id)
+    console.log(load_id)
+      // var url ='https://kinggambits.com/kinggambitapi/api/load?Driver_Id=' 
+      var url = AppUrlCollection.LOAD + "?id="+load_id;
+    
+      fetch(url, {
+        method: 'GET',
+        headers: {
+          'Content-Type':  'application/json',
+          'Authorization': "Bearer "+AppConstance.AUTH_KEY
+        }
+    })
+        .then((response) =>  response.json() )
+        .then((responseJson) => {
+    
+          // setdata(responseJson)
+           
+        console.log('login data iss ma data hi response',responseJson);
+
+          // alert(responseJson[0].P_Latitude)
+        setpickupLatitude(parseFloat(responseJson[0].P_Latitude))
+        setpickupLongitude(parseFloat(responseJson[0].P_Longitude))
+        setdestinationLatitude(parseFloat(responseJson[0].D_Latitude))
+        setdestinationLongitude(parseFloat(responseJson[0].D_Longitudes))
+        setD_Address(responseJson[0].D_Address)
+        setP_Address(responseJson[0].P_Address)
+        setVehicle_Type(responseJson[0].Vehicle_Type)
+        setconfirmationPic(responseJson[0].Confirmation_Pic)
+        setsealedPic(responseJson[0].Sealed_Pic)
+
+        sethaveLoad('1')
+      //   setspinner(false)  
+        })
+        .catch((error) => {
+          // setspinner(false)
+          alert(error)
+            console.warn(error)
+        });
+        
+        // <ActivityIndicator size='large' color="#EFDF79" animating={true}  />
+    }
+
+  useEffect( ()=>{
 
 
-  useEffect(async ()=>{
+    console.log('load id   diosdu',route.params?.post)
 
 
    
-      if(await route.params?.post)
-      {
-        alert('asfasklfjla')
-      }
-     setchkk(route.params?.post)
-   
+      // if( route.params?.post != undefined){
+      //   let load_id = route.params?.post
+      //   LoadApi(load_id)
+      // }
+    //   {
+    //     // alert(route.params?.post)
+    //     const d = route.params?.post
+    //  setchkk(d)
 
-     console.log(chkk)
+    //  console.log(d)
+
+
+    // //  alert(chkk)
+
+    //   }
+    //   if(chkk != undefined)
+    //   {
+    //     console.log(chkk)
+
+    //   }
+    //   else{
+    //  console.log(chkk)
+        
+    //   }
+   
+     
+    //  console.log(chkk)
+        // alert(chkk)
+
    
 
     // alert(r)
@@ -572,7 +652,18 @@ alert(e)
 
 
 
-  // alert( AppConstance.Id);
+  // alert(route.params?.post);
+
+  // setchkk(route.params?.post)
+  console.log('load id   ----',route.params?.post)
+  let getLoad_id = route.params?.post
+  if(route.params?.post)
+  {
+  LoadApi(route.params?.post)
+  }
+
+
+  
 const openRatingModal=()=>{
   setshowModal(true)
 
@@ -645,6 +736,7 @@ const submit = async ()=>{
         overlayColor='rgba(0, 0, 0, 0.25)'
          textStyle={{ color: AppColors.Appcolor }}
       />
+
 
       <Modal
        transparent={true}
@@ -744,7 +836,7 @@ style={{justifyContent:'center',width:'40%', backgroundColor:AppColors.Appcolor,
     // ref={mapRef}
     style={{width:"100%",height:haveLoad=='1'? "70%":'100%'}}
     initialRegion={
-      pickupLocation
+pickupLocation
     }
   >
 
@@ -844,7 +936,6 @@ style={{justifyContent:'center',width:'40%', backgroundColor:AppColors.Appcolor,
            </View>
 
            : null}
-
 
 
 
