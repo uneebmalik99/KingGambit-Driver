@@ -21,6 +21,12 @@ AppUrlCollection extends Component{
     static SEALED_PIC =AppUrlCollection.BASE_URL+'sealedPic';
     static Submit_Forget =AppUrlCollection.BASE_URL+'submitForgetPasswordForm';
     static Submit_Reset =AppUrlCollection.BASE_URL+'submitResetPasswordForm';
+    static CANCEL_RIDE =AppUrlCollection.BASE_URL+'cancel_ride';
+    static USER_UPDATE =AppUrlCollection.BASE_URL+'updateuserdata';
+    static USER_DELETE =AppUrlCollection.BASE_URL+'deleteuser';
+
+    
+   
     
 }
 export default AppUrlCollection;

@@ -347,7 +347,7 @@ console.log( `Precise Distance\n\n${pdis} Meter\nOR\n${pdis / 1000} KM`
     setdriver_id(Id)
     console.log('D_id',Id)
     console.log(AppConstance.Id)
-    alert(AppConstance.Id)
+    // alert(AppConstance.Id)
     console.log('appvon id'+AppConstance.Id)
     Geocoder.init("AIzaSyC0PyPzbZ1oOzhm74aUjuXNxZcbD3bEhOo"); // use a valid API key
    await requestCameraPermission()
@@ -516,12 +516,7 @@ console.log( `Precise Distance\n\n${pdis} Meter\nOR\n${pdis / 1000} KM`
         // navigation.navigate('welcome')
         console.log('accpt data response',responseJson);
         setspinner(false)
-        // navigation.navigate('welcomeLogistic',{item:responseJson.data})
-      //   navigation.navigate({name:'welcomeLogistic', 
-      //   params: { post: 'jhjjjjj' },
-      //   merge: true,
-      // });
-
+      
 
       navigation.navigate({
         name: 'welcomeLogistic',
@@ -805,7 +800,7 @@ console.log( `Precise Distance\n\n${pdis} Meter\nOR\n${pdis / 1000} KM`
 
 
     <Marker coordinate={{latitude:latitude,longitude:longitude}}>
-    <Image style={{width:55,height:55}} source={require('../assets/truck.jpg')} />
+    <Image style={{width:55,height:55}} source={require('../assets/truck22.png')} />
 
 </Marker>
    
@@ -832,49 +827,8 @@ style={{ height: 35, width: 45 }} size={40} color='black'/> */}
   
     
   </MapView>
-        {/* <MapView
-        mapRef
-        scrollEnabled={true}
-        onMapReady={() => setIsMapReady(true)}
-          provider={PROVIDER_GOOGLE} // remove if not using Google Maps
-          style={styles.map}
-          showsUserLocation={true}
-         showsMyLocationButton={false}
-         initialRegion={{
-          latitude: plat,
-          longitude: plong,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
-        }}
-       
-
-        >
-  
-   
-
-  <MapViewDirections
-    origin={{latitude:platitude, longitude:plongitude}}
-    destination={{latitude:dlatitude, longitude:dlongitude}}
-    apikey={GOOGLE_MAPS_APIKEY}
-    strokeWidth={3}
-    strokeColor={AppColors.Appcolor}
-  />
-  
-  <Marker 
-      coordinate={{latitude:platitude, longitude:plongitude}}
-
-/>
-
-<Marker 
-      coordinate={{latitude:dlatitude, longitude:dlongitude}}
-
-/>
-
-
-
-        </MapView> */}
-       
-    
+     
+      
  
       </View>
       
@@ -882,11 +836,10 @@ style={{ height: 35, width: 45 }} size={40} color='black'/> */}
 
       <View style={{top:'9%',position:'absolute',alignSelf:'center', height:deviceHeight*0.15, margin:10, paddingVertical:2,backgroundColor:'white',borderColor:AppColors.Appcolor,borderWidth:0, borderRadius:5, flexDirection:'column',   width:'95%', paddingHorizontal:'2%'}}>
 
-   
-
+  
        <View style={{height:'95%',justifyContent:'center', paddingHorizontal:'1%'}}>
 
-          <View style={{flexDirection:'row',  width:deviceWidth, height:'48%'}}>
+          <View style={{flexDirection:'row', justifyContent:'center', width:deviceWidth, height:'48%'}}>
           <FontAwesome name='circle-o' style={{alignSelf:'center'}} color={plat == 'From' || plat.length>0 ? "grey": AppColors.skyblue} size={15} />
           <View 
           // onPress={()=> {refRBSheet.current.open()}}
@@ -895,7 +848,7 @@ style={{ height: 35, width: 45 }} size={40} color='black'/> */}
          </View>
           </View>
 
-          <View style={{flexDirection:'row', width:deviceWidth, height:'48%'}}>
+          <View style={{flexDirection:'row', justifyContent:'center', width:deviceWidth, height:'48%'}}>
           <FontAwesome name='circle-o' style={{alignSelf:'center'}} color={dAdd == 'To' || dAdd.length >0 ? "grey": AppColors.skyblue}  size={15} />
           <View 
           // onPress={()=> {refRBSheet2.current.open()}}
@@ -912,11 +865,10 @@ style={{ height: 35, width: 45 }} size={40} color='black'/> */}
 <TouchableOpacity style={{width:'100%',marginLeft:12, height:'30%',borderBottomWidth:0.4,borderColor:'#CACFD2',}}>
    <TextInput 
    editable={false}
-   style={{fontSize:15, textAlignVertical:'center',width:'100%',  height:'100%', textAlign:'left'}} 
+   style={{fontSize:15,color:'black', textAlignVertical:'center',width:'100%',  height:'100%', textAlign:'left'}} 
    value={weight}
    onChangeText={(text)=> {setweight(text)}}
    placeholder={'Weight'}
-   placeholderTextColor={'grey'}
    />
   </TouchableOpacity>
 
@@ -936,12 +888,11 @@ style={{ height: 35, width: 45 }} size={40} color='black'/> */}
   <TouchableOpacity style={{width:'65%',marginLeft:12, height:'95%',borderBottomWidth:0.4,borderColor:'#CACFD2',}}>
    <TextInput
    editable={false}
-   style={{fontSize:15, textAlignVertical:'center',width:'100%',  height:'100%', textAlign:'left'}} 
+   style={{fontSize:15,color:'black', textAlignVertical:'center',width:'100%',  height:'100%', textAlign:'left'}} 
    value={docknumber}
 
    onChangeText={(text)=> {setdocknumber(text)}}
    placeholder={'Dock Number'}
-   placeholderTextColor={'grey'}
    />
   </TouchableOpacity>
 
@@ -986,10 +937,12 @@ style={{ height: 35, width: 45 }} size={40} color='black'/> */}
 
  <TouchableOpacity 
    onPress={async()=> {  
-    //  addressgenerator(platitude,plongitude)
-      // CreateLoadAPI()
-    
-    // setpmapmodel(false)
+    // navigation.navigate({
+    //   name: 'welcomeLogistic',
+    //   params: { post: item.load_id },
+    //   merge: true,
+    // });
+
   }
   }
    style={{backgroundColor:'#F4F6F6' ,width:'40%',  height:deviceHeight*0.08,justifyContent:'center', borderRadius:10}}>

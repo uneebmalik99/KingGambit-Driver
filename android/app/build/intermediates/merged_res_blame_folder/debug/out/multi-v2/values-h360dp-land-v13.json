@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "E:\\TRT\\KingGambit-Driver\\android\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-h360dp-land-v13\\values-h360dp-land-v13.xml",
+            "outputFile": "/Users/sohailferoz/Desktop/React Native/KingGambit Projects/temp/0.66/kinggambitdriver/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-h360dp-land-v13/values-h360dp-land-v13.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\kashif yousaf\\.gradle\\caches\\transforms-3\\0ff1e4888fd7eba473ee58a30b602b04\\transformed\\material-1.1.0\\res\\values-h360dp-land-v13\\values-h360dp-land-v13.xml",
+                    "source": "/Users/sohailferoz/.gradle/caches/transforms-3/05b2c23e1d0e7d034a8f9038ba0be6da/transformed/material-1.1.0/res/values-h360dp-land-v13/values-h360dp-land-v13.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10",
                         "startColumns": "4,4,4,4,4,4,4,4,4",

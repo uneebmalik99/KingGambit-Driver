@@ -33,7 +33,7 @@ import firebase from '@react-native-firebase/app';
 
 
 // import MapView from 'react-native-maps';
-import MapView, { Marker} from 'react-native-maps'
+import MapView, { Marker, PROVIDER_GOOGLE} from 'react-native-maps'
 import MapViewDirections from 'react-native-maps-directions';
 import MaterialCommunityIcons from 'react-native-vector-icons/dist/MaterialCommunityIcons';
 import AppColors from "../Colors/AppColors";
@@ -196,40 +196,7 @@ const TrackYourDelivery = ({route,navigation}) => {
   useEffect(() => {
 
 
-
     requestLocationPermission();
-
-
-      // const onValueChange = database()
-      //   .ref(`/users/${userId}`)
-      //   .on('value', snapshot => {
-      //     console.log('User data: ', snapshot.val());
-      //   });
-  
-      // Stop listening for updates when no longer required
-      // return () => database().ref(`/users/${userId}`).off('value', onValueChange);
-
-    // console.log('  '+data.D_Latitude)
-    // console.log('  '+data.D_Longitudes)
-    // database().ref('/kingGamBit/Loads/1').once('value').then((snapshot)=>   {console.log(snapshot)} )  
-      // alert(dlocation.latitude)
-
-    // new  creating
-  //     database()
-  // .ref('/kingGamBit/Loads/2')
-  // .set({
-  //   name: 'Ada Lovelace',
-  //   age: 31,
-  // })
-  // .then(() => console.log('Data set.'));
-   
-// database()
-// .ref('/users')
-// .on('value', snapshot => {
-//   console.log('User data: ', snapshot.val());
-// });
-
-        // return () => database().ref(`/kingGamBit/Loads/1/${}`).off('value', onValueChange);
 
   }, []);
  
@@ -403,6 +370,8 @@ let Clongitude = currentLongitude;
       <MapView 
     // ref={mapRef}
     style={{width:"100%",height:"100%"}}
+    provider={PROVIDER_GOOGLE}
+
     initialRegion={
       pickupLocation
     }

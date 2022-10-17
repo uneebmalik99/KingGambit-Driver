@@ -5,7 +5,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import messaging from '@react-native-firebase/messaging';
 import AppConstance from '../constance/AppConstance';
 
-// import locationPermission from './HelperFunction'
 import Geolocation from '@react-native-community/geolocation';
 import {
   // SafeAreaView,
@@ -19,7 +18,7 @@ import {
   Platform,
   Button,
 } from 'react-native';
-import { locationPermission,getCurrentLocation } from './HelperFunction';
+// import { locationPermission,getCurrentLocation } from './HelperFunction';
 
 const deviceHeight = Dimensions.get("window").height;
 const deviceWidth = Dimensions.get("window").width;
@@ -256,20 +255,20 @@ const [spinner,setspinner] = useState(false)
   // };
 
 
-  const getLiveLocation = async () =>{
-    const locationPermissionDenied = await locationPermission()
-    if (locationPermissionDenied){
-      const  res = await getCurrentLocations()
-      console.log('res==>',res)
-    }
-    console.log('location permission ', locationPermissionDenied)
+  // const getLiveLocation = async () =>{
+  //   const locationPermissionDenied = await locationPermission()
+  //   if (locationPermissionDenied){
+  //     const  res = await getCurrentLocations()
+  //     console.log('res==>',res)
+  //   }
+  //   console.log('location permission ', locationPermissionDenied)
     
     
-  }
+  // }
   useEffect( async () => {
 
 
-      getLiveLocation()
+      // getLiveLocation()
 
     // const requestLocationPermission = async () => {
     //   if (Platform.OS === 'ios') {
@@ -341,7 +340,7 @@ const [spinner,setspinner] = useState(false)
     return (
     <SafeAreaView style={styles.container}>
     
-    <ImageBackground source={require('../assets/Splash.png')} resizeMode="cover" style={styles.image}>
+    <ImageBackground source={require('../assets/logocrop.png')} resizeMode="cover" style={styles.image}>
             </ImageBackground>
   </SafeAreaView>
     )

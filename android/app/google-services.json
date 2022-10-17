@@ -32,10 +32,10 @@
               "client_type": 3
             },
             {
-              "client_id": "242404480776-8ssoe2gdja98ql19bohia058aljjc05o.apps.googleusercontent.com",
+              "client_id": "242404480776-8elfb6jkv7caeg3oq5quaf6v0qeqjdok.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.KingGambit"
+                "bundle_id": "com.kinggambitdrivers"
               }
             }
           ]
@@ -68,10 +68,10 @@
               "client_type": 3
             },
             {
-              "client_id": "242404480776-8ssoe2gdja98ql19bohia058aljjc05o.apps.googleusercontent.com",
+              "client_id": "242404480776-8elfb6jkv7caeg3oq5quaf6v0qeqjdok.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.KingGambit"
+                "bundle_id": "com.kinggambitdrivers"
               }
             }
           ]

@@ -26,6 +26,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import StarReview from 'react-native-star-review'
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import MaterialCommunityIcons from 'react-native-vector-icons/dist/MaterialCommunityIcons';
+import AppColors from "../Colors/AppColors";
 
 
 export function DrawerContent(props) {
@@ -39,6 +40,7 @@ export function DrawerContent(props) {
     await AsyncStorage.setItem('DateofBirth','')
     // await AsyncStorage.setItem('CompanyName','')
     // await AsyncStorage.setItem('EIN','')
+    await AsyncStorage.setItem('HaveLoad','')
     await AsyncStorage.setItem('Role','')
     await AsyncStorage.setItem('PaymentType','')
     await AsyncStorage.setItem('BankInfo','')
@@ -49,6 +51,10 @@ export function DrawerContent(props) {
     await AsyncStorage.setItem('ZipCode','')
     await AsyncStorage.setItem('Token','')
 
+    await AsyncStorage.setItem('Login','0')
+    await AsyncStorage.setItem('Rating','0')
+
+    
     AppConstance.Name='';
     AppConstance.Email='';
     AppConstance.Phone='';
@@ -64,6 +70,8 @@ export function DrawerContent(props) {
     AppConstance.SecurityCode='';
     AppConstance.ZipCode='';
     AppConstance.AUTH_KEY='';
+    AppConstance.HaveLoad = '';
+    AppConstance.rating = '0';
     // await AsyncStorage.removeItem(AppConstance.USER_INFO_OBJ);
     // await AsyncStorage.setItem("ISUSERLOGIN", "0");
     // await AsyncStorage.setItem("ROLE", "");
@@ -76,26 +84,29 @@ export function DrawerContent(props) {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "black" }}>
-      <View style={{ backgroundColor:'#daa726', height: "25%" }}>
+      <View style={{ backgroundColor:AppColors.Appcolor, height: "25%" }}>
         <View style={styles.userInfoSection}>
           <Image
-            style={{ width: "50%", height: "40%", alignSelf: "center" }}
+            style={{ width: "60%", height: "50%", alignSelf: "center" , borderRadius:10, }}
+            
             source={require("../assets/logocrop.png")}
           />
-          <View style={{ flexDirection: "row",justifyContent:'space-around',  
+          <View style={{alignSelf:'center',   
           alignSelf:'center', width: "80%" }}>
-            {/* <Title style={styles.title}>John Doe</Title> */}
+            <Title style={{color:AppColors.Appcolor, alignSelf:'center', fontSize:18}}>{AppConstance.Name}</Title>
             <Title style={styles.title}>
-            {/* label={'fh'} */}
+            {AppConstance.Email}
             </Title>
             {/* <Caption style={styles.caption}>
-              {AppConstance.USER_INFO.USER_EMAIL}
+              {AppConstance.Email}
             </Caption> */}
             <View style={{alignSelf:'center'}}>
             <StarReview 
           style={{alignSelf:'center'}}
-              ratings={2}
+              ratings={AppConstance.rating}
               stars={5}
+              reviews={AppConstance.rating}
+              disableReview={false}
               starColor="#EFDF79"
             />
               </View>
@@ -160,7 +171,8 @@ export function DrawerContent(props) {
               label={'Setting'}
               labelStyle={{ color: "black" }}
               onPress={() => {
-                props.navigation.navigate("setting");
+                alert('Coming Soon')
+                // props.navigation.navigate("setting");
               }}
             />
               <DrawerItem
@@ -197,6 +209,7 @@ export function DrawerContent(props) {
             }}
           />
         </Drawer.Section>
+
       </View>
     </SafeAreaView>
   );
@@ -204,7 +217,7 @@ export function DrawerContent(props) {
 
 const styles = StyleSheet.create({
   drawerContent: {
-    backgroundColor: '#daa726',
+    backgroundColor: AppColors.Appcolor,
     borderTopLeftRadius: 35,
     width: "93%",
     justifyContent: "flex-start",
@@ -221,13 +234,15 @@ const styles = StyleSheet.create({
     height: "100%",
   },
   title: {
-    fontSize: 16,
-    fontWeight: "bold",
+    fontSize: 10,
+    alignSelf:'center',
+
     color: 'grey',
   },
   caption: {
-    fontSize: 14,
-    lineHeight: 14,
+    fontSize: 12,
+ alignSelf:'center',
+ backgroundColor:'red',
     color: 'grey',
   },
   row: {
@@ -250,6 +265,7 @@ const styles = StyleSheet.create({
   },
   bottomDrawerSection: {
     margin:20,
+    marginBottom:30,
     borderRadius:10,
     backgroundColor:'black'
     // backgroundColor: "#1B55A3",

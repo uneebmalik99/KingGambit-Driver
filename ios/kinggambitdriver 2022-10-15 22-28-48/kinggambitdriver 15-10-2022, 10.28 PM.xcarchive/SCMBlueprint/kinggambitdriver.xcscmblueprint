@@ -1,0 +1,26 @@
+{
+  "DVTSourceControlWorkspaceBlueprintLocationsKey" : {
+    "17B8820AB7DA01DBDEB9D0BAD15B9A62BCF1C1AD" : {
+      "DVTSourceControlBranchIdentifierKey" : "main",
+      "DVTSourceControlLocationRevisionKey" : "d6a815b06595979ad2b2260fd68b71c2b812d054",
+      "DVTSourceControlBranchOptionsKey" : 4,
+      "DVTSourceControlBranchRemoteNameKey" : "origin",
+      "DVTSourceControlWorkspaceBlueprintLocationTypeKey" : "DVTSourceControlBranch"
+    }
+  },
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "17B8820AB7DA01DBDEB9D0BAD15B9A62BCF1C1AD",
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "D051D223-EC6C-46E0-8701-BCD7F9BE2F92",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "17B8820AB7DA01DBDEB9D0BAD15B9A62BCF1C1AD" : "KingGambit-Driver\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "kinggambitdriver",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "ios\/kinggambitdriver.xcworkspace",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/uneebmalik99\/KingGambit-Driver.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "17B8820AB7DA01DBDEB9D0BAD15B9A62BCF1C1AD"
+    }
+  ]
+}

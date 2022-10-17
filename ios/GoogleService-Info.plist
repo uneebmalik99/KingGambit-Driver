@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>242404480776-8elfb6jkv7caeg3oq5quaf6v0qeqjdok.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.242404480776-8elfb6jkv7caeg3oq5quaf6v0qeqjdok</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDbGDWp6puxCVqn75pqczs4g-PLBwr7X2c</string>
+	<key>GCM_SENDER_ID</key>
+	<string>242404480776</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.kinggambitdrivers</string>
+	<key>PROJECT_ID</key>
+	<string>kinggambit-1713f</string>
+	<key>STORAGE_BUCKET</key>
+	<string>kinggambit-1713f.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:242404480776:ios:ea686285fbb5f0087a3ebd</string>
+	<key>DATABASE_URL</key>
+	<string>https://kinggambit-1713f-default-rtdb.firebaseio.com</string>
+</dict>
+</plist>

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>kinggambitdriver.ipa</key>
+	<array>
+		<dict>
+			<key>architectures</key>
+			<array>
+				<string>arm64</string>
+			</array>
+			<key>bitcode</key>
+			<true/>
+			<key>buildNumber</key>
+			<string>1</string>
+			<key>certificate</key>
+			<dict>
+				<key>SHA1</key>
+				<string>4DB1C61F32B0BFC8BD919669CADEB1A6F0B558DC</string>
+				<key>dateExpires</key>
+				<string>23/08/2023</string>
+				<key>type</key>
+				<string>Cloud Managed Apple Distribution</string>
+			</dict>
+			<key>embeddedBinaries</key>
+			<array>
+				<dict>
+					<key>architectures</key>
+					<array>
+						<string>arm64</string>
+					</array>
+					<key>bitcode</key>
+					<true/>
+					<key>buildNumber</key>
+					<string>1</string>
+					<key>certificate</key>
+					<dict>
+						<key>SHA1</key>
+						<string>4DB1C61F32B0BFC8BD919669CADEB1A6F0B558DC</string>
+						<key>dateExpires</key>
+						<string>23/08/2023</string>
+						<key>type</key>
+						<string>Cloud Managed Apple Distribution</string>
+					</dict>
+					<key>name</key>
+					<string>OpenSSL.framework</string>
+					<key>symbols</key>
+					<true/>
+					<key>team</key>
+					<dict>
+						<key>id</key>
+						<string>NR6LQD7V9S</string>
+						<key>name</key>
+						<string>Dahir Mohamed</string>
+					</dict>
+					<key>versionNumber</key>
+					<string>1.10.5</string>
+				</dict>
+			</array>
+			<key>entitlements</key>
+			<dict>
+				<key>application-identifier</key>
+				<string>NR6LQD7V9S.com.kinggambitdrivers</string>
+				<key>aps-environment</key>
+				<string>production</string>
+				<key>beta-reports-active</key>
+				<true/>
+				<key>com.apple.developer.team-identifier</key>
+				<string>NR6LQD7V9S</string>
+				<key>get-task-allow</key>
+				<false/>
+			</dict>
+			<key>name</key>
+			<string>kinggambitdriver.app</string>
+			<key>profile</key>
+			<dict>
+				<key>UUID</key>
+				<string>8481fa99-0fe3-48e3-9c29-b7e6d997700f</string>
+				<key>dateExpires</key>
+				<string>23/08/2023</string>
+				<key>name</key>
+				<string>iOS Team Store Provisioning Profile: com.kinggambitdrivers</string>
+			</dict>
+			<key>symbols</key>
+			<true/>
+			<key>team</key>
+			<dict>
+				<key>id</key>
+				<string>NR6LQD7V9S</string>
+				<key>name</key>
+				<string>Dahir Mohamed</string>
+			</dict>
+			<key>versionNumber</key>
+			<string>1.10.5</string>
+		</dict>
+	</array>
+</dict>
+</plist>

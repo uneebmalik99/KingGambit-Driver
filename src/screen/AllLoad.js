@@ -6,6 +6,7 @@ import AppUrlCollection from '../UrlCollection/AppUrlCollection';
 import AppConstance from '../constance/AppConstance';
 import Ionicons from 'react-native-vector-icons/dist/Ionicons';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import AppColors from '../Colors/AppColors';
 
 const deviceHeight = Dimensions.get("window").height;
 const deviceWidth = Dimensions.get("window").width;
@@ -25,7 +26,7 @@ const AllLoad = ({ navigation }) => {
     // navigation.navigate('welcome')
       
     }, 2000);
-    alert(AppConstance.Id)
+    // alert(AppConstance.Id)
 
   // var url ='https://kinggambits.com/kinggambitapi/api/load?Driver_Id=' 
   var url = AppUrlCollection.LOAD + "?Driver_Id="+AppConstance.Id;
@@ -78,15 +79,13 @@ useEffect(()=>{
                       }
                     }>
 
-      <View style={{ height:"20%", backgroundColor: "#EFDF79",borderRadius:10, justifyContent:"center"}}>
+      <View style={{ height:"20%", backgroundColor: AppColors.Appcolor,borderRadius:10, justifyContent:"center"}}>
           <Text style={styles.txt}>Dock Number:{item.Dock_Number}</Text>
       </View>
 
       <View style={{  paddingVertical:"2%", height:"80%", paddingHorizontal:'3%',flexDirection: "row" }}>
 
-          <View style={{  padding:"1%", width: "35%", height: "100%" }}>
-            <Image source={require('../assets/bk.png')}  style={{width:"100%",borderRadius:10, height:"100%"}} />
-          </View>
+        
 
 
 
@@ -189,7 +188,7 @@ const styles = StyleSheet.create({
         flexDirection:'row',
         paddingHorizontal:10,
         justifyContent:'space-between',
-        backgroundColor:'#EFDF79'
+        backgroundColor:AppColors.Appcolor
       },
   txt: {
     color: 'black',

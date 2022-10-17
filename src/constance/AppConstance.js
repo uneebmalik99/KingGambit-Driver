@@ -11,6 +11,7 @@ class AppConstance extends Component {
   static Id ='';
   static Name = "" ;
   static Email = "" ;
+  static rating = 0;
   static initialRouteName ='splash';
   static Password ='';
   static Phone = "" ;

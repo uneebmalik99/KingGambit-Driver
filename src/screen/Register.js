@@ -1,6 +1,6 @@
 import React, { useState , useEffect} from 'react'
 import { View, Text,TextInput,StyleSheet,Button, ScrollView, SafeAreaView,ImageBackground ,Dimensions, 
-  TouchableOpacity, Alert, Image,Modal,FlatList, } from 'react-native'
+  TouchableOpacity, Alert, Image,Modal,FlatList, KeyboardAvoidingView, } from 'react-native'
 import { ActivityIndicator, Appbar } from "react-native-paper";
 import AppUrlCollection from '../UrlCollection/AppUrlCollection';
 import SelectList from 'react-native-dropdown-select-list'
@@ -10,12 +10,12 @@ import Ionicons from 'react-native-vector-icons/dist/Ionicons';
 import Feather from 'react-native-vector-icons/dist/Feather';
 // import ImagePicker from 'react-native-image-crop-picker';
 import Spinner from 'react-native-loading-spinner-overlay';
-// or ES6+ destructured imports
 import DocumentPicker from 'react-native-document-picker';
 import * as ImagePicker from "react-native-image-picker"
 import AppColors from '../Colors/AppColors';
 import { getUniqueId, getManufacturer } from 'react-native-device-info';
 import Snackbar from 'react-native-snackbar';
+import DatePicker from 'react-native-date-picker'
 
 const deviceHeight = Dimensions.get("window").height;
 const deviceWidth = Dimensions.get("window").width
@@ -33,13 +33,15 @@ const Register = ({navigation}) => {
   const [Vehical,setVehical] =useState()
   const [selectedState, setselectedState] = useState()
   const [check, setCheck] = useState(false);
+  const [pickuptimeopen, setpickuptimeopen] = useState(false)
+
   // const [paymenttype,setpaymenttype] = useState(3)
   const data = [
       {key:'0',value:'Bank Info'},{key:'1',value:'Credit Card'},
       ]
   const VehicalType = [
       {key:'0',value:'Reefer Van'},{key:'1',value:'Dry Van'},
-      {key:'2',value:'FlatBed Van'}
+      {key:'2',value:'FlatBed Van'}, {key:'3',value:'Power Only'}
       ]
 
   const [email,setemail] = useState('')
@@ -96,87 +98,141 @@ const Register = ({navigation}) => {
 
   const registerApi =()=>{
 
-    setspinner(true)
-    var value = new FormData()
 
-    value.append('Name',name)
-    value.append('Email',email)
-    value.append('Phone',phone)
-    value.append('Date_of_Birth',dateofbirth)
-    value.append('SNN',snn)
-    value.append('DL',dl)
-    value.append('Dot_Number',dotnumber)
-    value.append('MC_Number',name)
-    value.append('Password',password)
-    value.append('Bank_Number',bankacountnumber)
-    value.append('Bank_Info',bankinfo)
-    value.append('Credit_Card_No',creditcardnumber)
-    value.append('Expire_Date',expiredate)
-    value.append('Security_Code',securitycode)
-    value.append('Token','token')
-    value.append('Role',"1")
-    value.append('Device_id','09898')
-    value.append('Driver_Pic', DriverPic )
-    // value.append('Zip_Code',zipcode)
-    value.append('Payment_Type',paymentType)
-    value.append('Vehicle_Type',Vehical)
-    value.append('State_id',stateid)
-    value.append('State_Name',statevalue)
+    if(name == ''){
+      alert('PLease Enter Name')
+      
+    }
+    else if(email == ''){
+      alert('PLease Enter email')
 
+    }
+    else if(phone == ''){
+      alert('PLease Enter Phone')
+
+    }
+    else if(dateofbirth == ''){
+      alert('PLease Enter date of birth')
+
+    }
+    else if(snn == ''){
+      alert('PLease Enter SNN')
+
+    }
+    else if(dl == ''){
+      alert('PLease Enter DL')
+
+    }
+    else if(dotnumber == ''){
+      alert('PLease Enter Dot Number')
+
+    }
+    else if(stateid == ''){
+      alert('PLease Select State')
+
+    }
+    else if(paymentType == ''){
+      alert('PLease Select Payment Type')
+
+    }
+    else if(Vehical == ''){
+      alert('PLease Select Vehicle Type')
+
+    }
+    else if(password == ''){
+
+      alert('PLease Enter Password')
+
+      
+    }
+    else{
+
+      setspinner(true)
+      var value = new FormData()
   
-
- 
-    console.log(JSON.stringify(value));
-
-    var url =AppUrlCollection.REGISTER;
-    fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type':  'multipart/form-data',
-        'Accept': 'multipart/form-data'
-      },
-      body: value,
-  })
-      .then((response) =>  response.json() )
-      .then((responseJson) => {
-        console.log('login data response',responseJson);
-        setspinner(false)
-          if(responseJson.result == 'SUCCESS'){
-
-            setTimeout(() => {
-              Snackbar.show({
-                text: 'Registered Successfully',
-                duration: Snackbar.LENGTH_SHORT,
-                backgroundColor	:AppColors.Appcolor,
-              });
-              navigation.navigate('login')
-            }, 200);
-            
+      value.append('Name',name)
+      value.append('Email',email)
+      value.append('Phone',phone)
+      value.append('Date_of_Birth',dateofbirth)
+      value.append('SNN',snn)
+      value.append('DL',dl)
+      value.append('Dot_Number',dotnumber)
+      value.append('MC_Number',mcnumber)
+      value.append('Password',password)
+      value.append('Bank_Number',bankacountnumber)
+      value.append('Bank_Info',bankinfo)
+      value.append('Credit_Card_No',creditcardnumber)
+      value.append('Expire_Date',expiredate)
+      value.append('Security_Code',securitycode)
+      value.append('Token','token')
+      value.append('Role',"1")
+      value.append('Device_id','09898')
+      value.append('Driver_Pic', DriverPic )
+      // value.append('Zip_Code',zipcode)
+      value.append('Payment_Type',paymentType)
+      value.append('Vehicle_Type',Vehical)
+      value.append('State_id',stateid)
+      value.append('State_Name',statevalue)
+  
+    
+  
+   
+      console.log(JSON.stringify(value));
+  
+      var url =AppUrlCollection.REGISTER;
+      fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type':  'multipart/form-data',
+          'Accept': 'multipart/form-data'
+        },
+        body: value,
+    })
+        .then((response) =>  response.json() )
+        .then((responseJson) => {
+          console.log('login data response',responseJson);
+          setspinner(false)
+            if(responseJson.result == 'SUCCESS'){
+  
+              setTimeout(() => {
+                Snackbar.show({
+                  text: 'Registered Successfully',
+                  duration: Snackbar.LENGTH_SHORT,
+                  backgroundColor	:AppColors.Appcolor,
+                });
                 navigation.navigate('login')
+              }, 200);
+              
+                  navigation.navigate('login')
+  
+              console.log('login data response',responseJson);
+              setspinner(false)
+            }else if(responseJson.status == 422){
+              setspinner(false)
+  
+              alert(responseJson.errors.password)
+            }else if(responseJson.status == 401){
+              setspinner(false)
+  
+              alert(responseJson.error)
+            }
+        console.log('login data response',responseJson);
+      //   setspinner(false)  
+        })
+        .catch((error) => {
+          setspinner(false)
+  
+          alert(error)
+                // navigation.navigate('login')
+  
+            console.warn(error)
+        });
+   
 
-            console.log('login data response',responseJson);
-            setspinner(false)
-          }else if(responseJson.status == 422){
-            setspinner(false)
 
-            alert(responseJson.errors.password)
-          }else if(responseJson.status == 401){
-            setspinner(false)
+    }
 
-            alert(responseJson.error)
-          }
-      console.log('login data response',responseJson);
-    //   setspinner(false)  
-      })
-      .catch((error) => {
-        setspinner(false)
 
-        alert(error)
-              // navigation.navigate('login')
-
-          console.warn(error)
-      });
- 
   }
 const galleryPic= async()=>{
 
@@ -297,7 +353,10 @@ const renderstateslist = ({ item }) => {
     GetStates()
    },[])
     return (
-      <>
+      
+    
+      
+   
            <SafeAreaView style={styles.container}>
          
         <Spinner
@@ -372,6 +431,7 @@ const renderstateslist = ({ item }) => {
 
        </Modal>
 
+  
       <ImageBackground source={require('../assets/bk.png')} resizeMode="cover" style={styles.image}> 
         
         <Appbar.Header style={styles.header}>
@@ -387,9 +447,16 @@ const renderstateslist = ({ item }) => {
 
       </Appbar.Header>
 
-
-          <ScrollView>
      
+      <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      // style={styles.container}
+    > 
+
+          <ScrollView style={{paddingBottom:0,}}>
+     
+     
+
           <View style={styles.logtxt}>          
           <TouchableOpacity style={{width:"40%",height:"11%",justifyContent:"center",alignSelf:"center"}}
           onPress={galleryPic}
@@ -426,12 +493,36 @@ const renderstateslist = ({ item }) => {
         keyboardType={"numeric"}
         />
        
-         <TextInput   
+
+       
+ <DatePicker
+        modal
+        open={pickuptimeopen}
+        date={new Date()}
+        mode='date'
+        onConfirm={(date) => {
+          // alert(date)
+          setdateofbirth(date.toDateString())
+          
+          console.log(date.toDateString());
+          setpickuptimeopen(false)
+
+        }}
+        onCancel={() => {
+          setpickuptimeopen(false)
+        }}
+      />
+
+      <TouchableOpacity style={{backgroundColor:'white',justifyContent:'center', borderRadius:10, height:40,paddingHorizontal:12, marginVertical:12, padding:10, borderWidth:1,w:'100%', borderColor:AppColors.Appcolor}} onPress={()=> {  setpickuptimeopen(true)}}>
+        <Text style={{color:dateofbirth == ''? "grey":'black' }}>{dateofbirth == ''? "Date Of birth":dateofbirth}</Text>
+        </TouchableOpacity>
+
+         {/* <TextInput   
         placeholderTextColor={'grey'}
         onChangeText={(Text)=>{setdateofbirth(Text)}}
         value={dateofbirth}
         style={styles.input}
-        placeholder="Date of Birth"/>
+        placeholder="Date of Birth"/> */}
          <TextInput   
         placeholderTextColor={'grey'}
         onChangeText={(Text)=>{setsnn(Text)}}
@@ -468,15 +559,20 @@ const renderstateslist = ({ item }) => {
       data={VehicalType}  />
 
 <TouchableOpacity
-       onPress={() =>setshowModal(true) }
+style={{backgroundColor:'white', borderWidth:0.5,paddingHorizontal:11, marginTop:8,marginBottom:8, justifyContent:'center', borderRadius:10, height:45}}
+       onPress={() =>{setshowModal(true) }}
        > 
-       <TextInput   
+
+       <Text  style={{color:'black', backgroundColor:'white',}}>
+         {statevalue != ''?statevalue:"Select States" } 
+         </Text>
+       {/* <TextInput   
         onChangeText={(Text)=>{setstates(Text)}}
         value={statevalue}
         editable={false}
         placeholderTextColor={'grey'}
         style={[styles.input,{color:'black'}]}
-        placeholder="States"/> 
+        placeholder="States"/>  */}
 
 
 </TouchableOpacity>
@@ -614,13 +710,20 @@ const renderstateslist = ({ item }) => {
         <Text style={{color:'#EFDF79'}}>Already have an account? Login</Text>
       </TouchableOpacity>
 
+
     </ScrollView>
-   
+
+    </KeyboardAvoidingView>
+
     
     </ImageBackground>
+
     </SafeAreaView>
+
+
+
         
-        </>
+        
     )
 }
 const styles = StyleSheet.create({
@@ -727,6 +830,7 @@ header: {
   justifyContent: "center",
   width:deviceWidth,
   paddingHorizontal:0,
+  marginTop:55,
   paddingVertical:0,
 
 },

@@ -1,7 +1,7 @@
 import React,{useState,useEffect} from 'react'
 import { View,ImageBackground,BackHandler, Text,TextInput,StyleSheet ,ActivityIndicator,
 
-TouchableOpacity,Button, SafeAreaView, Dimensions, ScrollView, Alert,PermissionsAndroid } from 'react-native'
+TouchableOpacity,Button, SafeAreaView, Dimensions, ScrollView, Alert,PermissionsAndroid, Platform } from 'react-native'
 import { Appbar } from "react-native-paper";
 import AppUrlCollection from '../UrlCollection/AppUrlCollection';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -10,8 +10,9 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import DeviceInfo from 'react-native-device-info';
 import messaging from '@react-native-firebase/messaging';
 import AppColors from '../Colors/AppColors'
-import LocationEnabler from 'react-native-location-enabler';
 
+
+import MaterialCommunityIcons from 'react-native-vector-icons/dist/MaterialCommunityIcons';
 
 
 
@@ -20,13 +21,14 @@ const deviceWidth = Dimensions.get("window").width;
 // const image = {require('    ')};
 const Login = ({navigation}) => {
   // 'Driver2@gmail.com'
-  const [email,setemail] = useState()
-  const [password,setpassword] = useState('12345678')
+  const [email,setemail] = useState('')
+  const [password,setpassword] = useState('')
   const [deviceid,setdeviceid] = useState(0)
   const [spinner,setspinner]=useState(false)
   const [passMessage, setPassMessage] = useState("");
   const [message, setMessage] = useState('');
   const [firebaseToken,setfirebaseToken] = useState()
+  const [passsecure ,setpasssecure]= useState(true)
 
   const storeData = async (responseJson) => {
 
@@ -36,44 +38,60 @@ const Login = ({navigation}) => {
     // alert(AppConstance.Id)
     AppConstance.Name=responseJson.DATA.user.Name;
     AppConstance.Email=responseJson.DATA.user.Email;
-    AppConstance.Password=responseJson.DATA.user.Password;
-    AppConstance.HaveLoad=responseJson.DATA.user.Have_load
-
     AppConstance.Phone=responseJson.DATA.user.Phone;
     AppConstance.DateofBirth=responseJson.DATA.user.Date_of_Birth;
-    // AppConstance.CompanyName=responseJson.DATA.user.Company_Name;
     AppConstance.snn=responseJson.DATA.user.snn;
+    
+
+    // AppConstance.Password=responseJson.DATA.user.Password;
+    AppConstance.HaveLoad=responseJson.DATA.user.Have_Load
+
+    if( responseJson.DATA.user.Rating == null ){
+      AppConstance.rating = 0
+      await AsyncStorage.setItem('Rating', '0')
+
+    }else {
+      AppConstance.rating = responseJson.DATA.user.Rating;
+      await AsyncStorage.setItem('Rating', responseJson.DATA.user.Rating)
+    }
+    // AppConstance.CompanyName=responseJson.DATA.user.Company_Name;
     AppConstance.Role=responseJson.DATA.user.Role;
     AppConstance.PaymentType=responseJson.DATA.user.Payment_Type;
-    AppConstance.BankInfo=responseJson.DATA.user.Bank_Info;
-    AppConstance.BankNumber=responseJson.DATA.user.Bank_Number;
-    AppConstance.CreditCardNo=responseJson.DATA.user.Credit_Card_No;
-    AppConstance.ExpireDate=responseJson.DATA.user.Expire_Date;
-    AppConstance.SecurityCode=responseJson.DATA.user.Security_Code;
-    AppConstance.ZipCode=responseJson.DATA.user.Zip_Code;
+    if( responseJson.DATA.user.Payment_Type == '0'){
+      AppConstance.BankInfo=responseJson.DATA.user.Bank_Info;
+      AppConstance.BankNumber=responseJson.DATA.user.Bank_Number;
 
+      AppConstance.CreditCardNo='';
+      AppConstance.ExpireDate='';
+      AppConstance.SecurityCode='';
+      AppConstance.ZipCode='';
+    }else{
+      AppConstance.BankInfo='';
+      AppConstance.BankNumber='';
+      AppConstance.CreditCardNo=responseJson.DATA.user.Credit_Card_No;
+      AppConstance.ExpireDate=responseJson.DATA.user.Expire_Date;
+      AppConstance.SecurityCode=responseJson.DATA.user.Security_Code;
+      AppConstance.ZipCode=responseJson.DATA.user.Zip_Code;
+    }
+  
     AppConstance.AUTH_KEY=responseJson.DATA.token;
 
-    try {
+
     await AsyncStorage.setItem('Login',"1")
     await AsyncStorage.setItem('Id',responseJson.DATA.user.id.toString())
 
 
     await AsyncStorage.setItem('Name', responseJson.DATA.user.Name)
     await AsyncStorage.setItem('Email', responseJson.DATA.user.Email)
-    await AsyncStorage.setItem('Password', responseJson.DATA.user.Password)
+    // await AsyncStorage.setItem('Password', responseJson.DATA.user.Password)
     await AsyncStorage.setItem('HaveLoad', responseJson.DATA.user.Have_Load)
-
     await AsyncStorage.setItem('Phone', responseJson.DATA.user.Phone)
     await AsyncStorage.setItem('DateofBirth', responseJson.DATA.user.Date_of_Birth)
-    
-    // if (responseJson.DATA.user.Company_Name!= null){
-    //   // await AsyncStorage.setItem('SNN', responseJson.DATA.user.SNN)
-    //   await AsyncStorage.setItem('CompanyName', responseJson.DATA.user.Company_Name)
-
-
-    // }
-      // await AsyncStorage.setItem('CompanyName', responseJson.DATA.user.Company_Name)
+    if(responseJson.DATA.user.Company_Name == null ){
+      await AsyncStorage.setItem('CompanyName', '')
+    }else{
+      await AsyncStorage.setItem('CompanyName', responseJson.DATA.user.Company_Name)
+    }
     
     if (responseJson.DATA.user.SNN != null){
       await AsyncStorage.setItem('SNN', responseJson.DATA.user.SNN)
@@ -92,10 +110,6 @@ const Login = ({navigation}) => {
 
     }
     
-     
-      // await AsyncStorage.setItem('DL', responseJson.DATA.user.DL)
-    
-   
     await AsyncStorage.setItem('Role', responseJson.DATA.user.Role)
 
     await AsyncStorage.setItem('PaymentType', responseJson.DATA.user.Payment_Type)
@@ -110,14 +124,11 @@ const Login = ({navigation}) => {
     }
 
     await AsyncStorage.setItem('Token', responseJson.DATA.token)
-    setspinner(false)
+    // setspinner(false)
+    console.log('going to next page');
 
     navigation.navigate('AppDrawer')
 
-    }
-     catch (e) {
-      console.log(e)
-    }
   
   }
 
@@ -163,11 +174,15 @@ const validatePass = (event) => {
   }
 };
 // chck Location Permission
-const {
-  PRIORITIES: { HIGH_ACCURACY },
-  useLocationSettings,
-} = LocationEnabler;
+// if(Platform.OS = 'android'){
+//   const {
+//     PRIORITIES: { HIGH_ACCURACY },
+//     useLocationSettings,
+//   } = LocationEnabler;
+// }
+
 const requestLocationPermission =async()=> {
+  if(Platform.OS == 'android'){
   const chckLocationPermission = PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION);
   if (chckLocationPermission === PermissionsAndroid.RESULTS.GRANTED) {
       alert("You' rr access for the location");
@@ -197,29 +212,38 @@ const requestLocationPermission =async()=> {
           alert(err)
       }
   }
+}
 };
-const [enabled, requestResolution] = useLocationSettings(
-  {
-    priority: HIGH_ACCURACY, // default BALANCED_POWER_ACCURACY
-    alwaysShow: true, // default false
-    needBle: true, // default false
-  },
-  false /* optional: default undefined */
-);
+if(Platform.OS == 'android'){
+  // const [enabled, requestResolution] =  useLocationSettings(
+
+
+  //   {
+  //     priority: HIGH_ACCURACY, // default BALANCED_POWER_ACCURACY
+  //     alwaysShow: true, // default false
+  //     needBle: true, // default false
+  //   },
+  //   false /* optional: default undefined */
+    
+  
+  
+  // );
+}
+
   useEffect(async () => {
 
-    requestLocationPermission()
+    // requestLocationPermission()
 
-    {!enabled ?
-          requestResolution()
-          :
-          console.log('not enabled ')
-        }
+    // {!enabled ?
+    //       requestResolution()
+    //       :
+    //       console.log('not enabled ')
+    //     }
     BackHandler.addEventListener("hardwareBackPress", handleBackButtonClick);
   
     let fcmToken = await messaging().getToken();
     if (fcmToken) {
-      console.log("fcm"+fcmToken);
+      console.log("fcm     "+fcmToken);
         // await AsyncStorage.setItem('device_token', fcmToken);
         setdeviceid(fcmToken)
         
@@ -229,24 +253,8 @@ else {
     console.log('Device_token')
     console.log("----"+JSON.stringify(fcmToken))
 }
-    // let deviceId = DeviceInfo.getDeviceId();
-    // setdeviceid(deviceId)
-    // DeviceInfo.getAndroidId().then((androidId) => {
-    //   // androidId here
-    //   console.log(androidId)
-    //   setdeviceId(androidId)
-      // console.log(deviceId)
-
-
-    // });
-
-  //   DeviceInfo.getAndroidId().then((androidId) => {
-  //     // androidId here
-  //       console.log(androidId)
-  //       setdeviceid(androidId)
+ 
   
-  //   });
-  //
   return () => {
     BackHandler.removeEventListener("hardwareBackPress", handleBackButtonClick);
   };
@@ -320,9 +328,11 @@ else {
             setspinner(false)
 
             alert(responseJson.error)
+          }else{
+            setspinner(false)
+
+            alert(JSON.stringify(responseJson))
           }
-      console.log('login data response',responseJson);
-    //   setspinner(false)  
       })
       .catch((error) => {
         setspinner(false)
@@ -381,7 +391,7 @@ else {
         placeholderTextColor={'grey'}
         />
         
-        <Text style={{color:'#6315EF'}}>{message } </Text>
+        {/* <Text style={{color:'#6315EF'}}>{message } </Text>
             <TextInput
         style={styles.input}
         // onChangeText={onChangeNumber}
@@ -393,8 +403,77 @@ else {
 
         secureTextEntry={true}
 
+
+
         
-      />
+      /> */}
+
+<View
+            style={{
+              borderColor: AppColors.Appcolor,
+           
+              borderWidth:1,
+              
+              backgroundColor:'white',
+              borderRadius:15,
+              height:60,
+
+              paddingHorizontal:15,
+              margin:12,
+              width:'100%',
+              alignSelf:'center',
+              flexDirection: "row",
+              justifyContent:'center',
+            
+              
+            }}
+          >
+          
+            <View style={{ justifyContent:'center', backgroundColor:'white', width: "90%" }}>
+              <TextInput
+                style={{
+                 
+                  paddingVertical: 4,
+
+                  width: "98%",
+                  
+                }}
+                // onChangeText={text => onChangeText(text)}
+                onChangeText={(Text)=>{setpassword(Text)}}
+                placeholder="Enter Password"
+                placeholderTextColor={'grey'}
+                secureTextEntry={passsecure}
+                value={password}
+                inlineImageLeft="search_icon"
+              />
+            </View>
+            {passsecure == true ? (
+              <MaterialCommunityIcons
+                name="eye"
+                onPress={() => {
+                  passsecure == true
+                    ? setpasssecure(false)
+                    : setpasssecure(true);
+                }}
+                style={{ alignSelf: "center" }}
+                size={20}
+                color={"gray"}
+              />
+            ) : (
+              <MaterialCommunityIcons
+                name="eye-off"
+                onPress={() => {
+                  passsecure == true
+                    ? setpasssecure(false)
+                    : setpasssecure(true);
+                }}
+                style={{ alignSelf: "center" }}
+                size={20}
+                color={"gray"}
+              />
+            )}
+          </View>
+
        <Text style={{color:'#6315EF'}}>{passMessage } </Text>
 
            
@@ -455,7 +534,7 @@ const styles = StyleSheet.create({
         borderBottomRightRadius:15,
         borderBottomLeftRadius:15,
         justifyContent:'center',
-        backgroundColor:'#EFDF79'
+        backgroundColor:AppColors.Appcolor
       },
     input: {
       height: 60,
@@ -466,7 +545,7 @@ const styles = StyleSheet.create({
       borderWidth: 1,
       // padding: 10,
       borderRadius:15,
-      borderColor:'#EFDF79',
+      borderColor:AppColors.Appcolor,
       backgroundColor:"white",
       color:"black"
       
@@ -474,7 +553,7 @@ const styles = StyleSheet.create({
     },
     logtxt:{
       marginTop:120,
-      borderColor:'#EFDF79',
+      borderColor:AppColors.Appcolor,
     borderWidth:1,
     
     height:"51%",
@@ -503,10 +582,10 @@ header: {
 forgetPass:{
   alignSelf:"flex-end",
   marginBottom:45,
-  color:'#EFDF79'
+  color:AppColors.Appcolor
 },
 btnBorder:{
- borderColor:'#EFDF79',
+ borderColor:AppColors.Appcolor,
  borderWidth:3,
  backgroundColor:'black',
  borderRadius:150/2,
@@ -525,7 +604,7 @@ btnBorderSize:{
   borderRadius:400/2,
   borderColor:'#EFDF79',
   borderWidth:1,
-  backgroundColor:'#EFDF79',
+  backgroundColor:AppColors.Appcolor,
   alignContent:"center"
   // fontSize:40
 },
@@ -545,9 +624,9 @@ loginFirst:{
   height:50,
   // textAlign:"center",
   alignItems:"center",
-  borderColor:'#EFDF79',
+  borderColor:AppColors.Appcolor,
   borderWidth:2,
-  backgroundColor:'#EFDF79',
+  backgroundColor:AppColors.Appcolor,
   // borderRadius:200,
   borderBottomRightRadius:15,
   borderBottomLeftRadius:15,
